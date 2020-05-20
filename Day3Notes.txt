@@ -1,0 +1,167 @@
+Encapsulation: Wrapping up data and function into a single unit (object)
+
+class class_name
+{
+ Members: data members/Member methods
+}
+
+Access modifiers- define accessibility of a member
+         
+	 private:only access by class members (can't be accessed by objects also)
+         protected :
+	 public : same as private and also others but require Object to be accessed
+	 default
+
+Data: Security
+Methods: Accuracy
+
+We keep usually
+data members: private
+methods: public
+----------------------------------------------------------
+class Sample
+{
+ private void fun1(){
+	System.out.println("Sample Fun1......");
+  }
+
+ public void fun2(){
+       System.out.println("Sample Fun2......");
+  }
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+ 	Sample ob1=new Sample(); 
+        Sample ob2;
+        ob1.fun2();
+        ob1.fun1();
+  }
+}
+//ob2 is a reference variable which has nothing inside it
+//ob1 is a reference variable pointing to an object
+//fun1 will not execute as fun1 is private. Even same class object can't access private member
+new keyword allocates memory dynamically and then constructor will execute and it will initialise initial values to object
+
+Numerical:::0
+Char:''
+boolean:false
+reference:null
+
+object is made in heap memory
+but reference variable is created in RAM
+
+class Sample
+{
+private int x,y; //Instance variable. They are said so because their memory ALLOCATION HAPPENS FOR INSTANCE
+
+public show()
+{
+System.out.println("\nX :"+x);
+System.out.println("Y :"+y);
+}
+
+}
+
+class Demo
+{
+public static void main(String [] args)
+{
+Sample obj1=new Sample();
+obj1.show();
+Sample obj2=new Sample();
+obj2.show();
+Sample obj3=new Sample();
+obj3.show();
+}
+}
+
+// here x and y will be printed as 0,0 . This only gets default value in a constructor
+
+class Sample
+{
+private int x,y;
+public Sample(int a,int b) //overloading . Also this one is parametrised constructor
+{
+x=a;
+y=b;
+}
+
+public void show()
+{
+System.out.println("x:"+x+" y:"+y);
+}
+}
+
+class Demo
+{
+public static void main(String [] args)
+{
+Sample obj1=new Sample(34,55);
+obj1.show();
+Sample obj2=new Sample(12,56);
+obj2.show();
+Sample obj3=new Sample(67,89);
+obj3.show();
+}
+}
+
+-------------------------------------------------
+public Sample(int x,int y)
+{
+x=x;
+y=y;
+}
+
+will this run or not?
+Ans. This will run. but output will be 0,0 
+
+Why?
+Ans. In constructor, it will assume both x as local though instance variable is also present. So the private instance variable will never be initialized
+
+How to solve this?
+Ans. using a predefined keyword, 'this' , we can refer to the object which has called the method.
+ 
+publix Sample(int x,int y)
+{
+this.x=x;
+this.y=y;
+}
+
+this.x is instance variable and x is local variable
+//Earlier x and x both were local variable
+
+----------------------------------------------------------
+In main function,
+
+System.out.println(ob1.x);
+
+It will give error, x has private access. 
+---------------------------------------------------------
+data hiding means do not let access data members directly
+
+then how to change values?
+
+public void setX(int x)
+{
+this.x=x;
+}
+public void getX()
+{return this.x;  //or we can write returnn x but this.x is preferable to avoid issue with local variables
+}
+
+in main,
+
+obj1.setX();
+
+----------------------------------------------------
+We made private so it is not accessed outside, Then we made setter to access it. Then why not make it public only?
+
+Ans. We can put if conditions in setter methods so only if data meets our criteria, we will let it change.
+     Outside setter, we can't keep this if condition always
+
+We will let it access but depending on some logic when we have to let it access and when not to
+---------------------------------------------------------------------------
+ 
