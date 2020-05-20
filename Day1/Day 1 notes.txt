@@ -1,0 +1,120 @@
+client side
+
+HTML/CSS/JSS/Jquery/Bootstrap + angular/Reactjs
+
+server side
+
+Java+ MysqlDB
+
+1. Core java - basic of java,OOPs concept
+2. advance java -servlet/jsp+database connectivity
+3. Web Design: HTML,CSS,JS,Jquery
+4. NodeJS
+5. Angular or ReactJS
+6. Client Side/Server Side
+7. Project
+
+-----------------------------------------------------
+Java is a platform independent object oriented programming language
+Java is WORA: Write once run Anywhere!
+
+Platform Dependency->
+
+Source Code>>>hello.c
+Compile>>>Compiler>>>"OS"
+Executable code>>>.exe file<< RUN
+
+We get exe file because of combination work of OS and compiler
+
+Win10: 64 bit>>>test.exe<< Win7:32 bit
+exe file from Win10,64 bit won't run on win7,32 bit because architecture changes
+Plus it will not work on Linux and MAC
+
+platform dependence means exe file is made for a specific platform,machine
+---------------------------------------------------------------------
+Interview question->>
+1. Is Source code platform Dependent? 
+Ans. No, it will run on any platform. 
+     Exe file will not run on any platform
+
+2. Then which file is platform dependent?
+Ans. exe file is platform dependent
+---------------------------------------------------------------
+Platform independency--->>
+
+Source code>>hello.java<<<
+Compile>>>Compiler>>>
+	Byte Code>>> which is a .class file
+	"Byte code is intermediate code", cannot be executed,binary code encrypted. Can't be opened in editor
+
+Execute>>>JVM<<<Interpreted
+       "OS">>>>>Binary code<<< will not get a .exe file
+
+int x; >>> JVM >>> 4 byte >>> OS
+JVM is like agent which interacts with bank(OS)
+ 
+When we execute bytecode on jvm, it will be interpreted and we will not get a .exe file
+------------------------------------------------------------
+3. Intermediate code --->
+Ans. A code which only those who have converted it to can understand
+    It is formed by Java compiler. It is formed in form of .class file.
+    It is machine independent binary code
+
+4. Do we get a .exe file after executing the bytecode?
+Ans. No . It will be directly interpreted in 01 form and executed
+
+5. Which code is platform independent?
+Ans. Bytecode
+
+6. Is android a virtual machine?
+Ans. Android is a Operating system. It is not JVM.
+
+7. Is code executed on environment of OS?
+Ans. Not on OS. 
+     Byte code is executed in JVM environment which interacts with OS
+
+8. Is JVM platform dependent?
+Ans. Yes. we have to install it depending on platform
+--------------------------------------------------------------------------
+jdk(java development kit) Download. It is for development . with jdk, jre comes.
+
+jre (java runtime environment). It is just for executing
+
+9. Diff between JDK and JRE
+
+JDK + JRE
+Java SE 8
+Java 8 . (Oracle JDK)
+
+x86 means 32 bit system but its java setup will run on 64 bit system also but for 32 bit system, we require x86 only
+x64 means 64 bit version
+
+After setup, you will get c:/programfiles/java
+
+See jdk/bin . Here you will get javac and java
+javac - compiling
+java - executing
+_____________________________________________________---
+run on cmd->
+
+java -version
+javac -version
+
+test.java code->>>
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  System.out.println("Hello Students, How are you");
+ }
+}
+
+Compilation:
+javac test.java
+
+Byte code:
+Demo.class (This can be run on any platform)
+
+Execute:
+java Demo 

@@ -1,0 +1,177 @@
+class Demo
+{
+ public static void main(String [] args)
+ {
+  //out-object-OutputStream
+  System.out.print("Good Morning !\n);
+  }
+}
+
+
+//print() method is inside out object which is inside System class
+
+//Class name starts with capital letter .
+/* Class Name: Demo,Sample
+     SampleProgram
+     SampleDemoProgr
+am
+*/
+
+//Here there are 3 classes- Demo,String,System
+//System is a class
+
+Class is run by java Demo
+
+class Sample
+{
+
+}
+
+1. If there are 2 classes in a .java file, two bytecode files will be created
+2. But only Demo class will run because it only has main function
+
+3. If we insert main function inside sample also, we can execute Sample class also .
+   Demo is different program, Sample is different program
+
+4. In a project, we will keep only 1 main function
+
+System.out.print();  //Line will not change
+System.out.println();  // Line will change
+
+-----------------------------------------------------
+Datatypes-->
+
+Integer:	
+	byte 1bytes  : -128 to 127
+	short 2      : -32768  to 32767
+	int    4     : -2147483648 to 2147483647
+	long   8   
+
+Floating:
+	float  4
+	double  8
+
+Character:
+       	char  2   'a'
+
+Boolean:
+	boolean   1  :true/false
+
+Interview questions:
+2. Range
+3. why 128 , 1 more in range
+4. memory size of datatypes
+
+//Java does not support modifiers like long long int, unsigned int etc.
+-------------------------------------------------
+
+Declaration
+
+ 	int x;
+	float y;
+	double a,b,c;
+	boolean z;
+       
+	int x=34,y=45,a=12;
+// We can initialise during declaration as well as after that
+
+// String is not a datatype. It is a class
+--------------------------------------------------------
+class Demo
+{
+ public static void main(String [] args)
+ {
+   int x=45; //Local variable - as it is declared inside method
+   System.out.println(x);
+   System.out.println("X : "+x);
+  }
+}
+
+//local variable do not get default value
+// If x is just declared and not other statement, program will run
+//If x is used without initalizes, program will give error
+//No garbage value in java
+//3 types of variables: Local, Instance, Class
+
+----------------------------------------------------
+calculations:
+
+int x,y,x;
+x=34;
+y=12;
+
+z=x+y;
+System.out.print("Add : "+z);
+z=x-y;
+System.out.print("Sub: "+z);
+z=x*y;
+System.out.print("Mul: "+z);
+z=x/y;
+System.out.print("Div: " +z);
+z=x%y;
+System.out.print("Rem: "+z);
+---------------------------------------------------
+user input on console-->
+
+//in object of InputStream class and is inside System class
+Scanner sc=new Scanner(System.in);
+
+//new keyword is for dynamic memory allocation
+// Scanner() is a constructor
+//sc is a reference variable and in is also a reference variable. Both pointing to objects
+
+But this gives error, Scanner class is not being able to identified
+
+We categorize classes using packages like folders. Packages is like a collection of classes(both predefined and user defined classes)
+We have to tell compiler from where to take the classes, so we have to use an import statement
+
+import java.util.Scanner;  // java is the root package which has util package and inside that is Scanner class . 
+
+Now error will be resolved. The class got Scanner class.
+
+System.out.print("\nEnter Two Numbers: ");
+//nextInt() , nextShort(), nextFloat() , nextDouble()
+
+//next() method for taking String as input
+x=sc.nextInt();
+y=sc.nextInt();
+
+//Some packages are imported by default. 
+ Classes like String,System are present in java.lang package which is imported by default
+
+/*
+Naming convention for Methods: (camelCase)
+ next() , nextInt() , 
+
+first word lower, second word capital
+ nextIntDemoSample()
+*/
+
+/*
+Relational : < <= >= == != >
+Logical:  && || !
+Assignment : =
+Increment and decrement : ++ --
+Bitwise : & |
+
+If ...else,switch
+loops
+*/
+
+When we import Scanner class, do Scanner class code gets merged?
+Ans. No, it is not merged. When we execute the class, then JVM merges class using ClassLoader
+
+Compiler goes to Scanner class and checks whether right methods are used or not
+
+/*
+What is OOPs?
+OOPs is focus on objects
+What is class?
+Class is blueprint og objectss
+Why we make a class?
+
+Object is an instance of a class. object is a combination of data and methods (features and behaviours)
+
+when we make a program, it starts from class or object?
+Ans. 
+*/
