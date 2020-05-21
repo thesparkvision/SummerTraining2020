@@ -7,13 +7,14 @@ class Exam
 
 	public Exam()
 	{
-		marks=new int[5];
+		this.marks=new int[5];
 	}
 
 	public void giveExam()
 	{
-		System.out.println("Enter the subject title:");
 		Scanner sc=new Scanner(System.in);
+
+		System.out.println("Enter the subject title:");
 		this.title=sc.next();
 
 		System.out.println("Enter the 5 subject marks:");
@@ -25,12 +26,16 @@ class Exam
 
 	public void showExam()
 	{
-		System.out.println("Subject title: "+this.title);
-		System.out.println("Subject marks: ");
-		for(int x:this.marks)
+		System.out.println("\n\tSubject title: "+this.title);
+		System.out.println("\tSubject marks: ");
+		for(int num:this.marks)
 		{
-			System.out.println(x);
+			System.out.print(num+" ");
 		}
+		System.out.print("\n");
+
+		Result res=new Result();
+		res.calculateResult(this.marks);
 	}
 
 }
