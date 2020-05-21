@@ -1,0 +1,274 @@
+3 classes to be made-
+Student : roll no., name
+Exam    : title, marks[] (for 5 subjects) 
+Result  : Calculate Result
+
+//Now , we will make our classes in separate files 
+
+Q1. If we make an Exam class object when Exam class is in different file, will this code run or not?
+Ans. The main program will not even compiled. Exam class not found
+
+Q2. What to do so that compiler can find Exam class?
+Ans. First compile code.java, then Exam.class bytecode gets created. 
+	javac code.java
+     Then compile the pro1.java file
+	javac pro1.java
+
+Q3. We can't pass Class as command line arguments . why?
+Ans. Because now we are only doing compilation. so no use of command line arguments
+
+Q4. But this introduces a new problem. If we have a project with 100 classes, do we need to compile 100 files?
+Ans. We can't keep all classes in a file because it may become complex
+     
+     Name the file with the same name as the class inside it. 
+     Now when we compile pro1.java , 
+	the compiler will search for Exam.class bytecode
+	And if it didn't find this, then it compiles Exam.java and makes the bytecode and uses it
+
+.............................................................
+
+pro1.java
+-----------
+class Demo
+{
+  public static void main(String [] args)
+ {
+	Exam ob=new Exam();
+	ob.giveExam();
+	ob.showExam();	  
+ }
+}
+...........................................................
+
+code.java
+----------
+import java.util.Scanner;
+
+class Exam
+{
+	private String title;
+	private int marks[]; //Array
+
+	public Exam()
+	{       //title=null
+		this.marks=new int[5]; //5 subjects
+	}
+
+	public void giveExam()
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.print("\nExam Title: ");
+		this.title=sc.next(); //input string
+		System.out.println("Give 5 subjects marks:");
+   		for(int x=0;x<5;x++)
+		{
+			this.marks[x]=sc.nextInt();
+		}
+	}
+	
+	public void showExam()
+	{	
+		Result res=new Result();
+		System.out.println("\n\tExam Title: "+this.title);
+		System.out.print("\t Exam Marks: \n");
+		for(int num: this.marks)	//for each loop for traversing the data
+		{
+			System.out.print(num+" ");
+		}
+		System.out.print("\n");
+		res.process(this.marks);
+	}
+		
+/*
+int arr[]=new int[5];
+This is for declaring an array of 5 elements
+
+int arr[]; //here memory is not allocated
+arr=new int[5];	//here memory is allocated
+
+This is also okay, first declaration and later initialization
+*/
+
+/*
+Syntax of for each loop-->
+ 
+ for(int x:collection)	
+	{
+						
+	}	
+*/
+
+}
+
+//Doubt solved. We have to make object of Scanner class only once and then we can use it to take inputs multiple times inside a function
+
+
+/* 
+Object Relationships-->
+
+Use A Relationship->
+When one object is using another object for a particular task, this is use a relationship
+Example. Human object uses a chair object for a seating purpose.
+
+But there is no dependency. Human doesn't depend on chair and chair doesn't depend on Human
+
+Another Example. Exam class object is using Scanner class object. This is also a Scanner object
+
+...................................................................................
+
+Result.java
+------------
+
+class Result
+{
+ public void process(int marks[])
+ {
+	int total=0;
+	float per;
+	for(int n:marks)
+	{
+		total+=n;
+	}
+	per=total/5;
+	System.out.println("\tTotal Marks: "+total);
+	System.out.println("\tPercentage: "+per+" %");
+ }
+}
+
+//Currently we will get wrong result as per. Because we are dividing both integers. So we have to typecast any one variable to float
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+class Student
+{
+	private int roll;
+	private String name;
+
+	public void input()
+	{
+	Scanner sc=new Scanner(System.in);
+	System.out.print("\nRoll Number: ");
+	this.roll=sc.nextInt(); //Now assuming roll no. as int but it can be string also
+	System.out.print("Name: ");
+	this.name=sc.next();
+	}
+
+	public void input()
+	{
+	System.out.print("\n\tRoll Number:"+this.roll);
+	System.out.print("Name: "+this.name);
+	}
+}
+
+class Demo
+{
+	public static void main(String [] args)
+	{
+	Student s1=new Student();
+	s1.input()
+	s1.output();
+	}
+}
+
+/*Has A relationship . When one object happening depends upon another object
+Pen needs refill and refill needs a pen.
+Student have multiple exams and can give multiple exams. If there are no students, then there is no need of exams. Exams are dependent on Students
+
+When one object creation depends on another object creation
+*/
+
+-----------------------------------------------------------------------------
+class Student
+{
+
+private int roll;
+private String name;
+private Exam exam[];
+private int examcounter;
+
+public Student()
+{
+	this.exam=new Exam[5];
+	for(int x=0;x<5;x++)
+	{
+		this.exam[x]=new Exam();
+	}
+}
+
+public void output()
+{
+ System.out.println("\n\tRoll Number: "+this.roll);
+ System.out.println("\tName: "+this.name);
+ System.out.println("\tExam details:\n")'
+ for(int x=;x<examcounter;x++)
+ {
+	exam[x].showExam();
+ }
+
+public void addExam()
+{
+	if(this.examcounter<5) //the instance variable got initalizsed by 0 only
+	{
+		this.exam[examcounter].giveExam();
+		this.examcounter++;
+	}
+	else
+	{
+	System.out.println("\n\t** All Exam Added! **");
+	}
+}
+/*
+Exam exam[]=new Exam[5];
+
+This is not a array of 5 objects. This is an array of reference variables
+*/
+
+----------------------------------------------------------------------------------------------
+import java.util.Scanner;
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Scanner sc=new Scanner(System.in);
+  Student students[]; //array of references
+  int studcount;
+  int choice;
+  System.out.print("\nHow many students: ");
+  studcount=sc.nextInt();
+  students=new Student[studcount]; 
+
+  while(true)
+  {
+    System.out.println("\n1. Add Student.");
+    System.out.println("2. Search Student.");
+    System.out.println("3. Add Exam.");
+    System.out.println("4. Show Topper.");
+    System.out.println("5. Exit.");
+    System.out.print(">>>>");
+    choice=sc.nextInt();
+    if(choice==5)
+     {break;}
+    switch(choice)
+	{
+		case 1: break;
+		case 2: break;
+		case 3: break;
+		case 4:break;
+		default:System.out.println("\n**Wrong input");
+     }
+    System.out.println("**Thanks**");  
+  }
+}
+
+//1. add -Add student should add a student and if more than 5, should give error
+//2. search- when user enter a number, you have to ask roll no. and if that roll no. is found, print that record else give error
+//3. add Exam- ask roll no. where to add exam. if roll no is wrong, give error. else that exam should get added in that user
+//4. show topper - collect all exams data,average it and show the topper
+
+//First make the code by yourself.this is first task
+
+/* If we enter students=1000, then 1000 Student objects are created
+   Inside each student, there are 5 objects of Exam . that means 5000 Exam objects
+   Inside each Exam object, there will be 5000 Scanner and 5000 Result objects
+   And we can access them all by a single variable students because whole objects are related to each other
