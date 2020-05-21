@@ -30,7 +30,7 @@ class Student
 		System.out.println("\n\tRoll number: "+this.roll_no);
 		System.out.println("\tName: "+this.name);
 		System.out.println("\tExam Details: \n");
-		for(int x=0;x<examcounter;x++)
+		for(int x=0;x<this.examcounter;x++)
 		{
 			this.exams[x].showExam();
 		}
@@ -41,6 +41,7 @@ class Student
 		if(this.examcounter<5)
 		{
 			this.exams[examcounter].giveExam();
+			this.examcounter++;
 		}
 		else
 		{
