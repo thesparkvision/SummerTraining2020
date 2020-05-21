@@ -1,8 +1,8 @@
 class Demo
 {
 	public static void main(String[] args) {
-		Exam ob=new Exam();
-		ob.giveExam();
-		ob.showExam();
+		Student s1=new Student();
+		s1.input();
+		s1.output();
 	}
 }
