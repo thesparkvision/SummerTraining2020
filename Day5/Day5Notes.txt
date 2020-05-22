@@ -1,0 +1,346 @@
+Inheritance : IS-A
+********************************************
+Base - Derive
+Parent - Child
+Super - Sub  //Java Terminology
+
+What rules to follow before doing inheritance between 2 classes?
+Ans. The classes should follow Is-A relationship then only we can do it
+     
+     Bus Car Chair Clerk Human
+     
+     Pulsar Nano Bike
+
+Pulsar is a Bike
+Nano is a Car
+Clerk is a Employee
+Employee is a Human
+**************************************************** 
+
+How can we decide that we can make one class as base and one class as sub?
+Ans.
+*****************************************************
+Reusability-->
+
+Student 	Faculty
+
+name		name
+age		age
+phone		phone
+roll		facid
+marks 		salary
+
+Here name,age,phone is common. 
+
+
+	Person
+		name
+		age
+		phone
+
+Student		Faculty
+
+roll		facid
+marks		salary
+
+CS IT EC   |  Fulltime Visiting  
+
+Now ,we can make a voting feature in Person class,and both students and teacher will get that
+Also common features are now in Person
+
+Now if we want different branch student, we can make more sub-classes of Students
+
+Also faculties can be full-time and visiting faculty.
+This is how inheritance goes on
+
+This is Heirarchical Inheritance (also importantly used in industry)
+****************************************************************************
+Types-->
+
+Java only has 3 inheritances:
+
+1. Single   	:A->B
+2. Multilevel   :A->B->C
+3. Hierarchical :A->B,C
+
+C++ can have multiple inheritance also but in java, one class can have only 1 base class
+
+Also hybrid inheritance will not be possible, because hybrid requires multiple inheritance inside it
+***********************************************************************
+pro1.java
+-----------
+
+class ABC
+{
+  public void fun1()
+  {
+	System.out.println("ABC Fun1......");
+  }
+}
+
+class XYZ
+{
+  public void hello()
+  {
+       System.out.println("XYZ hello......");
+  }
+}
+
+class Demo
+{
+  public static void main(String [] args)
+  {
+	ABC ob1=new ABC();
+	XYZ ob2=new XYZ();
+	
+	ob1.fun1();
+	ob2.hello();
+	
+  }
+}
+
+
+Q. How many .class file we will get?
+Ans. 3 . class files because 3 classes are present
+
+Q. Can I call hello by ob1 and fun1 by ob2?
+Ans. No, because they are not present in that class
+*******************************************************
+
+class ABC
+{
+ public void fun1()
+{
+ System.out.println("ABC");
+ }
+}
+
+class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.printlb("XYZ");
+  }
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  ABC ob1 =new ABC();
+  XYZ ob2= new XYZ();
+   
+  ob1.fun1();
+  ob2.hello();
+	
+  ob2.fun1();
+ }
+}
+
+Q. Can we call hello method using ob1?
+Ans. No,we can't call child class method using parent class
+************************************************************
+pro1.java
+----------
+class XYZ
+{
+public void fun1()
+{
+ System.out.println("XYZ HELLO");
+ }
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  XYZ=ob2=new XYZ();
+   ob2.fun1();   //Inherit Method from ABC
+   ob2.hello();  //own method of XYZ
+ }
+}
+
+//By inheritance, we promote reusability and so one class can resuse the features of old class
+//Ex. we inherits manners from parents but we also have different features from parents
+
+*********************************************************************
+
+Now we make another function inside ABC class.
+
+public void fun2()
+{
+ System.out.println("ABC fun2...");
+}
+
+in main,
+
+ob2.fun2();
+
+
+//We have some common methods with parents but we do it in different manner
+
+Q. Why we didn't inherit the same method from parents?
+Ans. because we are not comfortable to do the same way or we learn a smarter or good way
+
+Hence we should be able to override the methods so we can do something in a better way
+Or the derived class should have the permission to change the code
+This is called Method overriding
+
+In XYZ, class we will define fun2 method again
+
+public void fun2()
+{
+ System.out.println("XYZ fun2...");
+}
+
+Now, this will be printed. So our method overriding happened
+
+3 Categories of method-->
+ob2.fun1();   //Inherit Method
+ob2.hello();  //Own method
+ob2.fun2();   //Override Method
+
+*******************************************************
+
+In ABC, we create another method fun3
+
+public void fun3()
+{
+System.out.println("ABC fun3");
+}
+
+ob2.fun3();
+
+In XYz, we made the same method fun3
+
+fun3()
+{
+System.out.println("XYZ fun3");
+}
+
+2 reasons for overriding:
+1. We don't want the same code as parent class
+2. Parent class code is right but we want some more code in this
+
+But currently only child class code is running.
+Then how to make parent and child both codes working
+
+We will call the fun3 method of base class inside child class fun3
+
+public void fun3()
+{
+ super.fun3();
+ System.out.println("XYZ Fun3");
+}
+
+//The super keyword points to base class. Using this , we can call super class methods
+Now fun3 method of both classes will be executed
+
+ob2.fun1();   //Inherit Method
+ob2.hello();   // Own method
+ob2.fun3();    //Override MEthod
+ob2.fun3();    // Override Method+super
+**********************************************************
+pro3.java
+-----------
+class ABC
+{
+private int x,y; //Data Member
+ 
+ public ABC(){}
+ 
+ public ABC(int x,int y) 
+ {
+  this.x=x;
+  this.y=y;
+ }
+
+ public void show()
+ {
+ System.out.println("\nX:"+this.x);
+ System.out.println("\nY:"+this.y);
+ }
+}
+
+class XYZ extends ABC
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+{
+ XYZ ob2=new XYZ();
+ ob2.show();
+}
+}
+
+Q. Will code compile and if compile, what will be printed?
+Ans. 0,0 will be printed
+
+//Firstly base class constructor gets called, then derived class constructor gets called and then the show method
+
+
+//We can check by writing in ABC class, System.out.println("ABc class constructor run")
+//Also in XYZ constructor,we can put a print method
+
+Q. Can we access x, y of parent class in child class directly?
+Ans. No, because they are private . This will give error
+-----------------------------------------------------------------
+But ,we can call public methods of base class
+
+class XYX extends ABC
+{
+ private int a,b;
+ public XYZ()
+ {
+ System.out.prtinln("XYZ Cons. Done");
+ }
+ 
+ public XYX(int a,int b)
+{
+ this.a=a;
+ this.b=b;
+ }
+
+public void show()
+{
+ super.show();
+ System.out.println("A: "+a+",B:"+B);
+}
+}
+
+main()
+{
+XYZ ob1=new XYZ();
+XYZ.show();
+}
+
+//Currently, we will get 00000 values because default constructor will be called
+
+Q. Now, if we supply XYZ(23,54), will output change?
+Ans. Output will change-> a=23, b=54,x=0,y=0
+
+Q. But now we want that we can supply values of a,b and also x,y like in form XYZ(a,b,x,y)
+Ans. Let's make another constructor for this
+
+  public XYZ(int a,int b,int x,int y)
+  {
+   this.a=a;
+   this.b=b;
+   }
+
+Q. How we will pass to parent class constructor values of x,y?
+Ans. Use super keyword to access constructor calling
+
+public XYZ(int a,int b,int x,int y)
+{
+ super(x,y); //constructor calling manually
+ //This should be always first statement . Otherwise will give error if it is present in second or other lines
+ this.a=a;
+ this.b=b;
+}   
+
+//In next(), we can take only without space string, You can use nextLine() for multiple words and take a line
+
+// When we will make child class object, first base class constructor will be called
