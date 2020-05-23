@@ -316,6 +316,11 @@ XYZ ob1=new XYZ();
 XYZ.show();
 }
 
+//data members are separately created for each object
+//member functions are common for all objects . They are called whenever an object requires it from class
+//super and this both are keywords . Even if super() and this() uses brackets , it is a keyword. This is because it can be used to call constructor. 
+//wrapping means accessing. class is made up of vars and methods and object is a way to access them
+
 //Currently, we will get 00000 values because default constructor will be called
 
 Q. Now, if we supply XYZ(23,54), will output change?
