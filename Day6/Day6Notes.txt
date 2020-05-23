@@ -1,0 +1,432 @@
+fToday, we are going to create this Classes:
+
+	Person 
+	name ,age,phone
+
+Student			Faculty
+roll,marks 		facid,salary
+-------------------------------------------------------
+pro1.java
+---------
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  }
+}
+
+*******************************************************
+Person.java
+------------
+import java.util.Scanner;
+
+class Person
+{
+ private String name;
+ private int age;
+ private String phone; 
+
+/*Some data like phone,pincode,countrycode,areacode ,
+it looks like integer but there behaviour is not integer but String,
+because we will never do calculation or arithmetic operation using this numbers*/
+
+ public void inputPerson()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nName:");
+  this.name=sc.next();
+  System.out.print("\nAge: ");
+  this.age=sc.nextInt();
+  System.out.println("\nPhone: ");
+  this.phone=sc.next();
+  }
+ 
+ public void outputPerson()
+ {
+  System.out.println("\n\tName: "+this.name);
+  System.out.println("\tAge: "+this.age);
+  System.out.println("\tPhone: "+this.phone);
+  }
+}
+
+//Checking program is working or not
+class Demo
+{
+public static void main(String[] args)
+{
+ Person ob=new Person();
+ ob.inputPerson();
+ ob.outputPerson();
+ }
+}
+
+*********************************************************
+Student.java
+-------------
+class Student
+{
+ private String roll;
+ private float marks; 
+
+ public void inputStudent()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nRoll Number :");
+  this.roll=sc.next();
+  System.out.print("\nMarks: ");
+  this.marks=sc.nextFloat();
+ }
+ 
+ public void outputPerson()
+ {
+  System.out.println("\n\tRoll Number: "+this.roll);
+  System.out.println("\tMarks: "+this.marks);
+  }
+}
+
+//Currently we have not inherited it from Person class
+//Let's check it
+
+class Demo
+{
+public static void main(String [] args)
+{
+ Student ob=new Student();
+ ob.inputStudent();
+ ob.outputStudent();
+ }
+}
+
+*************************************************************
+Student.java
+------------
+
+class Student extends Person
+{
+ private String roll;
+ private float marks; 
+
+ public void inputStudent()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nRoll Number :");
+  this.roll=sc.next();
+  System.out.print("\nMarks: ");
+  this.marks=sc.nextFloat();
+ }
+ 
+ public void outputPerson()
+ {
+  System.out.println("\n\tRoll Number: "+this.roll);
+  System.out.println("\tMarks: "+this.marks);
+  }
+}
+
+Q. What we will get output?
+Ans. Only student class output
+**********************************************************
+
+class Student extends Person
+{
+ private String roll;
+ private float marks; 
+
+ public void inputStudent()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nRoll Number :");
+  this.roll=sc.next();
+  System.out.print("\nMarks: ");
+  this.marks=sc.nextFloat();
+ }
+ 
+ public void outputPerson()
+ {
+  System.out.println("\n\tRoll Number: "+this.roll);
+  System.out.println("\tMarks: "+this.marks);
+  }
+}
+
+class Demo
+{
+main()
+{
+ Student ob=new Student();
+ ob.inputStudent();
+ ob.inputPerson();
+ ob.outputStudent();
+ ob.outputPerson();
+ }
+}
+**********************************************************
+Faculty.java
+-------------
+
+class Faculty
+{
+ private String facid;
+ private float salary; 
+
+ public void inputFaculty()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nFaculty ID :");
+  this.facid=sc.next();
+  System.out.print("\nSalary: ");
+  this.salary=sc.nextFloat();
+ }
+ 
+ public void outputFaculty()
+ {
+  System.out.println("\n\tFaculty ID: "+this.facid);
+  System.out.println("\tSalary: "+this.salary);
+  }
+}
+
+//let's check it
+class Demo
+{
+Faculty ob=new Faculty();
+ob.inputPerson();
+ob.inputFaculty();
+ob.outputPerson();
+ob.outputFaculty();
+}
+*********************************************************
+
+Q. How many classes in inheritance?
+Ans. 3 classes -Person,Student, Faculty and one Demo class is main
+
+Q. We have so many methods like inputPerson, inputFaculty. This becomes lot hectic. What to do?
+Ans. We can call inputPerson in inputStudent and input Faculty
+     And same in outputPerson in outputStudent and outputFaculty
+
+class Student extends Person
+{
+ private String roll;
+ private float marks; 
+
+ public void inputStudent()
+ {
+  inputPerson(); //we can use it without using super or this keyword. this is needed when confusion and super if overriding. Both are not there
+// We can use super but still confusion is not there
+//this is not used because it is for accessing instance variables so we can distinguish it from local variables. this has no relation in my view from methods which are not created separately but are inside classes
+
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nRoll Number :");
+  this.roll=sc.next();
+  System.out.print("\nMarks: ");
+  this.marks=sc.nextFloat();
+ }
+ 
+ public void outputPerson()
+ {
+  System.out.println("\n\tRoll Number: "+this.roll);
+  System.out.println("\tMarks: "+this.marks);
+  }
+}
+
+class Faculty
+{
+ private String facid;
+ private float salary; 
+
+ public void inputFaculty()
+ {
+  inputPerson();
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nFaculty ID :");
+  this.facid=sc.next();
+  System.out.print("\nSalary: ");
+  this.salary=sc.nextFloat();
+ }
+ 
+ public void outputFaculty()
+ {
+  outputPerson();
+  System.out.println("\n\tFaculty ID: "+this.facid);
+  System.out.println("\tSalary: "+this.salary);
+  }
+}
+
+// This is first improvement. Now we need not call parent class methods by child class objects
+
+**************************************************************************************
+Q. We have pulsar bike 
+and we will start it by start method
+If we have different types of bikes like :
+	TVS Apache
+	Glamour
+	TVS City
+	Honda Shine
+We will use start method only or something else?
+
+Ans. We will use start method only as all the way , the bikes are starting only. The work is same 
+ , how they do may be different.
+  Their behaviour may change, but their name should be same
+
+  Another example, eating()
+  We eat, our parents eat,friends eat. 
+  The method name is same -eating()
+  But style of eating is different of each person i.e. underlying code or behaviours is different 
+  though the name of method is same- eating()
+  
+  Hence child class will change code, not method's name
+*************************************************************************************************
+//We will change names to input() and output()
+// Here there will be confusion, base class method or child class method. So we will use super keyword
+
+class Person
+{
+ private String name;
+ private int age;
+ private String phone; 
+
+ public void input()
+ {
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nName:");
+  this.name=sc.next();
+  System.out.print("\nAge: ");
+  this.age=sc.nextInt();
+  System.out.println("\nPhone: ");
+  this.phone=sc.next();
+  }
+ 
+ public void output()
+ {
+  System.out.println("\n\tName: "+this.name);
+  System.out.println("\tAge: "+this.age);
+  System.out.println("\tPhone: "+this.phone);
+  }
+}
+
+class Student extends Person
+{
+ private String roll;
+ private float marks; 
+
+ public void input()
+ {
+  super.input(); 
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nRoll Number :");
+  this.roll=sc.next();
+  System.out.print("\nMarks: ");
+  this.marks=sc.nextFloat();
+ }
+ 
+ public void output()
+ {
+  super.output();
+  System.out.println("\n\tRoll Number: "+this.roll);
+  System.out.println("\tMarks: "+this.marks);
+  }
+}
+
+class Faculty
+{
+ private String facid;
+ private float salary; 
+
+ public void input()
+ {
+  super.input();
+  Scanner sc=new Scanner(System.in);
+  System.out.print("\nFaculty ID :");
+  this.facid=sc.next();
+  System.out.print("\nSalary: ");
+  this.salary=sc.nextFloat();
+ }
+ 
+ public void output()
+ {
+  super.output();
+  System.out.println("\n\tFaculty ID: "+this.facid);
+  System.out.println("\tSalary: "+this.salary);
+  }
+}
+
+//let's check making objects of this classes again it is working or not
+************************************************************
+//Now there are some method which have to be common for student and faculty. we will make them in person class
+//can one class represent 2 classes? This feels wrong. that's why multiple inheritance is not kept in java but we will do it using interface
+class Student
+{
+ public void canVote()
+ {
+  if(this.age>=18)
+     System.out.println("\t**Can Vote**");
+  else
+    System.out.println("\t**Cannot Vote**"); 
+ }
+}
+
+//let's check it
+
+class Demo
+{
+ ob.canVote();
+}
+
+******************************************************************************
+/* we can override methods in child classes
+   but we don't want that canVote method changes 
+   as students and faculties have a same criteria for age
+  we will use here final method. 
+ It makes a variable constant
+ And it makes a method not overridable
+ And we can make a class not inheritable using final
+
+ Variable:constant
+   final int x=34;
+
+ Method : no override
+   final void show(){}
+
+ Class : no inheritance
+    final class Demo{}
+
+*/
+
+//We can't make constructor as final as constructor can't be overrided
+
+Q. If we make the method private to avoid overriding?
+Ans. This will not let the method access inn child class object,
+    then there will be no point of inheritance.
+    So we will make it final and not private
+
+Q. If we make 
+    Person ob=new Student();
+    ob.input();
+    ob.output();
+    ob.canVote();
+   , will error come or not?
+    
+Ans. No, error will not come.
+     We can store any child class object in base class reference
+     
+    base class reference=any child class Object
+ 
+    Student is a Person? True
+    Faculty is a Person? True
+    Hence we can refer both using Person
+
+    And error did not come because compiler checks this methods in Person class as the ob is a Person reference variables
+    It will be find all methods in Person class
+    
+    but ob is pointing to Student class object
+    So methods will execute of Student class object
+
+    Hence cleared, code compiled from Person class but methods of Student class were executed
+
+//Compiler does not know the type of object . We can assign any objects which belong to person class
+
+Q. Person obj=new Student();
+   Student obj=new Student();
+  
+  Why java let us do this?
+
+Ans.  
+**********************************************************

@@ -153,7 +153,7 @@ class Student
 	this.name=sc.next();
 	}
 
-	public void input()
+	public void output()
 	{
 	System.out.print("\n\tRoll Number:"+this.roll);
 	System.out.print("Name: "+this.name);
