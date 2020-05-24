@@ -1,0 +1,311 @@
+Room>>>>>>cs,it,me,ce,ee...... meetings.....
+
+1. CS,IT,ME,CE,EE Meeting Room
+2. Students Meeting Room
+
+Choice? 2nd 
+
+Because we can repesent all these things by common name.
+Students Meeting Room is common for all students
+
+Technically, we are referring to all child class objects using a 
+base class reference variable. Because currently,we don't know about
+the type of object who is present in meeting.
+
+If we write before a room is written CS Meeting Room, then it is
+compile time as we can know by banner which branch students are
+sitting.
+
+But if Student Meeting room is written, this will be run time.
+We have to check which branch students are sitting.
+*********************************************************************
+So we don't know at compile time we will get Faculty object and Student
+object. So we made a Person class reference variable
+
+But if we know that only 1 class object will be there,
+then make that class object only i.e. compile time
+
+***************************************************************
+Now the new room prepared is for ME LAb
+
+What  banner we will write at the front of lab?
+   1. ME Lab
+   2. Student Lab
+
+   Choice? ME Lab
+   
+We already know that this will be ME lab so this is compile time
+Hence we will choose ME lab banner only
+**************************************************************
+Q. If we choose the option for banner as CS, IT,ME , CE,EE option,
+This is also not wrong
+
+But what problem can come?
+
+Ans. Suppose college removed EE branch .
+     Now we will have to change the banner
+
+Q. But if college made a Students Meeting Room banner
+   And we removed EE branch,
+   Do we have to change banner?
+
+Ans. no, hence now even if child classes come and go,
+    we need not change the reference
+    
+    Hence it is more good to work using base class as we can do
+    grouping
+*****************************************************************
+
+Now let's make another class in Demo
+
+class Sample
+{
+ public void print(Person ob) //Person class object
+  {
+   ob.input();
+   ob.output();
+   ob.canVote();
+  }
+} 
+
+class Demo
+{
+  public static void main(String [] args)
+  {
+   Student s1=new Student();
+   Faculty s2=new Faculty();
+
+   Sample sam=new Sample();
+   sam.print(s1);
+   sam.print(f1);
+  }
+} 
+
+
+Q. can we pass this s1?
+Ans. yes, we can store child class object in parent class reference variable
+
+Q. on compiling , how many bytecodes will be created?
+Ans. 5 .class files are created
+
+On running, the method of student class object  is run
+
+Q. Will it run for faculty class object?
+Ans. Yes , it will 
+     Now we didn't have to do changes in print function whether object is of student, faculty, driver, cs student, clerk etc
+
+Now we do any amount of inheritance , our code will work
+This is run-time polymorphism
+
+****************************************************************************
+Now, we made another method in Sample class
+
+public void show(Student ob)
+{
+ ob.input();
+ ob.output();
+ ob.canVote();
+}
+
+class Demo
+{
+ sam.show(s1);
+}
+
+Q. Will program work or not?
+Ans. It will work
+
+Q. Now, if we do sam.show(f1); , will this work?
+Ans. It will not work. This is compile time error. faculty can't be converted to student
+
+     Currently, it deals only with student objects but if we make more subclasses
+     of student class, it will work for them also
+
+*************************************************************************************
+Object writing experiment
+
+Sanitizer, Speaker, table, Chair
+Table, Laptop, Computer, Mobile, TV,
+Teddybear, Pillow, Fan, Remote
+
+Q. Are these names of base classes or child classes object?
+Ans. 
+
+Q. Is Sanitizer a base class?
+Ans. Sanitizer can be of Dettol, Lifebuoy, etc. So it is a base class
+     
+   Table, speaker are also base class
+   Laptop,Computer,Mobile are also base classes as we don't know types
+   So mostly they are base class names
+
+// Mostly we use base class because it is more suitable to work in generalized way
+
+Fan>>>>
+
+Q. If fan is off,we ask our sibling what to on it?
+Ans. Switch on the fan
+    We talk generally in daily life also because it is easy to work
+    
+    we won't say "Bajaj ka fan on kardo"
+ 
+    If we are in coaching, will we stand and check which comapny fan is there?
+    No , na. So in daily life , we work mostly on run-time polymorphism
+
+//But when we have to deal a specific object, then we can't use this
+*************************************************************************************
+
+// We have to collect student as well as faculty objects
+
+class Demo
+{
+ Student s1=new Student();
+ Student s2=new Student();
+ 
+ Faculty f1=new Faculty();
+ Faculty f2=new Faculty();
+ 
+ Person arr[]=new Person[4];
+ 
+ arr[0]=s1;
+ arr[1]=f1;
+ arr[2]=f2;
+ arr[3]=s2;
+
+ for(Person p:arr) //for each loop
+ {
+  p.input();
+  p.output();
+  p.canVote(); 
+ }
+}
+
+//Now we have to collect only students data who have not submitted fees.
+// now array won't be of person class as we need not facuties data
+
+Student arr[]=new Student[4];
+
+// This will not work now. we can't store faculty class objects
+******************************************************************
+ 
+**Upcasting and Downcasting**
+
+Person p1=s1; 
+//Upcasting -> Referring child class object by base class reference variable
+// Refering  using upper class
+
+Person p1=s1; //pointing to student object. Upcasting is legal
+
+Student stud=p1;  
+// Assinging parent class reference to child class reference. 
+//Downcasting
+
+Q. Is downcasting legal or not?
+Ans.  Datatype of p1 is person , though it is pointing to Student object
+      Datatype of stud is Stduent
+
+/* Pulsar is a bike ?
+   True
+
+   Apache is a bike?
+   True
+   
+   Bike is a Pulsar?
+   It can be true or false .
+
+  Student is a Person?
+  True
+  
+  Person is a Student?
+  It can be true or false. Not sure 
+*/
+
+Now Similarly , compiler is not sure whether p is pointing to Student object or Person object
+ because it can point to both. Hence compiler don't allow automatic downcasting
+
+But we can do manually.
+Student stud=(Student)p1;
+
+//This will run
+
+/* But remember. casting is not happening of object. It never happens of object
+  Always casting of reference variable happens*/
+
+Ex. We can be referred by many names-> actual names, nick names, pen names etc
+****************************************************************
+Q. Now if we do
+   Person p1=f1;
+   Student stud=(Student )p1;
+
+   Will this work?
+
+Ans. The code compiled.
+     Because compiler does not what type of object it stores
+     
+     But this will not execute
+     This will cause runtime error. Faculty cannot be converted into student
+     Runtime error
+
+    Hence if inside p1 , there is not student ,it will give error
+*******************************************************************************
+
+//Now we have deleted show method
+
+class Demo
+{
+ Student s1=new Student();
+ Faculty f1=new Faculty();
+ Person p1=new Person();
+ Sample sam=new Sample();
+ 
+ sam.print(s1);
+ }
+}
+
+//Parent class reference can only access the methods available in parent class not the child class
+
+class Student
+{
+ public void give Exam()
+ {
+ System.out.println("\t**** Yes****");
+ }
+}
+
+Q. can we make this method in person class?
+Ans. No, as then  this will be available to faculty class also
+
+Q. Can we call giveExam method in Sample class print now?
+Ans. No, this will not be called
+     
+    When this method will be compiled, 
+    this will be checked with Person class,
+    and compiler will not find giveExam method
+    .This is a compilation error
+
+//We do run-time polymorphism because we want to run common functionalities. 
+// In java, virtual function does not exist
+
+Q. But still , if we want to run , how we will run this?
+Ans.  
+       Student s=(Student)ob;
+       s.giveExam();
+
+       We have downcasted the reference variable. 
+       Compiler will compile the code properly
+       But still runtime error possibility is there(What if we have passed a faculty type reference variable)
+
+Q. How to avoid this error also?
+Ans. 
+      if(ob instanceof Student)
+      {
+       Student s=(Student)ob;
+       s.giveExam();
+       }
+
+    Now, no error in compilation and no error in runtime
+
+*******************************************************************************************
+  
+   
+
+
