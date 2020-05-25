@@ -1,0 +1,748 @@
+instanceOf() is a keyword
+
+Reference variable : ob
+you want to check which class object it is pointing
+
+************************************************************
+Abstract Class
+----------------
+
+	Bird    -> flying() method is there
+
+Crow 	Pigeon	Hen
+
+Q. Is this inheritance right?
+Ans. yes
+
+Q. Where will we define this flying method?
+Ans. 
+
+1. If we define flying() in Bird, we have to write different codes for each sub-classes
+2. We can override but we may. It is not compulsory. So this is problem. 
+3. Now, another opinion is define the flying() code separately in all sub-classes.
+   But this will mean Crow,Pigeon and Hen is flying but Bird is not flying. 
+   So this will be wrong.
+   
+   And also if we do not make method in this 3, then what? This is also a issue
+
+/* 
+  In some cases,some methods need to be compulsorily present in each class
+  Bird>>>flying()
+  Vehicle>>> start() stop()
+  Bank >>> deposit() withdraw()
+*/
+
+Base Class: 1. Common Data Members are firstly defined in this
+            2. Common Methods defined here which should be in each class
+            3. Abstract Methods must be provided by base class
+
+Abstract methods are those methods which we just declare and not defined in the abstract class.
+In C++, we called them pure virtual functions
+
+The responsibility of defining abstract method goes to child class. 
+We have to override abstract class in child class
+
+We cannot create object of abstract class. 
+Because even if for suppose we can create object, then we won't be able to run the abstract method
+No technology let us create object of abstract class
+
+Yesterday, most of the Classes were discussed yesterday were mostly Abstract classes
+**************************************************************************************
+We went to parking lot
+
+Q1. Can anybody tell TVS Apache in 2 wheeler parking?
+Ans. yes
+Q2. Can anybody tell Maruti 800 in 4 wheeeler parking?
+Ans. yes, it's object is there
+Q3. Pulsar 150 cc?
+Ans. yes
+
+Q4. Now, if we have to tell where Bike is standing?
+Ans. 
+
+Q5. Can anybody show me Original car class object?
+Ans.
+
+Q6. Can anybody take me to Bank?
+Ans. This is not complete.
+     We can go to ICICI , SBI bank but not to Bank.
+     This are abstract classes
+
+7. Fan...
+8. Speaker...
+9. Human...
+
+This is a general word. But we don't get objects of them.
+
+We can say ashutosh is a human. but we cannot show Human object
+Original Human class object we can't show
+***************************************************************
+The purpose of that class is to give a common pattern or give features to others
+
+In industry, we will have a abstract base clas mostly
+
+pro1.java
+----------
+class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public void fun2();
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+ }
+}
+
+Q. Is this syntax right?
+Ans. This will give error on compilation,
+ because we haven't included {} but writing them means defining method
+  
+Sol. So we will use abstract keyword in front to make it abstract method
+
+*************************************************************************
+class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2();
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+ }
+}
+
+Q. Now will we get error on compilation?
+Ans. Now also we will get error.
+     Because since we have an abstract method,
+     we will have to declare the class also as abstract
+***********************************************************
+//Let's try to make ABC object
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2();
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  ABC ob=new ABC();
+ }
+}
+
+On compiling this code again ,we get an error.
+As We can't create object of an abstract class
+*************************************************************
+//What if we include {} in fun2 ?
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(){};
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  ABC ob=new ABC();
+ }
+}
+
+On compiling, this will again give error.
+As after writing we defined fun2, then it can't be abstract
+*****************************************************************
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2();
+}
+
+class XYZ extends ABC
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+ XYZ ob=new XYZ();
+ }
+} 
+
+This will also give error on compiling 
+as XYZ also has an abstract method
+, therefore we can't create an object of it
+******************************************************************
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2();
+}
+
+class XYZ extends ABC
+{
+ //override
+ public void fun2{}{}
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  ABC ob=new ABC();
+ }
+}
+
+This code will compile successfully
+****************************************************
+//We can have access specifier of abstract method as public,protected but it can't be private
+
+We can have constructor in an abstract class to initialize the objects
+But still we can't create object
+This is just for defining the class variables
+
+//We only need atleast i.e. one abstract method in an abstract class
+
+/*If we defined an abstract classs but we don't have an abstract method inside it,
+  it will not give compilation error
+  but then there is no sense of making it abstract class
+  Only we won't be able to make object of it
+*/
+
+***********************************************************
+Q. If another child class of XYZ is there, do we have to overrride fun2 again?
+Ans. No, if we have done overriding in XYZ, then no need of overriding it in the subclass
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+}
+
+class XYZ extends ABC
+{
+ public void fun2()
+ {
+  System.out.println("XYZ Fun2........")
+ }
+}
+
+class PQR extends XYZ
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+ }
+} 
+
+//This code will work
+
+**********************************************************
+// Now if we didn't override method in XYZ but it had hello method
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+}
+
+class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.println("XYZ Fun2........")
+ }
+}
+
+class PQR extends XYZ
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+ }
+} 
+
+Q. Do XYZ or PQR overrided fun2 ?
+Ans . No
+
+On compiling, it gives error that we didn't overrided method in XYZ.
+It was mandatory for XYZ to overrided it ,otherwise it will give error
+
+So child class has 2 options:
+1. Either override the method
+2. Or declare itself as abstract
+
+So current error is in XYZ class and not PQR class
+***************************************************************
+//Let's make XYZ as abstract
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+}
+
+abstract class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.println("XYZ Fun2........")
+ }
+}
+
+class PQR extends XYZ
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+ }
+} 
+
+Now it is responsibility of PQR to override it
+When we compile code now,
+the compiler will give error for PQR class
+
+*************************************************************
+//Let's then implement fun2 in PQR then
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+}
+
+abstract class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.println("XYZ Fun2........");
+ }
+}
+
+class PQR extends XYZ
+{
+ public void fun2()
+{
+ System.out.println("PQR fun2.....");
+}
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+   ob.hello(); 
+ }
+} 
+
+//Now this code will work
+//We won't be able to make object of XYZ class also now
+
+***************************************************************
+Q. Now if we make another abstract method in ABC,
+   in which class will we get error?
+
+Ans. in PQR class
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+  public abstract void fun3();
+}
+
+abstract class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.println("XYZ Fun2........")
+ }
+}
+
+class PQR extends XYZ
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+ }
+} 
+
+//Now error in PQR class will be there
+**************************************************************
+//Now XYZ class also can give an abstract method
+
+abstract class ABC
+{
+  public void fun1()
+  {
+  System.out.println("ABC Fun1......")
+  }
+
+  public abstract void fun2(); //abstract method
+  public abstract void fun3();
+}
+
+abstract class XYZ extends ABC
+{
+ public void hello()
+ {
+  System.out.println("XYZ Fun2........")
+ }
+ 
+ public abstract void fun4();
+}
+
+class PQR extends XYZ
+{
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   PQR ob=new PQR;
+   ob.fun1();
+   ob.fun2();
+ }
+}
+
+Q. So now which methods PQR have to override?
+Ans. fun3, fun2  and fun4
+
+*********************************************************
+	Person
+Student		Faculty
+
+CS EC ME	Full-time Part-time
+
+All abstract method which we want there to be in Student as well as faculty ,
+we will make them in person class
+
+Then we will make abstract methods in student and faculty as well
+
+Now, we will implement this abstract methods in CS, EC, ME ,full, part-time etc
+
+**If Person has a method which is different in CS,EC,ME ,
+then we will override it in CS,EC,ME
+
+**If Person has a method which is same in CS,EC and ME,
+then we will override it in Student Class
+ 
+***************************************************************
+static keyword
+---------------
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ public static int a;    // Its memory will be created for class
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample ob1=new Sample();
+  Sample ob2=new Sample();
+  
+  ob1.x=34;
+  ob2.x=66;
+  ob1.a=100;
+  System.out.println("ob1 - X : "+ob1.x+ " A :"+ob1.a);
+  System.out.println("ob2 - X : "+ob2.x+ "A :"+ob2.a);
+ }
+}
+
+//When class will load in memory, this class variable will be made in memory
+
+//The code will compile and run
+ 
+/* Even though we assign value to a using ob1 only,
+  Though we will get same value for both objects in output
+  
+  As "a" is shared memory
+*/
+
+************************************************************
+//We can use Sample.a also
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ public static int a;    // Its memory will be created for class
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample ob1=new Sample();
+  Sample ob2=new Sample();
+  
+  ob1.x=34;
+  ob2.x=66;
+  Sample.a=100;
+  System.out.println("ob1 - X : "+ob1.x+ " A :"+Sample.a);
+  System.out.println("ob2 - X : "+ob2.x+ "A :"+Sample.a);
+ }
+}
+
+This is sharable data accessible to everyone
+**********************************************************
+//Even though, we don't have any object, we can access class variable as it is static
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ public static int a;    // Its memory will be created for class
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample.a=100;
+  System.out.println("a : "+Sample.a); 
+}
+***************************************************************
+If we make the static variable as private, it will not run at runtime.
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ private static int a;    // Its memory will be created for class
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample.a=100;
+ }
+}
+**************************************************************
+Then how to use that private variable
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ private static int a;    // Its memory will be created for class
+
+ public void show()
+ {
+  System.out.println("X: "+this.x);
+ }
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample ob=new Sample();
+  ob.show();
+ }
+}
+
+
+//This will print by default value 0
+********************************************************
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ private static int a;    // Its memory will be created for class
+
+ public void show()
+ {
+  System.out.println("X: "+this.x);
+  System.out.println("A: "+this.a); 
+}
+
+ public Sample()
+ {
+  this.x=10;
+ }
+
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample ob=new Sample();
+  ob.show();
+ }
+}
+
+//Now we can use method to access private variables and use constructor to get initial values defined
+
+**************************************************************************
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ private static int a;    // Its memory will be created for class
+
+ public void show()
+ {
+  System.out.println("X: "+this.x);
+  System.out.println("A: "+this.a); 
+}
+
+ public Sample()
+ {
+  this.x=10;
+ }
+
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+ }
+}
+
+Q. But now if a is private, how to make it print.
+Ans. we can make another static method for printing it
+********************************************************************
+
+class Sample
+{
+ //Instance variables
+ public int x;         //Their memory is created for objects
+ 
+ //Class variable
+ private static int a;    // Its memory will be created for class
+
+ public static void showA()
+{
+  System.out.println("A: "+this.a); 
+}
+ 
+public void show()
+ {
+  System.out.println("X: "+this.x);
+  System.out.println("A: "+this.a); 
+}
+
+ public Sample()
+ {
+  this.x=10;
+ }
+
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  Sample.showA();
+ }
+}
+
+//So we can use static method to execute things without creating objects
+***************************************************************************
+JVM is calling classname.main() to start execution 
+Because main is static method so it can be called directly without creating object
+

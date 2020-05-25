@@ -428,5 +428,22 @@ Q. Person obj=new Student();
   
   Why java let us do this?
 
-Ans.  
+Ans.  We use the parent class reference to store child class object when we 
+     don't know the runtime type of an object. But the disadvantage is that we
+     can only use those method with this reference which are present in base
+     class only. We cannot use the child class methods irrespective of the 
+     object stored in that reference.
+
+     It is type of polymorphism.  The reference obj can only access parent class methods
+
+    /* 
+       Polymorphism: one thing many forms
+       		Run-time polymorphism
+                Compile-time polymorphism  -> Method overloading
+*************************************************************************************
+ 
+
+         
+       
+
 **********************************************************
