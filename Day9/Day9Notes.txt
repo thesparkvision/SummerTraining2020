@@ -1,0 +1,329 @@
+Since static method is called by class name,
+it does not have 'this' which is present for objects,
+therefore we can only use static variables inside
+static method and not instance variables
+
+We cannot override static methods
+*******************************************************
+we make main function 'public' so it becomes available to outside
+
+We make main function 'static' so we don't have to make its object
+
+We make it 'void' as we don't want to return something from it
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  }
+}
+
+/* java Demo
+     
+   JRE loads class and then calls Demo.main()
+*/
+
+Here we use 'void' as here program is run by JRE 
+and not OS like C,C++ which requires return type
+for signal processing
+
+**************************************************
+
+		Person
+	Student		Faculty
+   CS    EC   IT    FullTime  PartTime
+******************************************
+Student, Faculty<<<Data-Methods common>>>> Person
+                  Abstract Methods
+ 
+CS,EC, IT <<< Data-methods common >>>Student
+	Abstract methods
+
+**Base class work is to provide common structure
+
+We in home everyone follows some rules
+When we come in MIT, we follow some other rules
+which our family members need not follow
+
+But now we want some rule to be applicable only to
+FullTime class?
+
+Ans. We can't make abstract method in Faculty as then we 
+    will need to override in Parttime also where it is not required
+
+   Also we can't make this in Person class
+
+Sol. The solution is interface -is full abstract .
+*******************************************************
+Interface 
+-is not a class
+-fully abstract
+
+interface abcd
+{
+ int x=12;  //public , static and final(never changing value) -by default
+ void hello(); 
+/*by default public and by default abstract ,
+ hence we need not declare explicitly*/
+}
+
+//Here we can only declare an abstract method
+
+************************************************************
+
+interface Abc
+{
+ void fun1();
+}
+
+class Sample implements Abc
+{
+ }
+
+class Demo
+{
+  public static void main(String [] args)
+  {
+  }
+}
+
+//We implement interface and extend a class
+
+Since, we haven't defined the method in Sample, 
+we will get an error. We can either override the method 
+or make it abstract class 
+***************************************************
+interface Abc
+{
+ void fun1();
+}
+
+class Sample implements Abc
+{
+ public void fun1()
+ {
+  System.out.println("Sample Fun1......");
+ }
+}
+
+class Demo
+{
+  public static void main(String [] args)
+  {
+   Sample sam=new Sample();
+   sam.fun1();
+  }
+}
+
+//we can have static methods in interface
+
+We can't make object of interface,
+but we can make reference of interface
+
+Abc sam=new Sample();
+sam.fun1();
+
+******************************************************
+/*
+  class extends class  (single class only)
+  class implements interface (can implement multiple interfaces)
+  interface extends interface (single)
+*/
+
+interface can also have an interface and class inside it
+
+interface ABC
+{
+  interface PQR
+   {
+    }
+   
+   class XYZ    //this will be a static class
+   {
+    public void hello()
+     {
+       System.out.println("XYZ Hello....");
+     }
+   }
+}
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  ABC.XYZ ob=new ABC.XYZ();
+  ob.hello();
+  }
+}
+****************************************************
+Q. How many bytecode files will be made in the above program?
+Ans. Demo.class
+     ABC.class	//interface also gets bytecode
+     ABC$PQR.class
+     ABC$XYZ.class  
+ 
+//the bytecode of inner classes is formed by including outer interface name
+
+***********************************************************
+interface Tax
+{
+ void payTax(); //income tax
+}
+
+interface GTax extends Tax
+{
+ void payGST();
+}
+
+class Employee implements Tax{}
+
+class BusinessMan implements GTax{}
+******************************************************
+
+class A
+{
+ public void fun1()
+ {
+  System.out.println("A's Fun1...");
+ }
+}
+
+class B
+{
+ private A ob; //Dependency
+  
+ public B()
+ {
+   this.ob=new A();
+ }
+ public void hello()
+ {
+  this.ob.fun1();
+ System.out.println("B's Hello....");
+ }
+}
+
+class Demo
+{
+public static void main(String [] args)
+ {
+ B b=new B();
+ b.hello();
+ }
+}
+
+This is a dependency
+B class depends on having A class object to be created
+
+But we don't want that A object gets created in method
+but it is created from outside i.e. A object becomes dynamic. 
+So dependency can become dynamic instead of static
+******************************************************
+class A
+{
+ public void fun1()
+ {
+  System.out.println("A's Fun1...");
+ }
+}
+
+class B
+{
+ private A ob; //Dependency
+  
+ public B(A a)
+ {
+   this.ob=a;
+ }
+ public void hello()
+ {
+  this.ob.fun1();
+ System.out.println("B's Hello....");
+ }
+}
+
+class Demo
+{
+public static void main(String [] args)
+ {
+A a=new A();
+ B b=new B(a);
+ b.hello();
+ }
+}
+
+Here we used parametrised constructor that made it dynamic
+***********************************************************
+tight coupling means when there is highly dependency
+between objects and it is strict coupling i.e. without
+them, program chalega nahi
+
+This above program is tightly coupled.
+Because we have to pass A object here
+
+But in real use, we need loosely coupled modules
+So there is less dependency . Where we can do separate
+work and it does not affect our programs. For example,
+here if we change name of Class A to AB, our program
+will not work
+
+interface Test
+{
+ void fun1();
+}
+
+class A implements Test
+{
+ public void fun1()
+ {
+  System.out.println("A Fun1...");
+ }
+}
+
+class B
+{
+  private Test ob;
+  
+ public B(test ob)
+ {
+  this.ob=ob;
+  }
+  
+ public void hello()
+  {
+    this.ob.fun1();
+    System.out.println("B hello...");
+  }
+}
+
+clas D implements Test
+{
+ public void fun1()
+ {
+  System.out.println("How D are you...");
+ }
+}
+
+class Demo
+{
+ A a=new A();
+ B b=new B(a);
+ B.hello();
+ 
+ D d=new D();
+ B bb=new B(d);
+ bb.hello();
+}
+
+/* Now whatever be the class , we can use a reference like this
+This is loose coupling , not affected by class names*/
+
+//This will not work for when A has its own methods not in interface
+
+The constructor use here is called Injection
+
+So this process is completely called Dependency Injection
+**************************************************************
+
+
+}
