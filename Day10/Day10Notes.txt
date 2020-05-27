@@ -1,0 +1,357 @@
+class ABC
+{
+ public void hello()
+ {
+  System.out.println("ABc's hello....");
+  }
+}
+
+/*default: access inside package
+ public: access outside package
+*/
+
+*******************************************
+So we will make the class public
+
+public class ABC
+{
+ public void hello()
+ {
+  System.out.println("ABC's Hello.....");
+ }
+}
+
+1. Now it is a rule of java,
+   if we make a public class,
+   then the name of the file should have the
+   same name compulsorily
+
+2. Then after making public, 
+   we also can't have another class
+   inside that file
+
+( But earlier, it was optional,
+  but now since we are using public keyword,
+  it is compulsory)
+---------------------------------------------------
+Wherever there was java file,
+there .class file got created
+
+Q. What will be give to the client?
+Ans. We will give .class file
+
+Q. But .class file is inside folders,
+   how we will separate this from folders and give to client?
+Ans. 
+     Let's delete all .class files
+     Create a folder on Desktop name pro
+     
+     Earlier we used to write javac pro1.java,
+     but now we will write,
+     javac -d /home/gourav/Desktop/pro/ pro1.java
+
+     -d means destination folder, and syntax is
+      javac -d <<path>> pro2.java
+
+     Now, there won't be any .class files in the
+     .java file folders.
+     The .class files will be now in pro folder in
+     Desktop
+     
+     Now we can execute this files from pro folder.
+     
+     Also the java compiler created the folders by default ,
+     which were present in .java folders
+***********************************************************
+Netbeans Download
+
+Download Netbeans 8 according to JDK version...
+
+Netbeans 8.1
+
+Download The version which has all the features-214 MB
+as this will avoid any errors and all server etc will come pre-installed
+
+************************************************************
+File-
+ > New Project
+ > Java Category 
+   and Project-Java application ,
+   then click Next
+ > Name the project , 
+   set the location of project
+   Uncheck for now the option "Dedicated Folder for storing libraries"
+   Uncheck main class option also
+ >Then finish
+
+ If project option is not showing,
+ Windows Menu> Projects
+
+ FirstPro project get created,
+ It has 2 folders-> 
+ -Source packages where we will create our own packages
+ - Libraries where JDK is present
+ 
+Q. Do we have to keep some rules in mind during creation of package?
+Ans.   1. Package name should be in lowercase
+       2. Give a meaningful name for package 
+       
+      ABC Com is a company
+      Suppose we have name if package as mypro.service (service-child package),
+      we made a class inside it mypro.service.Product 
+
+     Now another PQR Company is there
+     What if PQR also give the same name mypro
+     mypro.service.Product
+     This is possible to have same names
+
+     Now there is a third person,
+     1. He has to use ABC Class
+        import mypro.service.Product
+     
+      Now there is another persom,
+     2. He is using PQR class
+        import mypro.service.Product
+
+     Now there is a person who want to use both packages,
+     So how will that person differentiate now or the software?
+*****************************************************************
+Now company has a website domain name
+
+ www.abcd.com
+ www.pwrit.co.in
+ www.asd.in 
+
+ Now , we will use that domain name in reverse,
+ for making package
+
+ com.abcd.milkshop.service
+ com.abcd.milkshop.util
+ com.abcd.milkshop.model
+
+ another company pqr,
+  
+ in.co.pqrit.ecom.service
+
+ Another company asd will use,
+ 
+ in.asd.mitclg.service
+ in.asd.mitclg.model
+**************************************************
+>Right Click on Source Package
+ >Click on Java Package
+   in.adroit.firstpro -name of package
+  
+> Right click on package
+  >Create a class Demo.java
+ 
+Netbeans wrote some code for us
+and even made the class public because we have made 
+a package
+
+Now write psvm and click on Tab button (public static void main),
+this will automatically write main function in java
+
+To write System.out.println, write sout and press Tab
+
+Click on Run button,
+and program runs
+*************************************************************
+Let's create another package here,
+
+in.adroit.firstpro.pk1
+
+Create a class called ABC.java
+
+public void hello()
+{
+System.out.println("ABC's hello");
+}
+
+Demo.java
+
+//Pressing ctrl+space gives us suggestions 
+main()
+{
+ ABC ob=new ABC();
+ ob.hello();
+} 
+
+************************************************
+Let's create package 
+in.adroit.firstpro.pk1.pqr
+
+XYZ.java
+--------
+
+public void hello()
+{
+ Sout("hello fun1");
+}
+***************************************************
+Netbeans project folder
+> src
+> in package
+> adroid package
+> firstpro package
+> Demo pk1
+> pqr ABC.java
+> XYZ.java
+
+Netbeans keep the .class files in
+build folder
+with the same type of folders as src
+
+.java files in src and .class files in build
+***************************************************
+New Project
+> Second pro
+
+in.adroit.secondpro package
+
+Sample class
+--------------
+
+public class Sample
+{
+  private int a; //private -within a class only
+
+  public int b;  //public : access everywhere -
+    /*
+       within a class
+       within a package
+       outside a package
+       in subclasses also
+     */
+
+  protected int c;  //protected
+  /*
+    within a class
+    within a package but only in a child class
+    outside a package but only in a child class
+   */
+
+  int d;      //default or package modifier
+  /* 
+   within a class
+   within a package
+   not accessible outside the package i.e why it is called package modifier
+  */
+
+} 
+
+another class pro1.java
+-------------------------
+public class pro1
+{
+  main()
+  {
+   Sample ob=new Sample();
+   ob.b=12;
+   ob.c=34;
+   ob.d=11;
+
+   //ob.a=12; cannot access a here, it is private
+  }
+}
+
+ABC class in same package
+----------------------------
+public class ABC extends Sample
+{
+  public void show()
+  {
+   this.b=12;
+   this.c=23;
+   this.d=11;
+    
+   //this.a=33 cannot access a private variable in subclass
+  }
+}
+
+pk2 package / pro2.java
+-------------------------
+public class pro2
+{
+ main()
+{
+  Sample ob=new Sample();
+  //ob.a=33; private, cannot be accessed
+  ob.b=44;  //public is accessible
+  //ob.c=11;  cannot access protected variable
+  //ob.d=55 cannot access default variable
+ } 
+}
+
+
+pk2/XYZ.java
+----------------
+public class XYZ extends Sample
+{
+ public void hello()
+ {
+   //this.a=22;  private not accessible
+    this.b=33;   //public accessible
+    this.c=11;    //protected accessible in subclass
+   //this.d=33; default not accessible
+  }
+}
+
+*****************************************************************
+
+We can increase the accessibility of a method,
+but we can't decrease it.
+
+i.e. if a method is public, 
+we can't make it private
+
+class ABC
+{
+  void hello(){}
+}
+
+class XYZ extends ABC
+{
+ void hello(){}
+}
+
+***************************************************
+ThirdPro Project
+----------------
+
+package ok>Sample.java
+-------------------------
+void fun1() //currently default
+{
+ }
+
+Demo.java
+-----------
+
+public class Demo extends Sample
+{
+  void fun1() //we can make it public,protected but we can't put private keyword  
+  {
+ 
+  }
+ 
+}
+
+//Attemoting to access weaker access privilege
+//We can't decrease accessilbity
+
+************************************************
+Sample {
+ protected void fun2()
+ {
+ }
+}
+
+Demo extends Sample
+{
+  protected void fun2() //this won't become public or private or default
+  {
+  }
+}
+
+*************************************************************
