@@ -1,0 +1,658 @@
+Exception: Abnormal Condition at runtime.
+
+Exception means run-time errors
+.......................................................
+Exception Handling
+------------------
+How to handle these exceptions?
+
+1. User Readable Message show....
+2. Main Part, Sub Part -where the error has occurred.
+   If error in Sub Part, it should get closed,
+   but the software keep running.
+
+   Ex. If we have put a video on download on Chrome,
+   and it is not able to download,
+   then a proper message of not being able to download is shown,
+   and Chrome is still working 
+
+*******************************************************
+3 main keywords:
+
+try
+catch
+finally
+
+2 extra keywords:
+
+throw
+throws
+
+***************************************************
+pro1.java
+----------
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+  for(String s:args)
+  {
+	System.out.println(s);
+  }
+ }
+}
+
+javac pro1.java
+
+java Demo
+
+//nothing get printed. because array args got no value
+
+java Demo MIT Ujjain
+
+MIT
+Ujjain
+
+//This goes on printed as it got supplied to args array
+//This is called Command-Line arguments
+
+/* This array can be only of String type ,
+   and not of any other type like int etc. 
+   This is because we can convert String to
+   any other type
+*/
+********************************************************
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   System.out.println("X: "+x+" Y:"+ y);	
+   System.out.println("Program end");
+ }
+} 
+
+/*
+  We have wrapper classes like
+   Integer
+   Float
+   Double
+   Byte
+   Short
+
+   and they also have functions to convert String to this types
+
+   here Integer is a wrapper class,
+   it has a static method parseInt which converts String to Int
+*/
+
+javac pro2.java
+
+java Demo 1 2
+**************************************************
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x+y;
+   System.out.println("\tAdd Result: "+z);
+   System.out.println("Program end");
+ }
+} 
+**************************************************
+Now we run program by
+
+java Demo 53
+
+We will get an ArrayOutOfBoundsException
+as we didn't give it one more argument i.e. args[1] is not there
+
+ArrayOutOfBoundsException is a class
+inside the package java.lang
+
+------------
+even java Demo will give error
+
+Because no arguments passed
+
+Coding is okay
+but user didn't passed anything
+------------------------------------------------------------------
+Base class is Exception
+
+Child class is RunTimeException    IOException .....
+
+-----------------------------------------------------------------
+
+When exception comes,
+usually our program stops executing,
+and we also get a line where error comes
+
+Where there is chance of coming exception,
+we write that code in try block
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x+y;
+   System.out.println("\tAdd Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+  System.out.println("Program end");
+ }
+} 
+
+/*
+  When exception occurs in a line ,
+  an Exception object is created in try internally,
+  and try throws that object.
+  Now for receiving that object,
+  we have catch block.
+  
+  We have to tell catch which class exception,
+  we want to receive. So we have to make a reference 
+
+  And now when this exception will come ,
+  program control will transfer to this catch block
+*/
+
+Now our program will not stop on encountering this exception,
+it will still run and the exception will be handled
+
+**************************************************************
+Now ,
+
+java Demo 34 raj
+
+Now , ArrayOutOfBoundsException will not come
+but NumberFormatException will come.
+This means we can't convert string to number,
+it is not a number
+
+Now again our program will stop,
+it will not be received by catch,
+since it only accept ArrayBound Exception.
+
+Now how to handle this,
+we can put multiple catch blocks with a single try
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x+y;
+   System.out.println("\tAdd Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+  catch(NumberFormatException ex)
+  {
+  System.out.println("**Please supply numbers only: ***");
+  }
+  System.out.println("Program end");
+ }
+} 
+
+*******************************************************************
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x/y;
+   System.out.println("\tDivision Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+  System.out.println("Program end");
+ }
+} 
+
+
+Now we have put divide operation
+
+javac Demo 12 0
+
+This gives another error ArithmeticException: / by zero
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x/y;
+   System.out.println("\tDivision Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+ catch(ArithmeticException ex)
+ {
+  System.out.println("***Zero not allowed***");
+ }
+  System.out.println("Program end");
+ }
+} 
+
+***************************************************
+Now to handle other exceptions we can use Exception ex
+
+what this means is we are using base class reference variable to 
+point to child class object
+
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x/y;
+   System.out.println("\tDivision Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+  catch(ArithmeticException ex)
+  {
+  System.out.println("***Zero not allowed***");
+  }
+  catch(Exception ex)
+  {
+   System.out.println("Error: "+ex.getMessage());
+  }
+  System.out.println("Program end");
+ }
+} 
+
+The getMessage function will help us get technical error
+This will not let us write custom message.
+*******************************************************
+So first make custom catch blocks for major errors
+and then make an exception ex block to handle other type of errors
+
+if we put the catch(Exception ex),
+in first before other exceptions,
+
+it will only handle all the excpetions
+and other catch blocks will be of no use.
+So compiler will give error that this is not legal
+It will tell that exception has already been caught
+
+The catch(Exception ex) should be in last always
+
+Ex. the long height boys will always catch the ball
+    and short height boys won't be able to catch the ball
+
+**********************************************************
+finally keyword
+----------------
+class Demo
+{
+ public static void main(String [] args)
+ {
+   System.out.println("Program start.....");
+  
+   try
+   {
+   int x=Integer.parseInt(args[0]);
+   int y=Integer.parseInt(args[1]);
+   int z;
+   System.out.println("X: "+x+" Y:"+ y);	
+   z=x/y;
+   System.out.println("\tDivision Result: "+z);
+  }
+ catch(ArrayOutOfBoundsException ex) //Handling
+  {
+   System.out.println("**Please supply proper values***");
+  }
+ finally
+ {
+   System.out.println("**Finally code! **");
+  } 
+  System.out.println("Program end");
+ }
+} 
+
+java Demo 12 23
+//The code will work and finally code works
+
+java Demo 24 12
+//The code will work and finally code works
+ 
+java Demo 24
+//The code will work and finally code works whether exceptions occurs or not
+
+java Demo 24 raj
+//Then also code and finally code will work
+
+Finally code works when exception occurs or not,
+we want this finally code to run
+
+Our code will not work  (Program end statement)
+which is written after catch
+if the exception is not handled
+
+java Demo 24 0
+
+Now we didn't have Exception ex or Arithemtic exception
+so our program couldn't handle exception
+still out finally code got executed
+and then error is printed and program terminates
+
+finally will run 
+1. whether exception occurs or not
+2. whether exception is handled or not
+***********************************************************
+Q. When exception comes,
+  who terminates your program?
+
+Ans. First finally code executes,
+     then error goes to JVM where JRE terminates it and gets printed
+***********************************************************
+
+class Demo
+{
+ public static void main(String [] args)
+  {
+   System.out.println("Program starts");
+   A a=new A();
+   A.funA();
+   System.out.println("Program starts");
+  }
+}
+
+class A
+{
+ public void funA()
+{
+  B b=new B();
+  B.funB();
+}
+}
+
+class B
+{
+ public void funB()
+ {
+  C c=new C();
+  c.funC();
+ }
+}
+
+class C
+{
+ public void funC()
+ {
+  int z=34/0;
+ }
+}
+
+Q. When this gets executed,
+   where error will occur?
+Ans. 
+    First exception will come in funC()
+    But since a exception comes in a method,
+    it don't go directly to JRE,
+
+    It goes to the process that is running this,
+    so exception now goes to funB()
+    
+    but here also not handled,
+    the excpetion goes now to funA()
+    
+    Now exception goes to main()
+    
+    Here also not handled
+    So exception goes to JRE (Here program will terminate)
+
+This chain of exception will be visible in error message 
+**************************************************************
+We could have handled exception in 4 places 
+- funA, funB, funC, main
+
+Now the question arises where to handle this exception?
+
+Let's do change in funC
+
+class Demo
+{
+ public static void main(String [] args)
+  {
+   System.out.println("Program starts");
+   A a=new A();
+   A.funA();
+   System.out.println("Program starts");
+  }
+}
+
+class A
+{
+ public void funA()
+{
+  B b=new B();
+  B.funB();
+}
+}
+
+class B
+{
+ public void funB()
+ {
+  C c=new C();
+  int z=c.funC();
+  System.out.println("Z: "+z);
+ }
+}
+
+class C
+{
+ public int funC()
+ {
+  int z=25/5;
+  return z;
+ }
+}
+
+javac pro8.java
+java Demo
+
+//program will work
+
+Now change 5 to 0
+
+//excpetion will come
+
+Let's put try catch in funC
+
+**************************************************
+class Demo
+{
+ public static void main(String [] args)
+  {
+   System.out.println("Program starts");
+   A a=new A();
+   A.funA();
+   System.out.println("Program starts");
+  }
+}
+
+class A
+{
+ public void funA()
+{
+  B b=new B();
+  B.funB();
+}
+}
+
+class B
+{
+ public void funB()
+ {
+  C c=new C();
+  int z=c.funC();
+  System.out.println("Z: "+z);
+ }
+}
+
+class C
+{
+ public int funC()
+ {
+  try
+  {
+  int z=25/5;
+  return z;
+  }
+  catch(Exception ex)
+  {
+   Sout("error error");
+  }
+ }
+}
+
+/*
+ This program will not compile
+ Because we have mentioned return type of func
+ And if before returning if exception is generated,
+ then control will shift to catch block,
+ so there is no surity of return value
+*/
+
+Q. So what should we return from funC ?
+Ans.  
+    
+   Let's return -1 or 0, 
+   But this is giving us wrong result
+   We want return value so we can use it in some other expression
+   It will give us wrong calculation in expressions
+
+  We can do that we return anything,
+  then we can check in funB the legality of value
+  But this increases more headache
+********************************************************************
+/*
+  Water tank at the roof, 
+  Ladder to climb the tank-yup
+  Ram big bro ----Shyam small bro
+  Shyam went up to check water level
+  But while climbing , the ladder break
+  Shyam thought that big bro will scold him,
+  So he used a rope to fix the ladder temporarily to get saved from scolding
+  And then told Ram that tank is that much fill
+  
+  Then Ram will fell from ladder if he goes up
+   
+  What Shyam could do right?
+  1. No handling... and told Ram that this happened
+    Then Ram would not have fall
+  2. Handling ... and also told Ram that this happened
+
+ but Shyam did third thing
+ Handling done but did not told Ram  
+*/
+
+What is solution to this problem?
+
+Ans. 1. Let's do not handle error
+        and handle exception in funB
+
+       funB()
+      {
+       C c=new C();
+        try
+         {
+          c.funC();
+         }
+        catch
+         {
+          print("Error");
+         }
+      }
+
+Option B:
+----------
+But another solution is 
+
+funC also handled and also funB also handled
+
+
+funC()
+{
+ try
+ {
+ }
+ catch(Exception ex)
+ {
+ }
+} 
+
+but how will error go to funB?
+When exception will be raised in funB again?
+
+Ans. We can do this using throw keyword
+
+  catch{
+   throw ex;
+   }
+
+Now this error will go to funB and now funB also can handled
+Now we need not check value in funB
+
+*************************************************************
+throw is used to again generate exception
