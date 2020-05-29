@@ -1,0 +1,406 @@
+Checked Exceptions ----handling Mandatory
+Unchecked Exceptions ---Handling Optional
+
+Raining>>>RainCoat
+
+accessmodifier returntype funName(arguments) throws CheckedEx.....
+{
+}
+
+	Exception
+
+RunTimeException	..........
+
+RunTimeException and all its child classes are Unchecked Exceptions
+
+All other classes except RunTimeException and all their child classes are checked Exceptions
+
+----------------------------------------------------------------------------------------------
+package firstpro;
+public class FirstPro
+{
+ public static void main(String [] args)
+ {
+  System.in.read();
+ }
+}
+
+This will give error
+at compile time
+
+This is IOException and it is a Checked exception
+So we have to write try catch to handle it.
+
+Or we can put throws like:
+
+public static void main(String [] args) throws IOException
+
+but we can't put throws in front of main function
+as JRE is only running it and program will terminate abnormally
+
+--------------------------------------------------------------------
+Let's make another class here
+
+class A
+{
+   public void funA()
+  {
+    B b=new B();
+    b.funB();
+  }
+}
+
+class B
+ {
+  public void funB() throws IOException
+  {
+  }
+}
+
+Now since we have thrown IOException here,
+it will mandatory to the functions which call this
+to implement try catch, otherwise error will come
+
+The compiler is giving error 
+as we haven't implemented try catch
+
+But if we make the exception as ArrayOutOfBoundsException,
+then no error will come as it is Unchecked Xception
+
+Now funA has 2 options:
+1. It can apply try catch
+2. It can also throws IOException
+
+public void funA() throws IOException
+{
+}
+
+Then we have to apply try catch in main mandatorily
+because we have no other option left
+
+----------------------------------------------------------
+Unchecked exception comes because there can be mistake in code
+Checked xception can be because of internet error,database error,file error
+We can do nothing except handle it. So it is good to keep try-catch, a precaution
+
+--------------------------------------------------------------------
+Single Tasking
+Multi Tasking ,Process,Application
+*************************************
+  Single Threading
+  Multi Threading
+
+Thread- Dhaga
+        
+One Process can have multiple threads
+Thread is just like a process only
+
+We can now create subprocesses now
+Thread is like multiple processes in a process
+
+In Single Threading, one process which has one thread
+In Multi Threading, one process can have multiple threads
+
+Ex. When we run browser, we can keep open multiple tabs and also on the downloading
+So these are multiple threads working inside one process-Web browser application
+
+If we make multiple procesees,
+memory consumption is more and also becomes hectic
+
+But thread is lightweight process, 
+it don't require separate memory area,
+as it runs in same memory space.
+Thread is fast and performance wise good.
+
+Individually they are process.
+---------------------------------------------------------------------
+class Sample
+{
+  private String title;
+  Sample(String title)
+  {
+    this.title=title;
+  }
+ public void processs()
+ {
+  for(int x=1;x<11;x++)
+   {
+     System.out.println(this.title+" : "+x);
+   }  
+ }
+}
+
+public class Pro1
+{
+  main()
+  {
+   Sample s1=new Sample("Aman");
+    s1.process();
+}
+
+//10 times our result is printed
+----------------------------------------------------------------
+Now, we are creating 3 objects->
+
+Sample s1=new Sample("Rohan");
+Sample s2=new Sample("Anuj");
+Sample s3=new Sample("Sharad");
+
+s1.process();
+s2.process();
+s3.process();
+
+So we know that first s1.process will execute,then s2 and then s3
+
+This is single threaded
+------------------------------------------------------------------------
+But now we want this to be multi-threaded,
+the printings run in parallel.
+
+java has given a class java.lang.Thread
+All predefined methods are there to make , manage threads
+
+we will make a class and inherit the Thread
+Now Sample will become a Thread. its methods are available
+
+class Sample extends Thread
+{
+}
+
+To make multiple threads run, we will override the 
+run method in Thread class. So our code will be inside run method
+
+class Sample extends Thread
+{
+  private String title;
+  public Sample(String title)
+  {
+   this.title=title;
+   }
+   
+  public void run()
+  { 
+    for(int x=0;x<11;x++)
+    	print(this.title+" : " +x);
+  }
+}
+
+Still , we get same output
+Because we have to call start method to create thread
+
+s1.start();
+s2.start();
+s3.start();
+
+This will start the threads.
+Now we will get parallel threads and output
+---------------------------------------------------------
+This will give different output each time it runs
+because their execution is not pre-decided
+
+abcd------ market ---shop---purchase
+xyz------- market---car---
+pqr ------ food prepare
+
+What we can do
+1. One by one execution
+    abcd ----then xyz ----then pqr
+    This is single thread
+2. abcd went to market
+   xyz went to take car
+   pqr will food prepare
+
+   Now we don't know who will finish their work first. 
+   as no sequence , they are all parallel.
+
+Since we made same class objects, they are doing same task
+but if we create multiple class objects, they can run parallel
+-----------------------------------------------------------------
+Now, the problem comes
+we can't do multiple inheritance,
+so we can't inherit any class for this class
+
+So we have an interface for Threading-Runnable
+
+class Sam implements Runnable
+{
+  private String title;
+  public Sam(Strint title)
+  {
+   this.title=title;
+   }
+   
+   public void run()
+   {
+    for(int x=1;x<11;x++)
+     {
+      print(this.title+" : "+x);
+     }
+   }
+}
+
+But now we won't be able to start the thread
+because they are inside the Thread class 
+and we haven't extended them by thread class
+
+Now we can create separate Thread objects to run this.
+and pass them Runnable objects
+
+Thread t1=new Thread(s1);
+Thread t2=new Thread(s2);
+Thread t2=new Thread(s3);
+
+t1.start();
+t2.start();
+t3.start();
+
+Now this will work like it was working earlier
+-----------------------------------------------------
+Let's learn another way to do this
+
+Thread t1=new Thread(new Sam("Aman")); //This is called as anonymous object
+Thread t2=new Thread(new Sam("Rohan"));
+
+But if we have some extra work from those objects,
+we have to use the above approach only.
+------------------------------------------------------------
+BankAccount.java
+-----------------
+
+public class BankAccount
+{
+ private float balance;
+ public bAnkAccount(float balance)
+ {
+  this.balance=balance;
+ }
+
+ public void withdraw(float amt)
+ {
+   if(amt>this.balance)
+   { 
+   print("Balance : "+this.balance);
+   print("Withdraw: "+amt);
+   System.err.print("Not Sufficient Amount\n");  
+  }  //err object prints the error in red color
+  else
+  {
+   this.balance-=amt;
+   print("Amount Withdraw Successfully")
+   print("Current Balance : "+this.balance);
+   print("Withdraw: "+amt+"\n");
+  }
+ }
+}
+
+ThreadDemo.java
+----------------
+main()
+{
+BankAccount act=new Bankaccount(75000);
+act.withdraw(25000);
+act.withdraw(45000);
+act.withdraw(15000);
+act.withdraw(30000);
+}
+
+//our function is working properly
+
+This methods are called sequentially
+----------------------------------------------------
+But now there can be multiple operations on a bank acocunt at same time
+
+AccountTransactions.java
+----------------------------
+public class AccountTransactions
+{
+ private BankAccount act;
+ private float amount;
+ private int mode; //withdraw or desposit
+}
+
+BankAccount.java
+------------------
+public void desposit(float amt)
+{
+  this.balance+=amt;
+  print("Amount deposited successfully");
+  print("Deposit amount: "+amt);
+  print("Current Balance: "+this.balance);
+}
+
+*********************************************************************
+When we are making a project,
+there are some system constraints
+
+Matrimonial site -->
+Gender: Male/Female
+MarriageStatus : Single,Divorce,etc.
+
+BankAccount.java
+------------------
+
+public static final int MODE_WITHDRAW=1;
+public static final int MODE_DEPOSIT=2;
+
+AccountTransactions.java
+--------------------------
+public class AccountTransactions extends Thread
+{
+  public void run()
+  {
+   if(this.mode==BankAccount.MODE_WITHDRAW)
+    {
+       act.withdraw(this.amount);
+    }
+    else
+     {
+     act.deposit(this.amount);
+     }
+   }
+}
+
+
+main.java
+----------
+AccountTransactions t1=new AccountTransactions(act,10000,BankAccount.MODE_WITHDRAW);
+AccountTransactions t2=new AccountTransactions(act,5000,BankAccount.MODE_WITHDRAW);
+AccountTransactions t3=new AccountTransactions(act,50000,BankAccount.MODE_WITHDRAW);
+AccountTransactions t4=new AccountTransactions(act,20000,BankAccount.MODE_WITHDRAW);
+AccountTransactions t5=new AccountTransactions(act,1000,BankAccount.MODE_WITHDRAW);
+AccountTransactions t6=new AccountTransactions(act,13000,BankAccount.MODE_WITHDRAW);
+
+t1.start();
+t2.start();
+t3.start();
+t4.start();
+t5.start();
+t6.start();
+
+So this will give us wrong execution
+printing mistakes as well as wrong
+calculations
+---------------------------------------
+Let's combine the print statements so we get a one message
+
+So we get wrong results
+
+-----------------------------------------------------------------
+Ex. We all go to shopping
+    and so shopping in multiple threads
+    but payment can't be multi threading.
+    Because the payment person can only make 1 bill at a time
+    We have to do payment sequentially
+
+So we want to put lock
+so that at a time,
+only 1 thread can run a method
+
+So we will use synchronized keyword here
+Then JRE will let only 1 thread call this methods at a time
+
+public synchronized deposit()
+public synchronized withdraw()
+
+Now we will get correct outputs
+-----------------------------------------------------------------------
