@@ -1,0 +1,36 @@
+Qus 1 . Create a class Product(pid,price,quantity) with
+        parameterized constructor 
+        and perform following task :
+
+	  1) Accept five product information from user and store in an array. (Done)
+
+	  2) Create method which return the total amount of a Product   (Done)
+ (quantity*price).
+
+ 	  3) Sort and Print all Products in ascending order with total amount. (Done)
+
+
+Qus 2 . Create a class Student with two members : 
+        rollno and percentage.                  (Done)
+				
+        a) Create default and parameterised constructors.    (Done)
+        b) Create method show() to display infomation.       (Done)
+        c) Create another class CollegeStudent that inherits 
+           Student class.                                     (Done)
+		   Add a new member semester to it.                    (Done)
+           Create default and parameterised constructors.      (Done)   
+        d) Create another class SchoolStudent that inherits     
+    	   Student class.                                     (Done)
+		   Add a new member classname(e.g. 10Th , 
+ 	       12th) to it.                                        (Done)
+		   Create default and parameterised
+           constructors.                                       (Done)
+ 	    e) Do following operations -
+			i) One array to store objects of any class         (Done)
+			ii) Search record on the basis of rollno and check
+		        given rollno is of SchoolStudent or of
+                CollegeStudent                                 (Done)
+			iii) CollegeStudent have giveMidSemExam() and 
+                 SchoolStudent have giveMainExam().             (Done)
+            iv) Student must have payTutionFees().                (Done)
+
