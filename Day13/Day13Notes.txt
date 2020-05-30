@@ -1,0 +1,107 @@
+thirdpro package
+-------------------
+
+ThirdPro.java
+------------
+
+Employee.java
+---------------
+
+package thirdpro;
+public class Employee
+{
+ private int empid;
+ private String name;
+ private float salary;
+ private boolean isFullTime;
+
+ public Employee(int empid,String name,float salary,bool )
+ 
+  empty constructor
+
+  getter and setters
+
+  @Override
+  public String toString()
+  {
+   return "Employee{"+"empid=";
+  }
+}
+
+ThirdPro.java
+--------------
+main()
+{
+ Class cls=Employee.class;
+ Field fl[]=cls.getDeclaredFields(); //returns an array of fields 
+ for(Field f:fl)
+ {
+  String n=f.getName();
+  System.out.println(n);
+ }
+}
+
+/*
+This is called reflection. It gives us the members of class
+
+Class is a predefined class in java.
+we took all the data inside class Employee in cls object
+*/
+
+We can same also do like Class cls=String.class; or Class cls=System.class; or Class cls=Thread.class;
+
+This Class is a final class,it can't be extended
+
+---------------------------------------------------
+Pro2.java
+------------
+main()
+{
+Class cls=Employee.class;
+Method mt[]=cls.getDeclaredMethods();
+
+for(Method m:mt)
+{
+ String n=m.getName();
+ String rt=m.getReturnType().getName();
+ System.out.println(n+" : "+rt);
+
+ Class par[]=m.getParameterTypes();
+ for(Class c:par)
+	System.out.println(c.getName());
+ System.out.println("");
+}
+
+Employee.java
+--------------
+private void print()
+{
+ print("Emplpyee");
+}
+public float show(int x,float y,double z){return 0;}
+
+Q. Will Private methoc can be called?
+Ans.
+   Employee e=new Employee();
+   Class cls=Employee.class;
+   try
+    {
+   Method mt=cls.getDeclaredMethood("print",null);
+    
+    //Provide the access
+    mt.setAccessible(true);
+    mt.invoke(e1,null);
+    }
+     catch(NoSuchMethodException ex)
+     {
+       print("not found");
+     }
+     catch(SecurityException ex) 
+     {
+       print("security error");
+     }
+
+Thus we can execute the private method using reflection
+
+Spring and Hibernate framework use reflection in back end somewhere
+----------------------------------------------------------
