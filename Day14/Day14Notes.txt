@@ -1,0 +1,224 @@
+Collection framework is a collection of objects
+
+Q. So when we give list.add(5)
+   Then how can we pass integer. This is against object?
+
+Ans. There is an Integer wrapper class, then autoboxing happens
+
+Autoboxing means converting a primitive internally into its object
+
+We can check this by print(list.get(0) instanceof Integer);
+-----------------------------------
+Q. Now when we run list.remove(66);
+   So why this is giving error?
+
+Ans. There are 2 remove methods. Function overloading
+     It is considering 66 as index which is not available in list
+    
+     The right way to remove value 66 would be :
+     list.remove(new Integer(66));
+  
+     But this also removed the first 66. Not all
+
+     And similarly if we want to remove 2nd index,
+     we will do
+     list.remove(2)
+-------------------------------------------------------------
+ 
+If we want to remove multiple elements,
+we can use list.remove(list2)
+method to remove all elements in list2 from list1
+
+list=new list;
+Lets's add some no's in it
+66,11,43,67,23,87,73,44,56,96
+
+If we want to remove even numbers, what to do?
+
+list.removeIf(new Predicate()
+{
+  public boolean test(Object t)
+  {
+    Integer i=(Integer)t;
+    reyturn i%2==0;
+  }
+});
+
+why OBject t is passed?
+
+Because the interface don't know previously which kind of object will come
+So to handle any kind of object, Object is used
+
+-----------------------------------------------
+We can do another thing
+
+list.removeIf((Object)t->
+{
+ Integer i=(Integer)t;
+ return i%2==0;
+});
+
+Hashset
+
+HashSet <Integer> list=new HashSet<>();
+list.add(23);
+list.add(44);
+list.add(55);
+print(list);
+
+set interface do not let duplicacy
+Also we don't get data in the same order in which it is placed
+This is because internally it used hashing concept and then arrange the data
+--------------------------------------------------------------
+TreeSet
+--------
+- Since this is also a set, it will not allow duplicate values
+
+TreeSet <Integer> list=new TreeSet<>();
+list.add(34);
+list.add(11);
+list.add(122);
+
+This keeps the data always in the sorted order.
+
+1. Tree set do not allow duplicate values
+2. Tree set keeps the data sorted
+3. Here searching will happen by Binary Search
+
+******************************************************************
+class Student
+{
+ private int roll;
+ private String name;
+ private int age;
+ private float marks;
+ 
+ empty constructor
+
+parametrised cosntructor
+
+toString method
+}
+
+pro7.java
+-------------
+class Pro7
+{
+  main()
+  {
+   Student s1=new Student(101,"Aman",23,345.43f);
+   Student s2-new Student(123,"G0pal",21,245.43f);
+   Student s3=new Student(154,"Vikas",25,305.43f);
+   Student s4=new Student(121,"Teena",18,186.43f);
+   Student s5=new Student(163,"Rajesh",24,213.43f);
+
+   Treeset <Student>list=new TreeSet<>();
+   list.add(s1);
+   list.add(s2);
+   list.add(s3);
+  }
+}
+
+But this gives an error, ClassCastException
+
+TreeSet needs some field to arrange data
+
+There is an interface with it-Comparable
+We can only keep that object in TreeSet which is Comparable
+
+If the object is not comparable, then we can't keep that object in TreeSet
+
+*********************************************************************
+So we hava to implement Comparable interface on Student class
+
+
+public class Student implements Comparable <Student>
+{
+ //We have override compareTo
+
+ public int compareTo(Student ob)
+ {
+  return this.roll-ob.roll;
+  }
+}
+
+Here we have return type as int because we can know whicb no. is bigger by subtraction
+
+Same way we can do this:
+return this.age-ob.roll;
+
+So each time, we add a new object, it compares first to check where to insert it
+***************************************************************************************
+Pro8.java
+-----------
+ 
+ArrayList <Student> list=new ArrayList<>();
+
+But now we want to change the order by some other field
+
+There is a Collection interface in java
+We are using Collections class
+
+Collections.sort(list, new Comparator<Student>)()
+{
+ public int coompare(Student ob1,Student ob2)
+ {
+  return ob1.getAge()-ob2.getAge();
+ }
+}
+//so we used an interface Comparator
+
+print(list);
+
+This will sort the list
+
+or we can do return ob1.getName().compareTo(ob2.getName());
+******************************************************************************
+This is also a functional interface,
+
+Collections.sort(list,(Student ob1,Student ob2))->
+{
+}
+
+*******************************************************************************
+Pro9.java
+----------
+Map is an interface
+HashMap is a class
+
+main()
+{
+  //key must be unique
+  
+  HashMap<Integer,String> list=new HashMap();
+  list.put(23,"Vikas");
+  list.put(11,"Rohan");
+  list.put(55,"Meena");
+  
+  print(list.get(11));
+  print(list);
+  list.remove(43); //delete by key only
+
+  Set <Integer> keys=list.keySet(); //it gives set of keys
+  Collection<String> values=list.values();
+
+ for(Integer i:list)
+ { 
+  print(i);
+ } //this will not work as this is not iterable
+
+ for(Integer i:list.keySet())
+ {
+  print(i);
+ } //this key set is iterable, so for each will work
+}
+
+Collection interface was also implementing an interface called Iterator
+arraylist>>>>100 value at index 5
+There is no surity that after some insertion deletion,
+100 will be at index 100 .So then we have to again search 100 where it is
+
+But in HashMap , the key never changes even if some elements get deleted or inserted
+
+We have to get values here using key and not index
+********************************************************************************************
