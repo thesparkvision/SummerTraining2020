@@ -1,0 +1,288 @@
+db.sql
+-----------
+create database sample1;
+
+create table sample1.student(
+ roll int;
+ name varchar(100) NOT NULL,
+ 
+ Primary Key (roll)
+);
+
+
+Primary key is unique, cannot be null, never changes
+In database ,indexing of rows happen by primary key for faster searching
+And it is used to uniquely identify rows.
+Also a table can have only 1 primary key
+
+NOT NULL is a constraint so that any field cannot be null
+************************************************************
+
+empid 	name	salary	bonus
+
+1	Raj	15000	500
+2	Mohan	7000	0
+3	Shyam	8000	NULL
+
+Q. Why null is there in bonus?
+Ans. Suppose this is record of month
+     NULL means no value in it.
+    
+    In front of Mohan is 0, that means mohan didn't got bonus
+    Shyam has NULL doesn't means he didn't got bonus. There may be value missing
+    OR shyam doesn't get bonus ever .//That means this particular value is not applicable to Mohan
+
+    Null means no value
+*******************************************************************************************
+
+create table sample1.student(
+ roll int;
+ name varchar(100) NOT NULL,
+ phone varchar(12) NOT NULL UNIQUE,
+ email varchar(100) UNIQUE,
+ city varchar(100) default 'indore',
+ Primary Key (roll)
+);
+
+Phone no. will not repeat,
+so make it unique by UNIQUE Constraint.
+
+email can be missing and is unique
+
+**So there can be more than 1 unique keys in a table
+  And unique can accept NULL or NOT NULL
+  but primary key is always NOT  NULL
+
+Phone cannot be primary key
+*********************************************************************
+**default means if value not supplied, it get's default value
+
+Database Normalization
+**********************************************
+
+1NF: Atomic Values
+     phone :985874858,748595879
+
+     This is because database won't be able to search 985874858 because in database there is 985874858,7485958749
+     In delete, also we will have search problem
+     Also in update, suppose if we want to change phone no. , both phone no.s will be replaced by 1 phone no. Which is wrong
+
+2NF: Must be 1 NF
+     All columns must be dependent on primary key
+
+     Our table should have only those columns which are dependent on that roll no.
+     
+  Q:   What is problem with city field?
+  Ans. 
+         Suppose there are 10,00,00,000 Records are there
+         And we want to find ujjain city students,
+         select* from student where city="ujjain";
+         So database has to search 10 crore records 
+         
+         Now main primary columns do not have indexing
+
+         Now suppose we had state and pincode field,
+         then we had lot of MP, Bhopal, pincodes written
+         So this leads to lot of duplicacy. 
+         
+         So we can make separate table for managing all this data. 
+         This is 2 NF concept
+
+create table sample1.city
+(
+ pincode int,
+ cityname varchar(100) NOT NULL UNIQUE,
+ PRIMARY KEY(pincode)
+);
+  
+And we do changes in student table
+
+create table student
+(
+ city int,
+ PRIMARY KEY(roll),'
+ FOREIGN KEY(city) REFERENCES sample1.city(pincode)
+);
+
+So we made a foreign key in student like this
+
+
+So this will give us advantages.
+we will not have redundant data, 
+we will be able to search faster because city will be searched by primary key
+
+
+Ex. Suppose there is a shop owner 1
+    Now he has a single big place to keep stock of goods
+    
+    Another shop owner 2,
+    He kept the data in multiple small places(10 Rooms)
+
+    Now in Room1, we can't search different items faster
+
+    In Room2 also will be difficult,
+    but he has managed a Book
+    like 1. Kirana Room1
+        2. Milk Room2
+        3. Veg and Fruit Room3
+
+     Room1 ::: 1. tea: column 12
+               2. sugar:column 33
+  
+    For example, library manages books in separate location and it is very easy to search a 
+      particular branch, particular semester and particular subject book
+
+***************************************************************************************************
+Q. Now write SQL Query to search for ujjain city
+
+Ans. select * from student where city in
+     (select pincode from city where cityname="Ujjain")
+
+    This is called subquery or nested queries
+      
+    This will bring us pincode of ujjain city
+    And that pincode will be used to search
+
+   ------------------
+   But we have to use join query
+   
+   Select * 
+   from student inner join sample1.city
+   on student.city = city.pincode
+   where city.cityname='ujjain';
+   
+   Here we can fetch both student and city details
+***************************************************************************************************
+Let's come back to old table
+
+create table sample1.student(
+ roll int;
+ name varchar(100) NOT NULL,
+ phone varchar(12) NOT NULL UNIQUE,
+ email varchar(100) UNIQUE,
+ city varchar(100) default 'indore',
+ Primary Key (roll)
+);
+
+//Insert data//
+
+insert into sample1.student 
+value
+(101,'Gopal','9874857484','gopal@abcd.com','ujjain');
+
+But this data have to be in sequence according to table
+
+Now if we want not to give all column values
+
+insert into sample1.student
+value
+(102,'Mahesh','7845814578','dewas');
+
+This will give error because table have 5 columns
+So we have to mention column names
+
+insert into sample1.student
+(roll,name,phone,city)
+value
+(102,'Mahesh','7845814578','dewas');
+
+This will do the work
+***********************************************
+We can have sequence of columns different if we mention columns
+
+insert into sample1.student
+(roll,name,phone)
+value
+(102,'Mahesh','7845814578');
+
+default indore got written
+
+**************************************************************************************
+//update
+
+update sample1.student 
+set name="Anuj",email="anuj@abcd.com";
+
+This will give error as email id is unique,
+so it will change 1 row ,
+then it will give error in other rows because email id got entered
+
+But if uniqye constraint won't be there,
+all values have got changed
+
+update sample1.student 
+set name="Anuj",email="anuj@abcd.com"
+where rollno=110;
+
+This will change only 1 row or record
+
+**************************************************************************************
+delete from sample1.student;
+
+//This deletes all the records
+
+delete from sample1.student where city='dewas';
+
+//This deletes a particular record
+
+delete from sample1.student
+where city='dewas' or city='ujjain';
+
+***********************************************************************************
+//For fetching all the records
+select * from students;
+
+* means projection which means all columns
+We can change projection like enter roll,name,city
+
+select roll,name,city from student;
+//all records, selectable columns
+
+Use limit to view limited rows
+
+select * from student where city="ujjain";
+//selected records, all columns
+
+select roll,name,city from student
+where city="ujjain";
+//selected records, selectable columns
+
+So using where clause, we can do selection
+
+**********************************************************
+select * from student where age>23;
+
+select *from student 
+where age>23 and city='dewas';
+
+select * from student
+where city='ujjain' or city='dewas';
+
+or we can do
+
+select * from student
+where city in ('ujjain','dewas',bhopal');
+//to get student from this cities
+
+select * from student
+where city not in ('ujjain','dewas',bhopal');
+//to get student except this cities
+
+select *from student
+where age>21 and age<35;
+
+select *from student
+where age between 103 and 107;
+//inclusive records
+******************************************************************
+select * from student order by name; //ascending order
+
+select * from student order by name DESC; //descending order
+
+select * from student order by name,city;
+//first sort by name, if same names, then sort by city
+
+
+
+   
+  
