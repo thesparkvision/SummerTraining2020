@@ -1,0 +1,346 @@
+Add JARfile using Libraries option in Netbeans in  a project
+So our FirstPro.jar file will be added
+It has Sample class
+------------------------------------------------------------
+main()
+{
+//JAR Files: collection of classes
+Sample s1=new Sample(123,"Ujjain");
+s1.show();
+}
+
+
+But this introduces a problem
+Our path of jar file is set
+It will give problem in different computers
+
+---------------------------------------------------------------------
+So there is a option for netbeans project
+
+Use dedicated Folder for storing libraries -named lib
+Now when we will add jar file, it will get added to lib folder
+
+So no path issues will come now
+-----------------------------------------------------------------
+Java : java.sql package
+ It contains all classes to connect to any kind of databases
+
+JDBC: Java Database Connectivity
+
+Whichever database we want to connect with, we will need its JAR file
+By default, it gives us Mysql,POSTgreSQL,Oracle Jar file
+Otherwise we have to download a JAR file from internet
+
+What we need
+1. Database Driver: JAR file....
+2. Driver Load......
+
+-----------------------------------------------------------------------------
+New Project
+
+dbpro1 project
+and Pro1.java class
+
+Go to libraries
+ >Add libraries(for predefined libraries)
+ >import library
+ >MySQL JDBC Driver
+ 
+So we get a mysql connector 5.1.23 or newer version
+after importing
+
+You can also download
+dev.mysql.com/downloads/connector/j/
+and download platform independent or windows file etc
+
+-----------------------------------------------------------------------------
+main()
+{
+  /*Load the Driver ,Driver is a class and com.mysql.jdbc is the package
+    It generates a checked exception. So we have to place try-catch*/
+ try
+  {
+ Class.forName("com.mysql.jdbc.Driver");
+  }
+ catch(ClassNotFoundException ex)
+ {
+ System.out.println("Driver Not Found!");
+ }
+} 
+
+3rd Step. Create Connection Object......
+     
+    Database Server>>>Machine 
+    Port Number >>>
+    ID and Password >>>
+    Database to connect >>>
+
+ To make Connection object,
+ we will need DriverManager class
+
+ DriverManager.getConnection() 
+  
+ This is a factory method which generates objects of a class and returns to us
+********************************************************************************************
+The method will require a connection string
+
+"jdbc:mysql://localhost:3306/sample1"
+
+We are going to jdbc to mysql and our database is on our PC, so localhost and mysql is running on 3306 port and then database name sample1
+
+Similarly, we can connect with a remote databse via IP
+
+"jdbc:mysql://123.12.1.17:3306/sample1"
+
+main()
+{
+ try
+ {
+ Class.forName("com.mysql.jdbc.Driver");
+ 
+ //Connection object prepare
+ Connection cnn=DriverManager.getConnection("jdbc:mysql://localhost:3305/sample1","root","");  //username and password also to be given
+ 
+ //Connection close
+ cnn.close();
+ }
+ catch(ClassNotFoundException ex)
+ {
+ }
+ catch(SQLException ex) //for cnn object
+ {
+  print(""+ex.getMessage());
+ }
+} 
+
+***************************************************************************************
+4. For Execution SQL Query
+ 
+ Statement
+ PrepareStatement
+ CallableStatement
+
+//These are also interfaces
+
+main()
+{
+ try
+ {
+ Class.forName("com.mysql.jdbc.Driver");
+ 
+ //Connection object prepare
+ Connection cnn=DriverManager.getConnection("jdbc:mysql://localhost:3305/sample1","root","");  //username and password also to be given
+ 
+//Prepare Statement Object
+ Statement stm=cnn.createStatement();
+
+ String query="select * from student";
+ 
+ //Query execute,Resultset is also interface . It has a logical table
+ ResultSet rs=stmt.executeQuery(query); 
+ while(rs.next()) //it will turn that many times as we have records
+ {
+    //First option:Column Index
+    //Second Option:Column Name
+    int roll=rs.getInt(1); 
+      
+    /*this is a overloaded method, it can also accept columnname
+    java do indexing in database from 1
+    */
+
+     String name=rs.getString(2);
+     String phone=rs.getString(3);
+     String email=rs.getString(4);
+     String city=rs.getString(5);
+     print(""+roll+" "+name+" "+" "+phone+" "email+" "+city);   
+ }
+ 
+ //Connection close
+ cnn.close();
+ }
+ catch(ClassNotFoundException ex)
+ {
+ }
+ catch(SQLException ex) //for cnn object
+ {
+  print(""+ex.getMessage());
+ }
+} 
+ 
+
+rs.next() , this returns a boolean
+
+This is like a pointer or cursor of ResultSet
+In starting, it do not point to anything
+rs.next() makes ResultSet cursor to move to next record
+in starting case, to first record
+
+If cursor is able to move forward, it returns True
+and if it reaches end of result and not able to move forward, it returns False
+
+******************************************************************************
+This is very bad way to handle the data.
+We should follow OOPs and let us create a class
+
+public class Student
+{
+ private int roll;
+ private String roll,phone,email,city;
+
+ empty constructor,
+ parametrised constructor,
+ toString method
+}
+
+main()
+{
+ ArrayList <Student> list=new ArrayList<>();
+ while(rs.next()) 
+ {
+    int roll=rs.getInt(1); 
+     String name=rs.getString(2);
+     String phone=rs.getString(3);
+     String email=rs.getString(4);
+     String city=rs.getString(5);
+     Student s1=new Student(roll,name,phone,email,city); 
+     list.add(s1);
+ }
+ cnn.close();
+ for(Student s:list)
+ {
+  print(s);
+ }
+
+************************************************************************************
+Let's change the query
+
+String query="select roll,name,city,email from student";
+
+//we have changed the sequence and do not taken phone number
+
+This will give us error.
+Column numbering got wrong and we even can't remember all column indexes
+
+And also the indexing happens according to logical table sequence, not database column sequence
+
+So it's better to use column names
+only 1 problem when we do not know database 
+Then we have to use indexing only
+
+ while(rs.next()) //it will turn that many times as we have records
+ {
+    
+    int roll=rs.getInt("roll");
+     String name=rs.getString("name");
+     String city=rs.getString("city");
+     String email=rs.getString("email");
+     Student s1=new Student();
+     s1.setRoll(roll);
+     s1.setCity(city);
+     s1.setEmail(email);
+     s1.setName(name);     
+}
+
+*******************************************************************************************
+DBPro2 project
+---------------
+Pro1.java
+------------
+
+Let's make another column after name, named "age" which can accept NULL values
+
+101,Raj,21,937844, ,indore
+15,vikas, ,34424,vicky@ww.com,ujjain
+
+class Student
+{
+ private int age;
+ change parametrised constructor
+ create a setter method
+ redefine toString method
+}
+
+Connection cnn="...... /sample2";
+//change here database sample2
+
+while(rs.next())
+ {
+    
+    int roll=rs.getInt("roll");
+     String name=rs.getString("name");
+     String phone=rs.getString("phone");
+     String city=rs.getString("city");
+     String email=rs.getString("email");
+     int age=rs.getString("age");
+     Student s1=new Student(roll,age,name,phone,email,city);
+     list.add(s1);   
+}
+
+This prints when age is NULL, it prints 0
+But we should get a NULL
+
+We are getting NULL in email because it is a reference
+but age is int
+
+This is homework. find it out how get NULL value correctly
+****************************************************************************
+//Insert query
+
+int roll,age;
+String name,phone,city,email;
+Scanner sc=new Scanner(System.in);
+print("Roll no: ");
+roll=sc.nextInt();
+print("Name: ");
+name=sc.nextString();
+print("age: ");
+age=sc.nextInt();
+print("phone: ");
+phone=sc.nextString();
+print("city: ");
+city=sc.nextString();
+print("email: ");
+email=sc.nextString();
+
+try
+{
+  String query="insert into student" 
+               +"value("+roll+",'"+name+"',"+age+",'"+phone+"','"+email+"','"+city+"')";
+  print(query); //to check this query
+  int i=stmt.executeUpdate(query); //this returns integer type
+  print(i);
+}
+
+In this statement object,
+our object gets prepared
+later query is passed
+then its compiled and executed
+
+But in prepare statement,
+when object is created,then only query is passed
+the query is parsed then only,
+and later executed.
+
+String query="insert into student value(?,?,?,?,?,?)";
+PreparedStatement stm=cnn.prepareStatement(query);
+stm.setInt(1,roll);
+stm.setString(2,name);
+stm.setInt(3,age);
+stm.setString(4,phone);
+stm.setString(5,email);
+stm.setString(6,city);  //so we supplied value to ? when we want to execute query
+
+int i=stm.executeUpdate(); //it will not ask query because it is given during object creation
+
+So result is 1 i.e. 1 record got added
+
+So we get 2 advantages:
+1. we did not need to use concatenation
+2. query compiled earlier
+
+but preparedStatement will work on only 1 query because we give it during object creation
+So it is used when we have to execute 1 type of query and give different data
+
+but if we want to execute different type of queries using same object,
+then statement will be used
+*************************************************************************************************
