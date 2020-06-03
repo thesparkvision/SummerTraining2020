@@ -1,0 +1,355 @@
+com.adroit.mit.pro package
+
+com.adroit.mit.db package
+-------------------------
+package com.adroit.mit.db;
+
+public class MySqlConnection
+{
+ public static Connection getConnection() throws ClassNotFoundException,SQLException
+ {
+  
+  Class.forName("com.mysql.jdbc.Driver"); 
+  Connection cnn=DriverManager.getConnection("jdbc:mysql://localhost:3305/sample1","root","");
+  return cnn;
+ }
+}
+
+public class StudentDB
+{
+ public boolean saveStudent(Student ob) //it returns whether data is properly saved or not
+ { 
+   Connection cnn=null;
+   try
+   {
+   cnn=MySqlConnection.getConnection();
+   
+   string query="insert into student value(?,?,?,?,?,?)");
+   PreparedStatement stm=cnn.prepareStatement(query);
+   stm.setInt(1,ob.getRoll());
+   stm.setString(2,ob.getName());
+   stm.setString(2,ob.getPhone());
+   stm.setString(4,ob.getEamil());
+   stm.setString(5,ob.getCity());
+   int i=stm.executeUpdate();
+   if(i>0)
+      return true;
+
+   return true; 
+   }
+   catch(ClassNotFoundException ex)
+   {
+    System.err.println("Driver Not Found!");
+   }
+   catch(SQLException ex)
+   {
+    System.out.println("DB Error:"+ex.getMessage());
+   }
+   finally
+   {
+     if(cnn!=null)
+     { 
+       try
+       {
+       cnn.close();
+        }
+        catch(SQLException ex)
+        {
+        System.out.println("connection closing");
+        }
+      }
+   }
+   return false;
+ }
+
+  public boolean updateStudent(Student ob) //update all columns so that the rquired columns get updated
+ { 
+   Connection cnn=null;
+   try
+   {
+   cnn=MySqlConnection.getConnection();
+   //Update Code
+    
+   string query="update student set name=?,phone=?,email=?,city=?"+
+                  "where roll=?";
+   stm.setString(1,ob.getName());
+   stm.setString(2,ob.getPhone());
+   stm.setString(3,ob.getEamil());
+   stm.setString(4,ob.getCity());
+   stm.setInt(6,ob.getRoll());
+   int i=stm.executeUpdate();
+   if(i>0)
+      return true;
+   else
+      return false;   //here query successfully insert but roll no. is wrong. so here if else is required
+   
+   }
+   catch(ClassNotFoundException ex)
+   {
+    System.err.println("Driver Not Found!");
+   }
+   catch(SQLException ex)
+   {
+    System.out.println("DB Error:"+ex.getMessage());
+   }
+   finally
+   {
+     if(cnn!=null)
+     { 
+       try
+       {
+       cnn.close();
+        }
+        catch(SQLException ex)
+        {
+        System.out.println("connection closing");
+        }
+      }
+   }
+   return false;
+ }
+ 
+  public boolean deleteStudent(int roll) 
+ { 
+   Connection cnn=null;
+   try
+   {
+   cnn=MySqlConnection.getConnection();
+   //Delete Code
+   String query="delete from student where roll=?";
+   PreparedStatement stm=cnn.prepareStatement(query);
+   stm.setInt(1,roll);
+   int i=stm.executeUpdate();
+   if(i>0) 
+   	return true; 
+   }
+   catch(ClassNotFoundException ex)
+   {
+    System.err.println("Driver Not Found!");
+   }
+   catch(SQLException ex)
+   {
+    System.out.println("DB Error:"+ex.getMessage());
+   }
+   finally
+   {
+     if(cnn!=null)
+     { 
+       try
+       {
+       cnn.close();
+        }
+        catch(SQLException ex)
+        {
+        System.out.println("connection closing");
+        }
+      }
+   }
+   return false;
+ }
+
+  public ArrayList<Student> listStudents(Student ob) 
+ { 
+   ArrayList<Student> list=new ArrayList<>();
+   Connection cnn=null;
+   try
+   {
+   cnn=MySqlConnection.getConnection();
+   //Select Code
+   
+   String query="select * from student";
+   Statement stm=cnn.createStatement();
+   ResultSet rs=stm.executeQuery(query);
+   
+   while(rs.getNext())
+   {
+    int roll=rs.getInt("roll");
+    String name=rs.getString("name");
+    String phone=rs.getString("phone");
+    String city=rs.getString("city");
+    String email=rs.getString("email");
+    Student s=new Student(roll,name,phone,city,email);
+    list.add(s);
+   }
+   return list;
+   }
+   catch(ClassNotFoundException ex)
+   {
+    System.err.println("Driver Not Found!");
+   }
+   catch(SQLException ex)
+   {
+    System.out.println("DB Error:"+ex.getMessage());
+   }
+   finally
+   {
+     if(cnn!=null)
+     { 
+       try
+       {
+       cnn.close();
+        }
+        catch(SQLException ex)
+        {
+        System.out.println("connection closing");
+        }
+      }
+   }
+   return null;
+ }
+
+  public Student getStudent(int roll) 
+ { 
+   Student stud=null;
+   Connection cnn=null;
+   try
+   {
+   cnn=MySqlConnection.getConnection();
+   //Select Code
+   
+   String query="select * from student";
+   Statement stm=cnn.createStatement();
+   ResultSet rs=stm.executeQuery(query);
+   
+   if(rs.next())
+  {
+    int r=rs.getInt("roll");
+    String name=rs.getString("name");
+    String phone=rs.getString("phone");
+    String city=rs.getString("city");
+    String email=rs.getString("email");
+    stud=new Student(r,name,phone,city,email);
+   }	
+    
+   return stud; 
+   }
+   catch(ClassNotFoundException ex)
+   {
+    System.err.println("Driver Not Found!");
+   }
+   catch(SQLException ex)
+   {
+    System.out.println("DB Error:"+ex.getMessage());
+   }
+   finally
+   {
+     if(cnn!=null)
+     { 
+       try
+       {
+       cnn.close();
+        }
+        catch(SQLException ex)
+        {
+        System.out.println("connection closing");
+        }
+      }
+   }
+   return null;
+ }
+}
+--------------------------------------------
+pro package;
+
+public class student
+{
+ private int roll;
+ private String name,phone,email,city;
+
+ empty constructor
+ parametrised constructor
+}
+
+
+
+FirstPro class in package pro
+---------------------------------
+main()
+{
+ StudentDb db=new StudentDB();
+ arrayList<Student> list=db.listStudents();
+ for(Student s:arrayList)
+    print(s);
+
+ Student s=db.getStudent(101);
+ print(s);
+
+ Student s=new Student(714,"Payal","434343434","payal@wse.com","Dewas");
+ db.saveStudent(s);
+
+ Student s=new Student(714,"Payal Verma","434343434","payal@gmail.com","Pune");
+ db.updateStudent(s); 
+ 
+ db.deleteStudent(714);
+}
+
+
+**********************************************************************************
+com.adroit.mit.test
+--------------------
+
+Interface DBOperation
+
+DBOperation.java
+--------------------
+public interface DBOperation<T>
+{
+  boolean save(T ob);
+  boolean update(T ob);
+  boolean delete(int id);  //we are assuming that primary key will be always integer
+  ArrayList<T> list();
+  T get(int id);  
+}
+
+StudentOperation.java
+-------------------------
+public class StudentOperation implements DBoperation<Student>
+{
+  all methods will be overrided with name of Student class
+}
+
+FacultyOperation.java
+-----------------------
+public class FacultyOperation implements DBOperation<Faculty>
+{
+}
+
+//This is called generics
+**************************************************************************************
+
+Web application-> which is executed using a web server
+This is needed because we want to access our application from anywhere
+
+Website is a collection of web pages, it is static
+and we see the same data as someone else
+************************************************************************************
+Q. How to create a web server?
+
+Ans. 1. First requirement is we need a PC
+     2. Internet....Online Always
+     3. IP Address, public one(this identifies a machine) //we need to purchase this
+     4. Web server software -> Apache Tomcat, Glassfish,Jetty  (NGINX is for load balancing and inside it also we install Apache etc.)
+     5. Port Number -> Port number helps the cpu to find the correct process to which information received is to be transferred
+     
+http://114.12.23.147:8080  So this is our location. The ip address and port to send requests
+
+The web server software work is to receive a web requests
+
+Since we are working in java, we need another thing
+    6. JRE
+    7. Web Application  (a WAR file will be made and deployed to web server)
+
+http://112.23.34.23:8080/demo   -> So this is our URL
+
+But in real life,
+1. we can't use them to represent company
+2. also ip address and port number can change
+
+So we use domain name like http://www.abcd.com
+			This is mapped with ip address by DNS
+
+We purchase domain name from sites like godaddy and use hosting instead of making our computer a server
+****************************************************************************************************
+
+
+  
