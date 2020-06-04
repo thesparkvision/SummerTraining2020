@@ -1,0 +1,233 @@
+New Project
+
+Web application
+
+checkbox the lib
+
+Select server-> 
+
+Give context path
+
+Do not select any framework currently
+
+*******************************************************
+Let's discuss the folders created
+
+WebPages-> (This is related to client side)
+	There a file index.html file is created
+
+- There is a folder here WEB_INF
+
+Source Package-> (Server side)
+
+Run the project, you will see only message
+
+Here the web server starts
+WAR file of application get created
+The application get deployed
+Then URL works
+******************************************************************
+Make another webpage,
+place a heading in it
+
+In index.html,
+put a a tag   <a href="second.html"><b>Second Page</b></a>
+
+We are not seeing index.html on the url
+Because it is default configured
+
+Now suppose if we have renamed the index.html to index2.html
+But now since, index.html page is not there, it give HTTP status 404-  not found error
+
+Default is index.html
+hence no need to put url of index.html
+**********************************************************************
+Make a new folder "Images" inside Web Pages folder
+
+Copy paste any image in this folder
+
+Now add <img src="Images/adroit.jpeg"> in index.html
+
+Always keep the files inside project
+****************************************************************************
+
+In source packages,
+create com.adroit.serv package
+and class FirstServlet.java
+
+import javax.servlet.http.HttpServlet;
+
+public class FirstServlet extends HttpServlet 
+{
+  init(ServletConfig config) throws ServletException
+  {
+    super.init(config);
+    System.out.println("servlet Init RUN...");
+  }
+
+protected void service(HttpServletRequest rew,HttpServletResponse resp) throws
+{
+ super.service(req,resp);
+ System.out.println("Servlet Service Run...");
+}
+
+public void destroy()
+{
+  super.destroy();  
+  System.out.println("Servlet Service Destroy...");
+}
+ 
+}
+*************************************************************************
+create a new web.xml file in WEB_INF and under deployment category
+
+web.xml
+----------
+<servlet>
+   <servlet-name> //write this tag always first
+	first
+   </servlet-name>
+   <servlet-class>  //to make it understand what servlet is
+	com.adroit.serv.FirstServlet
+   </servlet-class> 
+</servlet>
+<servlet-mapping> //tell alongside which url servlet will work
+    <servlet-name> first</servlet-name>
+    <url-pattern>/demo</url-pattern>
+</servlet-mapping>
+
+Link by <a href="demo">Call Servlet</a> the servlet in index.html
+**************************************************************
+Or we can do it by GUI
+
+Go to Source, in another tab, there is Servlets
+Enter Servlet Name
+Select Servlet class
+Enter URL Pattern
+
+And now u can run it,
+when we click on Call Servlet Link,
+ in output window, it will show
+		Servlet Init
+		Servlet Service 
+ This 2 methods run.
+
+And if call the link again,
+	only Servlet Service will be run
+Servlet Init runs only once
+Servlet Service runs every time a request is received
+
+And after closing the server,
+Servlet Destroy method will run to destroy the servlet
+
+Servlet Destroy will also run only once
+****************************************************
+But now on clicking on Call Servlet link,
+it gives error
+
+Let's make another servlet-SecondServlet
+
+public class SecondServlet
+{
+ protected void service(HttpServletResponse req,HttpServletResponse resp) throws ServletException,IOException
+ {
+   PrintWriter pw=resp.getWriter();
+   pw.write("Hello, Now I receive the request !");    
+ }
+}
+
+We have to its entry again in web.xml
+
+<servlet>
+   <servlet-name> 
+	second
+   </servlet-name>
+   <servlet-class>  //to make it understand what servlet is
+	com.adroit.serv.SecondServlet
+   </servlet-class> 
+</servlet>
+<servlet-mapping> //tell alongside which url servlet will work
+    <servlet-name> second</servlet-name>
+    <url-pattern>/sample</url-pattern>
+</servlet-mapping>
+
+In index.html,
+
+&nbsp;
+<a href="sample">Call Second Servlet</a>
+
+Now on running the application, we get a response on clicking Second Servlet
+
+We can do more changes like:
+
+pm.write("<h1> Hello, Now i receive the request! </h1>");
+pm.write("<hr/>");
+pm.write("MIT Ujjain, Training");
+
+On clicking page source,
+we can check the response html script
+
+So by default, the text written is HTML response
+*************************************************************
+
+Let's add another line in the service method
+
+response.setHeader("content-type","text/plain"); 
+
+On doing this, the text is displayed plain without rendering
+Because we have told the client that our response is going to be plain text
+
+This is a header
+
+2 types of header are there-
+ResponseHeader - similarly, server wants to tell the client,
+		what type of content it is sending-html,text etc.
+
+RequestHeader - when client is sending data to server and
+		 they want to explain what type of data 
+                 they are sending -html,text,pdf etc.
+
+By default, html setting is set
+*************************************************************************
+another class -CalculationServlet
+
+public class CalculationServlet extends HttpServlet
+{
+ protected void service(HttpServletRequest req,HttpServletResponse resp)
+ {
+  int x=Integer.parseInt(req.getParameter("fnum")); //with name fnum
+  int y=Integer.parseInt(req.getParameter("snum")); // data will come with snum
+  int z=x+y;
+  PrintWriter pw=resp.getWriter();
+  pm.write("Result : "+z+"</h1>");
+ }
+}
+
+
+Entry in web.xml
+
+<servlet>
+   <servlet-name> 
+	cal
+   </servlet-name>
+   <servlet-class>  //to make it understand what servlet is
+	com.adroit.serv.CalculationServlet
+   </servlet-class> 
+</servlet>
+<servlet-mapping> //tell alongside which url servlet will work
+    <servlet-name> cal</servlet-name>
+    <url-pattern>/operation</url-pattern>
+</servlet-mapping>
+
+index.html
+----------
+<form action="operation">
+  <input type="text" name="fnum" placeholder="First Number">
+  <input type="text" name="snum" placeholder="Second Number">
+  <br></br>
+  <input type="submit" value="Calculate">  //this button only works inside form tag and on clicking it, it sends request of this form to the site mentioned in action attribute
+</form>
+
+And now we will get result
+
+*************************************************************************************************************************************************
