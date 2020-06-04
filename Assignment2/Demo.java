@@ -38,7 +38,7 @@ class Demo
 	      break;
       case 7: examinfo.showComputerToppers();
   	      break;
-      case 8: examinfo.showTop5Students();
+      case 8: examinfo.showTopStudents();
 	      break;
       case 9: System.out.println("\nProgram exiting");
               break;

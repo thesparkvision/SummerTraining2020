@@ -231,3 +231,8 @@ index.html
 And now we will get result
 
 *************************************************************************************************************************************************
+Even if we change url-pattern to operation.php or operation.html,
+the file does not become html or php file.
+
+It is just url-pattern
+***********************************************************************************************************
