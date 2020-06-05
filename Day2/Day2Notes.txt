@@ -165,13 +165,15 @@ Compiler goes to Scanner class and checks whether right methods are used or not
 
 /*
 What is OOPs?
-OOPs is focus on objects
+OOPs is focus on objects.
+
 What is class?
-Class is blueprint og objectss
+Class is blueprint of objects.
+
 Why we make a class?
 
 Object is an instance of a class. object is a combination of data and methods (features and behaviours)
 
 when we make a program, it starts from class or object?
-Ans. 
+Ans.  Program starts with class,class is used to call the static main method
 */

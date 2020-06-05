@@ -45,7 +45,7 @@ Platform independency--->>
 Source code>>hello.java<<<
 Compile>>>Compiler>>>
 	Byte Code>>> which is a .class file
-	"Byte code is intermediate code", cannot be executed,binary code encrypted. Can't be opened in editor
+	"Byte code is intermediate code", cannot be executed,binary code encrypted. Can be opened in editor but the code is not understandable
 
 Execute>>>JVM<<<Interpreted
        "OS">>>>>Binary code<<< will not get a .exe file

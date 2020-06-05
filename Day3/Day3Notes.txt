@@ -83,7 +83,7 @@ obj3.show();
 class Sample
 {
 private int x,y;
-public Sample(int a,int b) //overloading . Also this one is parametrised constructor
+public Sample(int a,int b) //overriding. Also this one is parametrised constructor
 {
 x=a;
 y=b;
