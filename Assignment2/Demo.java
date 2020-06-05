@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.*;
+import java.util.Map.Entry;
 
 class Demo
 {

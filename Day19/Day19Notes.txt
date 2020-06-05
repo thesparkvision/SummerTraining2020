@@ -1,0 +1,233 @@
+GET:
+   1. data url show, no security
+   2. limited data
+   3. only text data
+
+POST:
+  1. data request send
+  2. unlimited data
+  3. text or binary data
+
+In GET method, we can save URL, because data is in URL
+
+But in POST method, we can't save URL as bookmark because data won't be always there
+
+***********************************************************************************************
+Currently it is handling get and post both
+
+But it is not done
+
+Let's make another page.html
+
+and new servlet CalculationGetServlet.java
+
+
+To work on get method, we will override doGet instead of service
+
+protected void doGet(HttpServletRequest req,HttpServletResponse resp)
+{
+same code as service , remove the service method
+}
+
+Similarly, if we want POST method to run, we can override doPOST
+
+web.xml
+------------
+Add here the servlet
+
+with calcu name
+
+*****************************************************************
+make another servlet for post
+
+Service method always work first , then doGet or DoPost
+
+But if we want both get ,post to work, we can use service method
+But pay caution, we removed super.service. This is done because 
+it internally called get and post method
+
+If we want get or post to do same thing,we use service method
+********************************************************************
+So in web.xml,
+we do url mapping so we can reach a specific servlet on going to a url
+We have to write a lot here 
+
+
+But there is another method,
+
+Create FinalServlet.java
+-----------------------
+Using annotation here
+
+@WebServlet(name="final",urlPatterns={"/final"})
+public class FinalServlet extends HttpServlet
+{
+}
+
+This is same as our previous code and will work
+
+3 types of annotation:
+1. Markup
+2. Single Value
+3. Multivalue
+
+Annotation is containing like metadata
+
+ELementType.TYPE means class, enum, 
+ElementType.FIELD means for fields
+ElementType.METHOD for methods
+
+@Target(ElementType.TYPE)
+@interface Test
+{
+ int num();
+ String title();
+}
+
+class Sample
+{
+ @Test(num=12,title="gopal")
+ public void hello()
+ {
+ }
+}
+
+So we put data in annotation
+
+Class cls=Sample.class();
+Method mt=cls.getDeclaredMethod("hello");
+mt.getAnnotation(Test.class);
+
+//so this way we are able to get data out of annotation
+
+Now, xml file have to be parsed and would be slow
+But if we are able to get everything in java only, then it will be fast.
+So we are using annotation here
+
+So we made doGet and doPost method, and now test it
+
+<form action="final" method="get">
+	<button type="submit">Go</button>
+</form>
+
+first service method called, then doGet
+******************************************************************************
+New project
+
+Give a context path- /demo
+
+Now we can directly create servlet using menu
+There is a checkbox to tell whether we want entry in web.xm
+Write servlet name and url pattern
+
+So netbeans did everything for us.
+
+***processRequest method does not exist in Servlet
+It is a custom method made by Netbeans which is called by doGet and doPost
+
+we can do multiple mappings
+@WebServlet(name="first",urlPatterns={"/wfist","/first"})
+
+*******************************************************************************
+So problem is
+
+we will need to make large webpages
+and in servlet everything is being written using printwriter
+So we have to put lot of lines using printwriter
+And plus there is a headache that we have to write inside "" double quotes
+
+our servlet is java file
+and our webpage is html file
+******************************************************************************
+Solution is
+JSP (Java Server Pages)
+
+the type of file will be >>>>html
+But here we have JSP tag to write java
+so we will write java in html
+
+New Web application>JSPDemo1
+context path>demo1
+
+Delete index.html file
+
+In Web pages folder, create JSP
+
+So we get a jsp file but here only html is there
+
+On running application, we got our jsp page
+*******************************************************************************
+For every JSP, there is internally a servlet
+
+Let's put some JSP tags
+
+//Here we can write java inside it.
+//This code gets added inside the Servlet class
+<%!
+    int x=34;   //instance variable
+
+    public void hello()
+    {
+      System.out.pritnln("X: "+x);
+    }
+ %>
+
+//This code gets inside service method
+<%
+   int x=74;    //local variable
+   hello()
+   //here we can't create method as we can't create method inside method
+%>
+
+So 34 value will be printed as 34 is instance var and 74 is local to service method
+
+They are called as scriptlets
+*********************************************************************
+
+JSP Scriptlet tag: <%%>       :Service()
+JSP Declaration tag: <%!%>    :class
+JSP Expression tag: <%=%>     :service()
+
+<%@include %> //for including something
+
+<% 
+    int z=this.x+x;  //34+74
+%>
+
+//First option
+<h3>Result is :<% out.write(z+""); %></h3>
+
+//Second easy method
+<h3>Result is :<%=z%> </h3> //but we can't do calculation inside this 2nd one  
+
+*************************************************************************************
+<form action="add.jsp" method="post">
+	<input type="text" name="num1" placeholder="First Number">
+        <input type="text" name="num2" placeholder="Second Number">
+        <br>
+        <button type="Submit">Submit</button>
+</form>
+
+//JSP has some inbuilt objects -application,config,request,response
+add.jsp
+----------
+<%
+    float x=Float.parsseFloar(request.getParameter("num1"));
+     float y=Float.parsseFloar(request.getParameter("num2"));
+     float z=x+y;
+%>
+
+<h1> Result is <%=z%> </h1>
+
+This will work
+
+And if we see the page source, we will see no java code there
+java code run on server and page is displayed to us
+
+*********************************************************************************************
+Now we no need to make servlet
+No need of doing mapping
+less complication
+
+E-commerce site : Admin Panel
+User Panel: React/Angular
