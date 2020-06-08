@@ -1,0 +1,213 @@
+ajax
+
+- We don't want page to refresh
+  
+
+So we will put an event first 
+<input type="text" onchange="fun2()" placeholder="Search By Name">
+
+funtion fun2()
+{
+ console.log("Hello"); //Inspect Element, then in console it will be shown
+}
+
+but this is working up on change
+
+******************************************************
+Let's use onkeyup event
+
+<input type="text" onkeyup="fun2()">
+
+******************************************************
+now we want the data of text field
+
+<input type="text" onkeyup="fun2(this.value)">  //this is referring to text field and taking its value into fun2
+
+function fun2(txt)
+{
+ console.log(txt);
+}
+
+
+When when we key press, the text gets printed
+
+************************************************************
+
+function fun2(txt)
+{
+  if(txt.length==0) //we want search to work when some data is entered
+	return;
+  var req=new XMLHttpRequest();
+  var URL="search?data="+txt;
+  req.open("GET",URL);
+  req.onreadystatechnage=function()
+  {
+    if(req.readyState==5 && req.status==200)
+    {
+      var responseData=req.responseText;
+      alert(responseData);
+    }
+  }
+
+}
+
+Let's make a class SearchServlet.java
+
+SearchServlet.java
+--------------------
+@WebServlet(name="search",urlPatterns={"/search"})
+public class searchServlet extends HttpServlet
+{
+ public void service(req,resp)// so that same code for both get and post
+ {
+    String txt=req.getParameter("data");
+    try
+    {
+      Class.forName("com.mysql.jdbc.Driver");
+      Connection cnn=DriverManager.getConnection("jdbc:mysql","","");
+      
+      String query="select * from student"
+       +"where name like '%?%'";
+      PreparedStatement stm=cnn.prepareStatement(query);
+      stm.getString(1,txt);
+      
+      ResultSet rs=stm.executeQuery();
+      
+      printWriter pw=resp.getWriter();
+      pw.write("Text Received: "+txt); 
+    }
+ }
+}
+
+
+In web,
+how we transfer the data: of Records
+
+Zomato
+Trivago
+Red Bus
+
+Now it can be that Trivago is made using java and
+Raj Hotel using php,
+then how to transfer data between them
+
+**************************************************************************
+Student :roll,name,phone,email,city
+
+string>> 101,vikas,242443443,vikas@erd.com,indore
+
+But somebody will use # and if some complicated data comes,
+this string won't work
+
+So XML came,
+
+<student>
+	<roll>101</roll>
+	<name>Raj</name>
+	<phone>34432344</phone>
+	<email>vikas@frf.com</email>
+	<city>ujjain</city>
+</student>
+
+Now this will we send over web,
+and the one who receive will try to decode it
+
+Now if many students are there, how to send?
+
+<root>
+	<student>
+	<roll>101</roll>
+	<name>Raj</name>
+	<phone>34432344</phone>
+	<email>vikas@frf.com</email>
+	<city>ujjain</city>
+	</student>
+	<student>
+	<roll>101</roll>
+	<name>Raj</name>
+	<phone>34432344</phone>
+	<email>vikas@frf.com</email>
+	<city>ujjain</city>
+	</student>
+</root>
+
+This tags explain what 101 is,Raj is
+
+****************************************************************
+RSS :
+
+  Rich Site summary
+  really simple syndication
+
+RSS (Really Simple Syndication or Rich Site Summary) 
+is an XML-based format for sharing and
+distributing Web content. 
+
+Many sites like ZeeNews, ESPN etc provide RSS feed
+This is not complete news,just a trailer
+
+And if you want all the news, 
+You can buy their premium rss feed to get latest updates
+
+********************************************************************
+Now this are just 2 students,
+but if there are 10,000 students,
+XML file would have been very lengthy
+
+So here lot of tags are there
+And their encoding and decoding is heavy
+
+So now we use JSON
+
+The curly braces means single object
+[
+{
+  roll:101,
+  name:'vikas',
+  phone:'334442434',
+  mail:'sads@wse.com',
+  city:'indore'
+},
+
+{
+  roll:101,
+  name:'vikas',
+  phone:'334442434',
+  mail:'sads@wse.com',
+  city:'indore'
+}
+]
+
+So [] is json array and {} is json
+
+*************************************************************
+Let's make a Student.java class
+
+public class Student
+{
+ private int roll;
+ name,phone,email,city , getter,setter,constructors 
+}
+
+
+Now ,
+
+  ArrayList <Student> slist=new ArrayList<Student>();
+  while(rs.next())
+  {
+   int roll=rs.getInt("roll");
+   String name=rs.getString("name");
+   String phone=rs.getString("phone");
+   String email=rs.getString("email");
+   String city=rs.getString("city");
+   Student s= new Student(roll,name,phone,email,city);
+   slist.add(s);
+  }
+  Gson gson=new Gson();
+  String json=gson.toJson(slit)
+   
+  pw.write(json);
+
+So we have to  add gSON JAR file in project
+
+********************************************************************
