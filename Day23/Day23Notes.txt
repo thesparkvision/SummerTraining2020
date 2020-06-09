@@ -1,0 +1,252 @@
+Back to eshop
+
+Now we want that if some category is already there,
+it gives us error that "Category" is there
+
+In category.jsp,
+
+<input type="text" onkeyup="
+
+<script>
+	function check(txt)
+	{
+	  $.ajax({
+		url:"checkcate?txt="+txt,
+		success:function(response){
+			if(response=="true")
+			{
+			document.getElementById("cmsg").innerHTML="Category already exist";
+			}
+			else
+			{
+			document.getElementById("cmsg").innerHTML="";
+			}
+		},
+		error:function(error){
+			alert(error);	
+		}
+	    }); 
+	}
+</script>
+
+In footer.jsp,
+we have added jquery files in footer
+
+Since footer will load later,
+so if we write some jquery code without a function,
+it will give error
+
+we made a servlet checkCategoryServlet.java
+
+@WebServlet(name="checkcate",urlPatterns={"/checkcate"})
+public class checkcategoryServlet extends Httpservlet
+{
+ protected void doGet(req,resp)
+ {
+   String txt=req.getParameter("");
+	
+   CategoryDao cdao=new CategoryDao();
+   boolean check=cdao.checkByName(txt);
+
+   PrintWriter pw=resp.getWriter();
+   pw.write(txt+": success");
+ }
+}
+
+In CategoryDao.java
+-----------------------
+
+public boolean checkByName(String txt)
+{
+   try(Connection cnn)
+   {
+    String query="select * from category"+
+	"where cate_name=?";
+    PreparedStatement stm=cnn.prepareStatement(query);
+    stm.setString(1,txt);
+    ResultSet rs=stm.executeQuery();
+    return rs.next();
+   }
+   catch(exception)
+   {
+   }
+   return false;
+}
+
+Now we want to update the category
+
+So add another column "Operation"
+
+and then we will add 
+<th> <button class="btn btn-info">Update</button>
+
+Now we will make a new page for updating the category
+
+Create a updatecategory.jsp
+
+include header,footer
+keep the form tag from category.jsp
+Remove category list
+Change title to Update Category
+
+<a href="updatecategory.jsp?cateid=<%=cate.getCateId()%>"> </a>
+
+<%
+  int cid=Integer.parseInt(request.getParameter("cateid"));
+ 
+  CategoryDao cdao=new CategoryDao();
+  category category=cdao.get(cid);
+
+  if(category==null)
+  {
+     response.sendRedirect("category.jsp");
+  }
+%>
+
+And we will add placeholder for the old value
+
+<input type="text" onkeyup="check(this.value)"
+	class="form-control" name="cname"
+	value="<%category.getCname()%>">
+
+<input type="hidden" name="cid" value=<%=category.getCateId()%>"
+	required>
+
+<form action="updatecategory" method"POST>
+
+And now we will create a UpdateCategoryServlet.java
+
+@WebServlet(name="updatecate")
+
+doPost()
+{
+  String cname=req.getParameter("cname").toLowerCase();
+  int cid=Integer.parseInt(req.getParameter("cid"));
+  Category cate=new Category(cid,cname);
+  boolean check=cateDao.update(cate);
+  resp.sendRedirect("category.jsp");
+}
+***************************************************************************
+Now we will create subcategory,
+
+In dto,
+we copy paste the Category.java and create SubCategory.java
+
+public class SubCategory
+{
+ private int subcateId;
+ private String subcateName;
+ private int cateid;
+ private String cateName;
+
+ empty constructor
+
+ parametrised constructor with subcateId,subcateName,cateid
+
+ getters and setters
+}
+
+In dao
+------
+Copy paste the categoryDao.java and create SubCategoryDao.java
+
+public class SubCategory implements BaseDao<SubCategory>
+{
+ public boolean save(SubCategory ob)
+ {
+   String query="insert into subcategory(scate_name,category)"
+     +"value(?,?)";
+    stm.setString(1,ob.getSubcateName());
+    stm.setInt(2,ob.getCateId());
+ }
+
+ public boolean update
+ {
+ String query=":update subcategory set scate_name"; 
+}
+
+public SubCategory get()
+{
+    while(rs.next())
+    {
+     int scid=rs.getInt("scate_id");
+     String cname=rs.getString("scate_name");
+     int cid=rs.getInt("category");
+    }
+}
+
+public boolean checkByName()
+{
+}
+
+*******************************************************************************
+Now let's copy paste category.jsp and paste in subcategory.jsp
+
+Change all Category word to SubCategory word using "ReplaceALL"
+
+change form tag to savesubcategory
+change cname to subcatename
+change getCateId to subCateId
+
+change div input to col-lg-4 
+and button div to col-lg-2
+
+Let's make another select field,
+
+<select name="category" required>
+	<option value=''>Choose category</option>
+</select>
+
+Let's create 
+
+<%!
+  CategoryDao Dao=new CategoryDao();
+%>
+
+In select list,
+
+<% for(Category cate:cateList){%>
+	<option value='<%=cate.getCateId()%>'><%cate.getCateName() %></option>
+<% } %>
+
+change cate.getCateName in the display list to cate.getSubcateName()
+
+***********************************************************************************
+Now, let's make SaveSubCategoryServlet.java
+----------------------------------------------
+Change all category to subcategory
+
+doPost()
+{
+ String scname=req.getParameter("subcatename");
+ int cate=Integer.parseInt(res.getParameter("cateid"));
+ 
+ SubCategory ob=new SubCategory();
+ ob.setCateid(cate);
+ ob.setSubcateName(scname);
+ boolean check=saveSubCategory(ob);
+}
+
+Now create another page updatesubcategory.jsp
+-----------------------------------------------
+Copy paste updatecategory.jsp code here
+
+SubCategoryDao cdao=new SubCategoryDao();
+SubCategory ob=cdao.get(scid);
+if(ob==null)
+{
+response.Redirect();
+}
+
+Change all category to subcategory
+
+************************************************************************
+Create another servlet UpdateSubCategoryServlet.java
+
+change category to subcategory
+
+*********************************************************************************
+create another servlet checkSubcategoryServlet.java
+----------------------------------------------------
+change category to subcategory
+
