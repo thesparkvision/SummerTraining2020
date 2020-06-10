@@ -1,0 +1,244 @@
+Product.java
+-------------------
+
+
+ProuductDao.java
+------------------
+
+public save(Product ob)
+{
+
+String query="insert into product"
+	+"(prod_name,company,price,"
+	+"pic1,category,subcategory)"
+	+"value(?,?,?,?,?,?)";
+PreparedStatement stm=cnn.prepareStatement(query);
+stm.setString(1,ob.getProdName());
+stm.setString(2,on.getCompany());
+stm.setFloat(3,ob.getPrice());
+stm.setString(4,ob.getPic1());
+stm.setInt(5,ob.getCategory());
+stm.set
+
+
+
+int i=stm.executeUpdate();
+}
+
+public Product get(int id)
+{
+
+ Product ob=null;
+ String query="select * from product"
+	+"where prod_id=?";
+ PreparedStatement stm=cnn.prepareStatement(query);
+ stm.setInt(1,id);
+
+ ResultSet rs=stm.executeQuery();
+ if(rs.next())
+ {
+   int pid=rs.getInt("prod_id");
+   String name=rs.getString("prod_name");
+   String company=rs.getString("company");
+   float price=rs.getFloat("price");
+   String pic1=rs.getString("pic1");
+   String pic2=rs.getString("pic2");
+   String pic3=rs.getString("pic3");
+   int category=rs.getInt("category");
+   int subcategory=rs.getInt("subcategory");
+   boolean isactive=rs.getBoolean("isactive");
+ }
+}
+
+public List<Product> list()
+{
+  ArrayList<Product> clist=new ArrayList<>();
+  try(Connection cnn=DBConnection.getConnection())
+  {
+   String query="select * from product"
+      +"where isactive=true"
+      +"order by isactive DESC,prod_name,price";
+   PreparedStatement stm=cnn.prepareStatement(query);
+ 
+}
+
+checkByName()
+
+list(boolean status)
+{
+ String query="select * from products"+  
+   "where isactive=?";
+ PreparedStatement stm=cnn.prepareStatement(query);
+ stm.setBoolean(isactive);
+}
+
+*************************************************************************
+product.jsp
+------------
+Category
+
+<% for(Category ob:clist){%>
+<option value='<%=ob.getCateId()%>'> <%=ob.getCategory()%>
+<% } %>
+
+
+Make a ajax function to get subcategory according to category
+
+function getSubCate(category)
+{
+ if(category.length>0)
+  {
+    $.ajax({
+       url:"getsubcate?cid="+category,
+       success:function(){},
+       error:function(err){
+       alert(err);
+        }
+     });
+  }
+ else
+ {
+   alert("Please Select Any One Category!");
+ }
+}
+
+
+****************************************************************
+GetSubCateServlet.java
+-----------------------
+
+@WebServlet(name="getsubcate",ulrPatterns={"/getsubcate"})
+public class GetSubCateServlet extends Httpservlet
+{
+
+ protected void doPost(req,resp)
+ {
+   String cid=req.getParameter("cid");  
+   
+   PrintWriter pw=resp.getWriter();
+   pw.write("YES :"+cid);
+ }
+}
+
+
+A new attribute to ajax
+
+$.ajax({
+ url:"getsubcate",
+ type:"POST",
+ data:{cid:category},
+ success:
+ error:
+})
+
+
+
+/*
+If we want to use ajax using jquery and do post
+$.post("url",{},function(data,status){});
+
+There is another function for get,
+$.get("url?",function(data,status){});
+
+*/
+
+GetSubCateServlet.java
+------------------------
+
+doPost()
+{
+ int cid=Integer.parseInt(req.getParameter("cid"));
+ SubCategoryDao sdao=new SubCategoryDao();
+ 
+ List<SubCategory> list=sdao.list(cid);
+ 
+ Gson gson=new Gson();
+ String json=gson.toJson(list);
+
+ PrintWriter pw=resp.getWriter();
+ pw.write(json);
+}
+
+SubCategoryDao.java
+--------------------
+public List<SubCategory> list(int category)
+{
+
+ String query="select * from subcategory"
+   +"where category=?";
+ stm.setInt(category);
+}
+
+***************************************************************************
+handling response in ajax
+
+success:function(response)
+{
+ var arr=JSON.parse(response);
+ var finalData="<option value=''>Choose Sub-Category</option>";
+ for(x=0;x<arr.length;x++)
+ {
+   var ob=arr[x];
+   var op="<option value='ob.subcateid'+>";
+   op+=ob.subcateName;
+   op+="</option>";
+   finalData+=op
+ }
+}
+
+****************************************************************************
+copy paste and make SaveProductServlet.java
+
+@WebServlet(name="saveproduct",urlPatterns={"/"})
+
+doPost(req,resp)
+{
+ String pname=req.getParameter("pname");
+ String company=req.getParameter("company");
+ float price=Flaot.parseFloat(req.getParameter("price"));
+ int category=Integer.parseInt(req.getParameter("category"));
+ int subcategory=Integer.parseInt(req.getParameter("subcategory"));
+ Product ob=new Product();
+ ob.setProdName(pname);
+ ob.setCompany(company);
+ ob.setCategory(category);
+ ob.setSubCategory(subcategory);
+ boolean check=pdao.save(ob);
+ 
+ String url="product.jsp?res="+;
+  }
+}
+*********************************************************************************
+
+In SaveProductServlet.java
+---------------------------
+set 
+
+ob.setPic1("???");
+
+This is done for temporary purpose to check whether data is getting saved or not
+*****************************************************************************************
+
+product.jsp
+-------------
+
+<% int x=1; for(Product ob:plist){%>
+<tr>
+  <th><%=x%></th>
+  <th><%=ob.getProdName()%></th>
+  <th><%=ob.getCompany()%></th>
+  <th><%=ob.getPrice()%></th>
+  <th><%=ob.getSubCategory()%></th>
+  <th><%=o
+</tr>
+
+****************************************************************************************
+Task->
+Product JSP Page
+
+1. Category and Subcategory Name we need in place of number
+2. Product Status (true:Active,false:Deactive)
+   now true false, should not be there in status url but active,deactive
+
+3. Row >>>Button Flip Status
+(to change active product to deactive and vice versa)
