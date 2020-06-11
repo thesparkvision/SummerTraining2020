@@ -1,0 +1,241 @@
+So we made a admin table
+
+adminuser(userid,adminname,loginid,password)
+
+If there would have been multiple people managing,
+we would have included usertype also for admin,clerk,manager etc.
+
+LoginServlet.java
+---------------------
+doPost(req,resp)
+{
+  String id=req.getParameter("loginid");
+  String pass=req.getParameter("loginpass");
+  try
+  {
+   Connection cnn=DBConnection.getConnection();
+   String query="select *from adminuser"+
+	"where loginid=? and password=?";
+   PreparedStatement stm=cnn.prepareStatement(query);
+   ResultSet rs=stm.executeQuery();
+   if(rs.next())
+   {
+     resp.sendRedirect("home.jsp"); 
+   }
+   else
+   {
+    resp.sendRedirect("index.jsp");
+   }
+  }
+  catch(Exception ex)
+  {
+   System.out.println("Login Error:");
+   
+  }
+}
+
+
+We have added  another menu in header.jsp,
+logout and connect it with "logout" servlet link
+
+controller
+------------
+LogoutServlet.java
+
+@WebServlet(name="logout",urlPatterns={"/logout"})
+public class LogoutServlet extends HttpServlet
+{
+ doGet(req,resp)
+ {
+  String cpath=getServletContest().getContextPath();
+  System.out.println(cpath);
+  resp.sendRedirect(cpath);
+ }
+}
+
+******************************************************
+
+Training Institute
+	Courses,Subject, Fees
+
+There are multiple users->
+	Admin
+	Faculty
+	Student
+	HR/Recap...
+	Manager
+
+Now, Someone changed the fees of a java course from 10000 to 5000 for relative
+Relative purchased the course
+Then the person again changed the fees to 10000
+
+Now problem will be who did this?
+
+*********************************************************************
+Sessions
+-----------
+
+Client information is stored in form of client info - 458748
+Now, this number will also comes in return to browser
+and browser stores this in cache
+
+Now browser will send this no. again in server.
+Server will check and it will find the no. , so it will identify who we are
+
+This is session memory
+This is temporary data 
+
+We can store some temporary data in this memory
+********************************************************************
+1. Login>> if id password are right, then we know user is right
+   We store the user record -name,id etc in session
+
+   Until, the user did not logout,
+   this data is removed from session.
+
+Sir we can also use to prevent inactivity of an employee.
+Sir agr koi login kr ke system waise hi rkhta hai,
+without doing any work.
+So we can end it session after sometime, 
+such that he has to login eveytime 
+and we can detect his working hrs.
+
+2. We are making a Job Portal ,
+   then user 
+
+   1. basic info will be asked from user
+   2. Then next button, then we ask education details on next page
+   3. Then next, it asks professional details
+   4. Last if any document have to be uploaded, upload it
+
+  Now, there will be Save button in last.
+
+  So what is actually done is data is stored in session of each page,
+  Then when save is clicked, we take data from session and put in database
+
+**********************************************************************************
+ 
+LoginServlet.java
+------------------
+
+if(rs.next())
+{
+  HttpSession sess=req.getSession();
+  sess.setAttribute("user",true);
+  resp.sendRedirect("/home");  
+}
+
+//This is used to remove a particulat attribute
+sess.removeAttribute(name);
+
+LogoutServlet.java
+---------------------
+//This will remove all session data
+
+doGet
+{
+...
+sess.invalidate();
+...
+}
+
+*****************************************************************************************
+Create a web.xml deployement descriptor file
+----------------------------------------------
+
+Create folder named pages in Web Pages
+and put all jsp pages of Web Pages in pages
+
+So now /home.jsp not working
+
+404 error, This page was not found
+
+And if we write /pages/home.jsp
+
+500 error, so it got page but there is some error inside page
+
+****************************************************************
+Rename index.jsp to eweblogin.jsp
+
+web.xml
+------------
+
+<servlet>
+	<servlet-name>loginadmin</servlet-name>
+        <jsp-file>pages/eweblogin.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+	<servlet-name>loginadmin</servlet-name>
+	<url-pattern>/web/login/html<url-pattern>
+</servlet-mapping>
+
+Now on typing eshop/web/login.html,
+
+we will see the login page, though css is not yet there
+**************************************************************************
+Now, the problem is hre="assets/css/..."
+
+It is searching inside eshop/assets/css/bootstrap.min.css
+But it is not there actually
+
+<%
+   
+  String cpath=application.getContextPath();
+%>
+
+href="<%=cpath%>/assets/"
+
+Now inspect the path , /eshop/assets/
+So now it is searching from the server
+
+*******************************************************
+Make index.jsp
+----------
+
+Remove the data
+
+<%response.sendRedirect("web/login.html")%>
+
+
+Now again it is not getting loginservlet
+
+We make pages before login separate
+And pages after login separate
+
+web.xml
+----------
+<servlet>
+	<servlet-name>adminhome<servlet-namee>
+	<jsp-file>pages/home.jsp</jsp-file>
+</servlet>
+<servlet-mapping>
+	<servlet-name>
+	<
+</servlet-mapping>
+
+
+In LoginServlet.java
+---------------------
+
+String cpath=getServletContext();
+
+resp.sendRedirect(cpath+"admin/home.html");
+resp.sendRedirect(cpath+"web/login.html");
+
+Now put blocks folder in pages,
+
+**********************************************
+localhost:8081/eshop/web/  -before login pages
+localhost:8081/eshop/admin/  -after login pages
+
+/web  >>> session
+/admin >>> if session does not have data,
+           this url will not work
+
+But we can't check session on each page
+This will become hectic
+
+So we have to study next- Filter
+
+/admin >>>NoSession , do not work
+Write just 1 code for all admin pages
