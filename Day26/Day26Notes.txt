@@ -1,0 +1,145 @@
+In header.jsp
+-------------
+
+change <a href="<%=cpath%>/admin/home.html</a>
+
+<a href="<%=cpath%>/admin/category.html</a>
+
+<a href="<%=cpath%>/admin/product.html</a>
+
+<a href="<%=cpath%>/logout</a>
+
+************************************************************
+Now all pages will be working
+
+now suppose we are working on a project
+
+doctor
+checkup
+office
+patient
+
+Suppose we have given context path
+
+/abchospital/
+
+Now all servlets related with doctor,
+should work with /abchospital/doctor
+
+Similarly,
+/abchospital/checkup
+/abchospital/office
+/abchospital/patient
+
+**********************************************************************
+When you login, session:Data is there
+
+/eshop/web
+/eshop/admin >>>No data in session >>>
+then will be redirected to outside pages
+*************************************************************
+So now to achieve this,
+we will create Filter
+which will let us check request before actually going to that url
+
+Filter will be run first
+
+Create a package com.adroit.eshop.filter
+and a class inside UserNoSessionTracker.java
+
+UserNoSessionTracker.java
+-------------------------
+@WebFilter(urlPatterns={"/eshop/admin"})
+public class UserNoSessionTracker implements Filter
+{
+   public void doFilter(ServletRequest request,ServletResponse resp,Filtercahin chain)
+   
+}
+
+
+Now here ServletResponse are not same like HttpResponse
+
+********************************************************
+The annotations are first executed, and later web.xml file is read
+That's why url mapping can get wrong in filters sometimes
+
+So we used here wb.xml
+
+<filter>
+	<filter-name>sessfilter</filter-name>
+	<filter-class>com.android.filter.UserNoSessionTracker</filter-class>
+</filter>
+
+<filter-mapping>
+	<filter-name>sessfilter</filter-name>
+	<url-pattern>/admin/*</url-pattern>
+</filter-mapping>
+
+
+in
+doFilter()
+{
+ HttpServletRequest req=(HttpServletRequest)request;
+ HttpServletResponse res=(HttpServletResponse)response;
+ HttpSession sess=req.getSession();
+
+ Object ob=sess.getAttribute("user");
+ if(ob==null)
+  {
+   res.sendRedirect(req.getContextPath()); 
+  }
+ else
+  {
+    boolean bl=(boolean)ob;
+    if(b==false)
+    {
+     res.sendRedirect(req.getContextPath());
+    }
+    else
+    {
+     chain.doFilter(request,response);
+    }
+  }
+}
+
+
+
+
+Copy paste the filter to make UserSessionTracker.java
+
+<filter>
+	<filter-name>sessfilter2</filter-name>
+	<filter-class>com.android.filter.UserSessionTracker</filter-class>
+</filter>
+
+<filter-mapping>
+	<filter-name>sessfilter2</filter-name>
+	<url-pattern>/web/*</url-pattern>
+</filter-mapping>
+
+
+doFilter()
+{
+ HttpServletRequest req=(HttpServletRequest)request;
+ HttpServletResponse res=(HttpServletResponse)response;
+ HttpSession sess=req.getSession();
+
+ Object ob=sess.getAttribute("user");
+ if(ob==null)
+  {
+   chain.doFilter(request,response); 
+  }
+ else
+  {
+    boolean bl=(boolean)ob;
+    if(b==false)
+    {
+    chain.doFilter(request,response);
+    }
+    else
+    {
+     String url=req.getContextPath()+"admin/home.html";
+     req.sendRequest(url);
+    }
+  }
+}
