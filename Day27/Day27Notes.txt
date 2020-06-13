@@ -1,0 +1,97 @@
+Our assets can be accessed by someone by url
+
+We don't want that to happen.
+So we use a .htaccess file with some code,
+so it can be used inside a project only
+and through a url
+
+****************************************************************
+glassfish-web.xml will be for glassfish server
+But web.xml will be present throughout in all servers if we make it
+
+*************************************************************
+robot.txt is for search engine which files should be add on in search engine
+
+*****************************************************************************
+MVC: Model, View and Controller
+
+In our project, we did CRUD operations
+But this gets complicated in Model part sometimes
+
+MVC2:
+       Model:Model and Service
+       View
+       Controller
+
+View>>>Controller>>>Service>>>Model
+
+Model> database layer
+Service> service layer ---business logic
+Controller> controlling layer
+View> Presentation layer 
+
+***********************************************************
+Spring is MVC framework
+
+SpringBootMVC is a more simplified framework
+
+maven is used for automatically downloading jar files,
+it can be used with advanced java,SpringMVC and automatically
+with SpringBootMVC
+***************************************************************
+GPS Tracking:
+	College/School>>>
+	
+	Buses:10 in each college
+	Colleges:12
+ 
+        Total 120 Buses,
+	
+	GPS device has to send signal in 5 seconds,
+	1 min 12 signals there
+	1 hour 720 signals in 1 hour by 1 bus
+	86,400 signals  by 120 buses in 1 hour
+	
+Single Time>>>Multiple Signals
+>>>processing
+
+Kafka helps in this
+It has Message Queuing API
+
+when it gets a signal,it stores the signal
+it makes a queue of signal.
+so one by one signal is forwaded
+
+**Apache Kafka
+
+***********************************************************************
+javascript>>>client-side coding....
+
+JS>>>NodeKS>>
+
+Google>>Angular>>Typescript>>Ionic
+Facebook>>ReactJS>>ES6,ES7>>>ReactNative
+
+**********************************************************
+MEAN>>>>
+
+    Angular > Client-Side
+    Express > NodeJS Framework
+    NodeJS  > Server Technology
+    MongoDB > Unstructured DB
+
+    Base Concept-Javascript
+
+MERN>>>>
+	
+    React   > Client-Side
+    Express > NodeJS Framework
+    NodeJS  > Server Technology
+    MongoDB > Unstructured DB
+
+unstructured databases-> MongoDB/Hbase/Cassandra
+
+If we want to collect structured data,
+we still use Mysql+Oracle
+
+******************************************************************** 
