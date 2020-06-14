@@ -1,3 +1,7 @@
+master tables are those tables
+in which client user won't enter any data
+but the data will be entered mostly by admin
+
 New web application->
    ProjectName -EShopWeb
    check dedicated folder
