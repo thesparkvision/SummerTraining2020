@@ -19,14 +19,17 @@ type on google-> free css templates
 
 neaty template
 
+URL - https://www.free-css.com/free-css-templates/page239/neaty
+
+Download and Extract it
 ************************************************************************
-make a folder assets in web pages folder
+make a folder assets in Web pages folder
 
 copy paste the img ,css,js folders of template
 
 Delete the index.html inside web application folder
 
-Create a index.jsp inside web application folder
+Create a index.jsp inside Web Pages folder
 
 Delete the tags of the page beside the first tag
 ***************************************************************************
@@ -42,26 +45,39 @@ js file will be in last and css file at top
 
 put assets/ in front of all js files
 
-change all images path using search and replace to assets/
+change all images path using search and replace to assets/img/ in place of img/ . You will find 27 matches
 
 ****************************************************************
-Now we want to avoid repitiion. because menu part will be on each page
+Change title of template to Eshop -Nice Place for shopping
+
+Change H1 heading of logo to Eshop (below /head)
+
+Now we want to avoid repetition. because menu part will be on each page
 
 Copy from top till left menu closes and cut it
-make a folder blocks, create a new jsp named header.jsp and paste all content here that you cut
+make a folder blocks, create a new jsp named header.jsp and paste all content here that you cut till left column code
 
 Now in index.jsp,
 
-write <#@include file="blocks/header.jsp"%>   tag
+write <%@include file="blocks/header.jsp"%>   tag
 Now all content will be showed
 
-Now copy all content below right column and put it in a new jsp called footer.jsp
+Now copy all content below right column div and put it in a new jsp called footer.jsp
 
 Again put below <%@include file="blocks/footer.jsp"%> tag in belowmost
 
 So what happenings if code of these footer and headers files gets merged up here
+
+Remove the footer copyright details
+
+Delete gallery sections
+
+Move to header.jsp
+Remove the unnecessary menus
+Keep the Welcome Menu and change it to Home
+Remove the figure1 image in top of index.jsp
 ************************************************************************************
-Let's test this is woorking or not
+Let's test this is working or not
 
 Let's put <%!int num=10; %> in header.jsp
 
@@ -75,8 +91,8 @@ There is another way to include jsp
 <jsp:include page="blocks.header.jsp"/>
 
 On using this,
-header.jsp will run on its own serverlet
-Then the output/result will get shown up here
+header.jsp will run on its own servlet
+Then the output/result will get shown up here from header.jsp to index.jsp
 
 Now , in this case num variable won't run. this will give error
 
@@ -97,16 +113,15 @@ Let's create another jsp -category
 	<div class="tm-content-div">
 		<h1>Categoy Page</h1>
 	</div>
-          <h1>Sub category page</h1>
-        </div>
 </div>
 
-<@include file="blocks/footer.jsp"%>
+<%@include file="blocks/footer.jsp"%>
 
 Make same like this a sub-category page 
 ****************************************************************************
 Let's come back to header
 
+Insert these 3 in 3 li tags
 <a href="index.jsp" >Home</a>
 <a href="category.jsp">Category</a>
 <a href="subcategory.jsp">Subcategory</a>
@@ -116,7 +131,13 @@ But this will not work
 the a tag is made to work for inpage sections
 the a tag is not made for different pages
 
-Delete the singlepage code of jquery in footer.jsp javascript
+Delete this code
+
+ $('.tm-main-nav').singlePageNav({
+                    'currentClass' : "active",
+                    offset : 20
+                });
+Deleting  this singlepage code of jquery in footer.jsp javascript
 and all the codes will work
 
 *************************************************************************
@@ -126,6 +147,9 @@ Model: Database and business logic
 Controller: Req/Response handler
 View: JSP i.e. our html css (presentation)
 
+View>>Controller>>Model
+Model>>Controller>>>View
+
 user will see view
 request from view will go to controller
 controller will request data from model
@@ -133,10 +157,15 @@ model will do database query
 model will give data to controller which will respond and result will be
 shown on view
 
-dao>>Data acess object, it will help you access data from database
+dao>>Data access object, it will help you access data from database
 dto>>data transfer object,
 
-Make a package com.adroit.eshop.controller
+dto: POJO class , our model and functions
+dao: JDBC code will be here only
+
+Make a root package com.adroit.eshop
+
+Make a package com.adroit.eshop.controller  (Here we will keep servlets)
 
 Make another package com.adroit.eshop.dao and com.adroit.eshop.dto
 
@@ -145,7 +174,7 @@ Make another package com.adroit.eshop.service for writing some extra code
 ********************************************************************************
 In dto package , make a class Category.java
 
-public class category
+public class Category
 {
  private int cateId;
  private String cateName;
@@ -156,21 +185,27 @@ public class category
  make empty and parametrised constructors and getters and setters 
 
 *************************************** 
-Add MYSQL library in libraries
+Add MYSQL jar file library in libraries
 
 In dao package, make a interface BaseDao.java
+
+import java.util.ArrayList;
 
 public interface BaseDao<T>
 {
  boolean save(T ob);
  boolean update(T ob);
  T get(int id);
- List<T> list();
+ ArrayList<T> list();
 }
 //we are not including delete here because we rarely delete data
 //the data just gets hidden but we can make this if we want
 
 make class DBConnection.java
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection
 {
@@ -184,17 +219,22 @@ public class DBConnection
 
 CategoryDao.java
 -------------------
+import com.adroit.eshop.dto.Category;
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.*;
+
 public class CategoryDao implements BaseDao<Category>
 {
 
  public boolean save(Category ob)
  {
-   try(Connection cnn=DBConnection.getConnection()) //this is possible because Connection has closeable interface, 
+    try(Connection cnn=DBConnection.getConnection()) //this is possible because Connection has closeable interface, 
 							//so java will automatically close it
     {
       String query="insert into category(cate_name)"
          +"value(?)";
-      PreparedStatement stm=cnn.prepareStatement();
+      PreparedStatement stm=cnn.prepareStatement(query);
       stm.setString(1,ob.getCateName());
       int i=stm.executeUpdate();
       if(i>0)
@@ -204,7 +244,7 @@ public class CategoryDao implements BaseDao<Category>
      {
        System.err.println("Category Save Error"+ex.getMessage());
      }
-     return false; 
+     return false;
    }
 
  public boolean update(Category ob)
@@ -213,7 +253,7 @@ public class CategoryDao implements BaseDao<Category>
     {
       String query="update category set cate_name=?"
          +"where cate_id=?";
-      PreparedStatement stm=cnn.prepareStatement();
+      PreparedStatement stm=cnn.prepareStatement(query);
       stm.setString(1,ob.getCateName());
       stm.setInt(2,ob.getCateId());
       int i=stm.executeUpdate();
@@ -227,38 +267,39 @@ public class CategoryDao implements BaseDao<Category>
      return false; 
    }
 
-  public Category get(int id)
- {
-   try(Connection cnn=DBConnection.getConnection()) 
-    {
-      Category ob=null;
-      String query="select * from category"
-         +"where cate_id=?";
-      PreparedStatement stm=cnn.prepareStatement();
-      stm.setInt(1,ob.id);
-      ResultSet rs=stm.executeQuery();
-      if(rs.next())
-        {
-          int cid=rs.getInt("cate_id");
-          String cname=rs.getString("cate_name");
-          ob=new Category(cid,cname);
+  @Override
+    public Category get(int id) {
+        Category ob=null;    
+        try(Connection cnn=DBConnection.getConnection()) 
+            {
+            String query="select * from category"
+             +"where cate_id=?";
+            PreparedStatement stm=cnn.prepareStatement(query);
+            stm.setInt(1,id);
+      
+            ResultSet rs=stm.executeQuery();
+            if(rs.next())
+            {
+            int cid=rs.getInt("cate_id");
+            String cname=rs.getString("cate_name");
+            ob=new Category(cid,cname);
+            }
         }
-    }
     catch(Exception ex)
      {
        System.err.println("Category Get Error"+ex.getMessage());
      }
      return ob; 
-   }
-
-   public List<Category> list()
- {
-   try(Connection cnn=DBConnection.getConnection()) 
+    }
+    
+   @Override
+    public ArrayList<Category> list() {
+         ArrayList<Category> clist=new ArrayList<>();
+        try(Connection cnn=DBConnection.getConnection()) 
     {
-      ArrayList<Category> clist=new ArrayList<>();
+     
       String query="select * from category";
-      PreparedStatement stm=cnn.prepareStatement();
-      stm.setInt(1,ob.id);
+      PreparedStatement stm=cnn.prepareStatement(query);
       ResultSet rs=stm.executeQuery();
       while(rs.next())
         {
@@ -273,5 +314,5 @@ public class CategoryDao implements BaseDao<Category>
        System.err.println("Category List Error"+ex.getMessage());
      }
      return clist; 
-   }
+    }
 }
