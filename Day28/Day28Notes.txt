@@ -1,0 +1,90 @@
+we went to glassfish local server
+
+localhost:4848/commmon/index.jsf
+
+Now click on deploy,
+it will ask to browse WAR file
+
+Then we entered context root /eshop
+
+Then we clicked okay.
+Now WAR file got deployed to application server
+
+Now we can directly type in browser localhost:8080/eshop/web/login.html
+
+We used Netbeans to only start glassfish but our project is running without netbeans
+
+******************************************************************************************
+Now we want to keep this application  on a remote server so it can be visible to everyone
+
+We uploaded the WAR file and mysql file on our email
+
+aws.amazon.com
+----------------
+
+We go to EC2
+We go to Instances
+
+We have prepared a VM of windows server (free machine)
+
+We will start the machine
+
+So we get its IP address
+And it changes each time, we start the machine
+
+So in Linux, there is a Remmina remote desktop
+So sir entered the details and connect to the AWS window machine
+
+So in cmd,
+check there is java
+but we did not have to development,
+so we installed only JRE, not JDK
+
+So we went on browser and went to download Android Studio
+
+It gets downloaded in 1 minute, because it is getting internet in Amazon
+
+Now we will open up our email here to get the WAR file and sql file
+
+Download the files
+We installed the XAMP here
+
+We started the Apache from XAMP control panel
+We can fix here the port number of MySQL file by my.ini file
+
+Start the Mysql server also
+
+We opened mysql on cmd,
+and copy pasted one by one commands from project.sql here
+
+We set the path of xammp mysql
+Then do mysql -u root -p
+
+Then enter the table commands
+
+Download the apache tomcat
+
+On writing on browser, "localhost",
+apache server will open up
+
+So if we write 54.237.24.132:80
+,then it will open up apache on our browser also
+
+We login to apache
+And then we entered the WAR file
+
+Now we entered the WAR file path
+It is not working
+**************************************************************
+Let's try using XAMMP tomcat server,
+start it
+
+We go to /tomcat-user.xml
+
+and set its configuration by setting its username and password
+********************************************************************
+So what problem was happening was
+we made the WAR file using glassfish server
+
+So we have to change glassfish-web.xml to context.xml
+and change the code inside it

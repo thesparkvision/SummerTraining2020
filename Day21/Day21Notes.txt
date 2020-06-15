@@ -1,0 +1,71 @@
+change title of category.jsp to "Add New Category"
+
+Now the web application resolution
+is equally divided in 12 columns in 1 row
+
+Now we can make 3 dots 4 groups
+ ... ... ... ...
+This is a grid system
+
+For small screen,
+we can make 6 dots 2 columns
+...... ......
+...... ......
+
+Now a very small window will have only 1 image in 12 columns
+............
+............
+............
+............
+
+
+We will put a class here in category.jsp inside tm-content-div tag
+
+lg for large device
+md for medium device
+sm for small device
+
+and 1 means we are giving 1 column from 12
+
+<h1>Add New Category</h1>
+<br>
+<div class="row">
+    <form action="savecategory" method="POST">
+    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+         <input type="text" class="form-control" name="cname" placeholder="Category Name">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+         <input type="submit" value="Save" class="btn btn-primary ml-2">
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+    </form>
+</div>
+<b class='text-danger'>Hello</b>
+<hr>
+
+Here text-danger for making text red
+ml-2 for shifting button by left margin
+
+*********************************************************************
+Create a servlet SaveCategoryServlet.java in controller
+
+@WebServlet(name="savecate",urlPatterns={"/savecategory"})
+public class SaveCategoryServlet extends HttpServlet
+{
+ private CategoryDao cateDao;
+ 
+ public void init(ServetConfig config) throws ServletException
+ {
+  cateDao=new CategoryDao();
+  super.init(config);
+ }
+
+ protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException
+ {
+  String cname=req.getParameter("cname");
+  Category cate=new Category();
+  cate.setCateName(cname);
+  boolean check=cateDao.save(cate);
+ }
+}
