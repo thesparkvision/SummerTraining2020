@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function process(){
+                var request=new XMLHttpRequest();
+                alert(request.readyState);
+                request.open("GET","test");
+                alert(request.readyState);
+                request.onreadystatechange=function(){
+                    if(request.readyState===4 && request.status===200)
+                    {    
+                      var txt=request.responseText;
+                      alert(txt);
+                    }
+                };
+                
+                request.send();
+            }
+            /*
+              This request object has following states:
+                          0 : Object Created
+                          1 : Object Init
+                          2 : Request Send
+                          3 : Running
+                          4 : Response come
+             */
+        </script>
+    </head>
+    <body>
+        <div>AJAX DEMO!</div>
+        <hr>
+        <button onclick="process()">Click Me!</button>
+    </body>
+</html>

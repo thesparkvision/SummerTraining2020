@@ -69,3 +69,278 @@ public class SaveCategoryServlet extends HttpServlet
   boolean check=cateDao.save(cate);
  }
 }
+
+
+The following code need to be there in DBConnection.java
+
+If your database has SHA password, you can disable it. Just search on stackoverflow
+
+public class DBConnection 
+{
+  public static Connection getConnection() throws ClassNotFoundException,SQLException
+  {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection cnn=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/eshop?useSSL=false","root","root");
+      return cnn;
+  }  
+}
+
+Now on trying the application,the data will get saved
+*********************************************************************************************************************************************
+make this line as
+
+String cname=req.getParameter("cname").toLowerCase()
+
+This will save all data in lowercase
+
+And if you want to get data in uppercase,
+you can change the getter of cname to 
+
+public String getCateName() {
+        return cateName.toUpperCase();
+    }
+
+Now we won't be able to enter duplicate values
+But now we have to tell the user on UI
+*********************************************************************************************************************************
+So firstly clear the category table "delete from category;"
+
+Then change the lines to 
+String url="category.jsp?res="+check;
+resp.sendRedirect(url);
+
+So if our query successfully executes, we can see res=true in url
+and if query fails, we can see res=false in url
+
+We have 3 possibilities -
+1. res value is  not coming
+2. res value is coming and is true
+3. res value is coming and is false
+
+So we added this code in category.jsp in top
+
+<%
+    String result=request.getParameter("res");
+    String resultmsg="";
+    if(result!=null && result.equals("true")){ resultmsg="Category Saved!";}
+    if(result!=null && result.equals("false")){ resultmsg="Category Not Saved!";}
+%>
+
+And in danger b tag, we added <%=resultmsg%> in between tags
+***************************************************************************************************************************************
+Now we have to show categories also
+
+Change in CategoryDao.java list() method
+
+String query="select * from category order by cate_name";
+
+Add this imports in category.jsp
+
+<%@page import="java.util.List"%>
+<%@page import="com.adroit.eshop.dto.Category"%>
+<%@page import="com.adroit.eshop.dao.CategoryDao"%>
+
+And add this code at top
+
+<%  
+    CategoryDao cdao=new CategoryDao();
+%>
+
+<%
+    String result=request.getParameter("res");
+    String resultmsg="";
+    if(result!=null && result.equals("true")){ resultmsg="Category Saved!";}
+    if(result!=null && result.equals("false")){ resultmsg="Category Not Saved!";}
+    //*****************************************************************************
+    List<Category> clist=cdao.list();   
+%>
+
+Add this code below hr tag to make table
+
+<h2>Category List</h2>
+<table class="table table-hover">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Category Name</th>
+                </tr>
+                <%
+                    for(Category cate:clist)
+                    {
+                %>
+                <tr>
+                    <td><%=cate.getCateId()%></td>
+                    <td><%=cate.getCateName()%></td>
+                </tr>
+                <% } %>
+</table>
+
+But here the S.No. is coming inordered .That is not looking good
+And also we never show primary key in UI .
+That is an internal matter
+
+We want only numbering
+So we did following changes to do proper numbering
+
+<%
+   int x=1;
+   for(Category cate:clist)
+    {
+  %>
+<tr>
+ <td><%=x%></td>
+ <td><%=cate.getCateName()%></td>
+</tr>
+<% x++;} %>
+
+**********************************************************************************************************
+Now what we want is,
+that when we click on Save button,
+then it tells whether data is saved or not
+
+So now what if its checks while we type whether a category is present or not
+
+So we already have Category objects
+So we can check in this list also whether the category exists or not
+
+1. Or we check in this tds whether category is present or not using Javascript
+   But now what if there are 1000 categories, we do pagination. Only show 5 categories on a page
+   So if such a situation will be there that only 5 categories will be show,
+   then that will not be right
+
+2. Now we opened another tab and added Laptop Category in that
+   So the Category will be added and page will be refreshed
+   But we closed this page
+   And after some time, we see page opened
+   And we will try to add Laptop Category as we will not see that in list
+   But laptop won't be able to be added
+
+So do not check from the response data by server
+Do not trust the data on client side 
+
+*******************************************************************************************************
+So solution is ajax
+
+Client>>>Server>>>Request
+Server>>>>Response>>>>Refresh
+
+but we have situation where we don't want page to refresh but want to request the server
+
+Ex. Facebook where we like the post but page didn't refresh
+    This is ajax
+
+AJAX - Asynchronous Javascript And XML
+       Java script for coding part and XML for data transfer
+
+       Earlier, XML was used for data transferring and now JSON is used
+
+Now, there is a mediator - browser
+Our browser will send on our behalf request to the server
+And the response will also be gained by the browser.
+We are not sending request by page but by browser.
+*******************************************************************************************************
+Let's making a testing package and there a TestServlet.java
+
+@WebServlet(name = "test", urlPatterns = {"/test"})
+public class TestServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
+    {
+        PrintWriter pw=resp.getWriter();
+        pw.write("Hello ujjain Students!");
+    }
+}
+
+On writing this url http://localhost:8080/eshop/test,
+our message appears
+
+So we make a web page testing.html in Web Pages folder and change title to AJAX DEMO!
+
+http://localhost:8080/eshop/testing.html this url makes the text apppear
+
+We added a button
+
+<hr>
+<button>Click Me!</button>
+
+and now we want on clicking this button, 
+a request goes to server,
+we get the data and we not have to refresh the page
+
+*********************************************************************************************
+<button onclick="process()">Click Me!</button>  change to this line
+
+And we will add javascript in head
+
+<script>
+            function process(){
+                var request=new XMLHttpRequest();
+                alert(request.readyState);
+            }
+            /*
+              This request object has following states:
+                          0 : Object Created
+                          1 : Object Init
+                          2 : Request Send
+                          3 : Running
+                          4 : Response come
+             */
+ </script>
+
+Initially, we will get a readystate of 0 as we have only create object
+***************************************
+
+Now we add,
+We opened a request and write the method to use and what servlet to send the request
+
+request.open("GET","test");
+alert(request.readyState);
+
+We will get a value 1 now on alert box
+******************************************
+Now we will send the request.
+
+request.send();
+alert(request.readyState);
+
+This doesn't mean that we send the request,
+request.send means that we supplied the object to browser that you send
+And now browser will send the request
+
+And we will get value 2 now
+*******************************************
+Now the browser only will receive whether response came or not
+And now the request object has an event , onreadystatechange
+
+request.onreadystatechange=function(){
+                    alert(request.readyState);
+                };
+
+request.send();
+
+On writing this,
+we will see as the state changes,
+our value of readystate changes and is show in alertbox
+
+And now we check the status also because server can return state even if the request fails.
+
+request.onreadystatechange=function(){
+                    if(request.readyState==4 && request.status=200)
+                    {    
+                      var txt=request.responseTest;
+                      alert(txt);
+                    }
+                };
+                
+request.send();
+
+And this will print our message on alertbox
+
+request.onreadystatechange=function(){
+                    if(request.readyState===4 && request.status===200)
+                    {    
+                      var txt=request.responseText;
+                      alert(txt);
+                    }
+                };
+*****************************************************************************************************
