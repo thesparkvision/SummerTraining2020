@@ -37,3 +37,12 @@ I will regularly update here what I have learnt daily.
 - Created dao,dto and controller packages
 - Created BaseDao interface, DBConnection class
 - Category Class in dao and implemented all the abstract methods
+
+### Day 21:
+- Added a input form to category.jsp
+- Added SaveCategoryServlet in Controller package to save the data
+- Added status message for the request success or failure
+- Added a table to display the categories
+- Corrected the numbering of categories
+- Learnt about AJAX
+- Implemented basic AJAX query using Testing.TestingServlet and testing.html
