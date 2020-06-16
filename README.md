@@ -57,6 +57,16 @@ I will regularly update here what I have learnt daily.
 - Made a Student class for creating objects of database records
 - converted Student objects arraylist to JSON and displayed it on screen
 
+### Day 23:
+- Displayed Data in Table in AJAX DEMO project
+- Implemented search feature in Category.jsp using jquery,ajax, CheckCategoryServlet.java and CategoryDao.java
+- Made a updatecategory.jsp
+- Implemented UpdateCategoryServlet to handle the backend
+- Made a SubCategory.java, SubCategoryDao.java, subcategory.jsp
+- Added Category select list to subcategory.jsp
+- Made updatesubcategory.jsp , UpdateSubCategoryServlet.java
+- Finally made CheckSubCategoryServlet.java and switched on the ajax
+
 ### Day 27:
 - .ht acess file
 - MVC2 architecture in short
