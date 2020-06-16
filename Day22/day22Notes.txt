@@ -171,23 +171,28 @@ When when we key press, the text gets printed
 
 ************************************************************
 
-function fun2(txt)
-{
-  if(txt.length===0) //we want search to work when some data is entered
-	return;
-  var req=new XMLHttpRequest();
-  var URL="search?data="+txt;
-  req.open("GET",URL);
-  req.onreadystatechange=function()
-  {
-    if(req.readyState===4 && req.status===200)
-    {
-      var responseData=req.responseText;
-      alert(responseData);
+function fun2(txt){
+              if(txt.length===0) //we want search to work when some data is entered
+                    return;
+               var req=new XMLHttpRequest();
+                var url="search?data="+txt;
+           
+                req.open("GET",url);
+                req.onreadystatechange=function()
+                {   
+                    if(req.readyState===4 && req.status===200)
+                    {
+                    var responseData=req.responseText;
+                    alert(responseData);
+                    }
+                }; 
+                req.send();
     }
-  };
- re.send();
-}
+
+Do not forget to add MYSQL connector latest JAR file
+Otherwise program will not run
+and also won't give an error
+So you will get confused
 
 Let's make a class SearchServlet.java
 
@@ -212,27 +217,27 @@ public class SearchServlet extends HttpServlet
 {
  @Override
  public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
-// so that same code for both get and post
  {
-    String txt=req.getParameter("data");
+    String txt=req.getParameter("data");  
     try
     {
-      Class.forName("com.mysql.jdbc.Driver");
-      Connection cnn=DriverManager.getConnection("jdbc:mysql","","");
+      //resp.getWriter().println("test" +txt);
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection cnn=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sample1?useSSL=false","root","root");
       
-      String query="select * from student"
-       +"where name like '%?%'";
+      String query="select * from student "
+       +"where name like '%"+txt+"%' ";
+      
       PreparedStatement stm=cnn.prepareStatement(query);
-      stm.setString(1,txt);
-      
       ResultSet rs=stm.executeQuery();
       
       PrintWriter pw=resp.getWriter();
-      pw.write("Text Received: "+txt); 
+      pw.print("Text Received: "+rs); 
     }
     catch(Exception ex){
-        
+        System.out.println(""+ex.getMessage());
     }
+    
  }
 }
 
@@ -339,16 +344,69 @@ The curly braces means single object
 So [] is json array and {} is json
 
 *************************************************************
-Let's make a Student.java class
+Let's make a Student.java class in co.serv package
 
 public class Student
 {
- private int roll;
- name,phone,email,city , getter,setter,constructors 
+    private int roll;
+    private String name,phone,email,city;
+
+    public Student(int roll, String name, String phone, String email, String city) {
+        this.roll = roll;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.city = city;
+    }
+
+    public Student() {
+    }
+
+    public int getRoll() {
+        return roll;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setRoll(int roll) {
+        this.roll = roll;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }
 
 
 Now ,
+import java.util.ArrayList;
+import com.google.gson.Gson;
 
   ArrayList <Student> slist=new ArrayList<Student>();
   while(rs.next())
@@ -362,10 +420,16 @@ Now ,
    slist.add(s);
   }
   Gson gson=new Gson();
-  String json=gson.toJson(slit)
-   
+  String json=gson.toJson(slist);
+  
+  PrintWriter pw=resp.getWriter();  
   pw.write(json);
 
 So we have to  add gSON JAR file in project
+We will download it from net
 
+http://www.java2s.com/Code/Jar/g/Downloadgson222jar.htm
+
+
+Unzip it and add to the netbeans project
 ********************************************************************
