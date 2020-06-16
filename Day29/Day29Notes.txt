@@ -1,0 +1,267 @@
+Server Side + Database
+= Java + Mysql
+
+Client-Side : Javascript + jQuery,
+	AJAX ,JSON
+***********************************************
+AngularJS is not Angular
+
+It is client-side MVC architecture
+
+AngularJS = Within HTML,Data Binding
+
+Data Binding means where where variable is there,
+there its value will be reflected
+AngularJS does 2-way data binding
+
+Angular 2
+
+Currently angular 8-9 are used
+***************************************************
+If somebody say angular,
+ask they are speaking about angular or angularjs
+
+We will study Angular (and not angularjs)
+
+Angular : Client-side
+Java : Server-side
+Means now JSP won't be used, as we will make pages using angular
+
+Now only servlets will be used
+
+**************************************************************
+JS : DOM Manipulation
+
+DOM - Document Object Model
+Here the tags are in heirarchy
+So when we load the page, DOM is created,
+We can change the content of the page using DOM
+
+In html, there are 2 tags-head and body
+In body, there are h1,hr,ol
+In ol, there are 2 li tags
+In li, there is a b tag
+
+Let's make a page page1.html
+
+<html>
+	<head>
+	</head>
+	<body>
+		<h1>Hello MIT Students</h1>
+		<hr>
+		<ol>
+			<li>Indore</li>
+			<li><b>Ujjain</b></li>
+		</ol>
+	</body>
+</html>
+
+So to access all the DOM,
+we have a predefined object in javascript
+called 'document' object
+
+
+Let's write some more tags there,
+
+<hr>
+<button onclick="fun1()"> Click Me </button>
+
+<script>
+	function fun1(){
+        	alert("Good Morning!");
+        }
+</script>
+
+Now we want Indore in place of Good Morning
+That means we want the content of that li object
+
+For that, we have to give it a id
+
+<li id="l1">Indore</li>
+
+And in fun1(), we will write
+
+var ob=document.getElementById("l1");
+alert(ob);
+
+This will print that the object is html li element
+So if we put this same id after removing from li to h1, 
+it will show html heading element
+
+So we wanted to printed the data of object,
+That is what is written between opening and closing tags
+we will write
+
+alert(ob.innerHTML);
+
+So we accessed the component inside the tag
+There are 2 things- tags and components
+********************************************************************
+So if we put the id="l1" in body tag,
+
+all the tags etc inside the opening and closing tags
+will be printed
+
+innnerHTML means everything inside opening & closing tags
+
+**********************************************************************
+We want that a new city get added
+So we will use here ol tag
+Add some more tags:
+
+<ol id="list1">......</ol>
+<button onclick="fun1()">Add City</button>
+<input type="text" id="box1" placeholder="Add New city">
+
+function fun2(){
+	var listob=document.getElementById("list1");
+	var boxob=document.getElementById("box1");	
+}
+
+Now Pune is not written between opening and closing tag
+It is not in innerHTML component
+So there is a 'value' attribute in input tags
+which can give us values
+
+We can access all attributes of a tag if we have the tag in javascript
+
+alert(boxob.value);
+alert(boxob.type);
+alert(boxob.placeholder);
+
+listob.innerHTML="<li>"+boxob.value+"</li>";
+
+But it removed all the other li elements
+and replaced them with new one
+full innerHTML replaced
+So we will use += operator so that
+in already innerHTMl, the li element get added
+
+listob.innerHTML+="<li>"+boxob.value+"</li>";
+
+Now all li elements will be shown
+We updated the ol and not replaced
+********************************************************************************
+page2.html
+-----------------
+
+<html>
+	<head>
+	<script>
+		function add(){
+			var t1=document.getElementById("t1");
+			var t2=document.getElementById("t2");
+			var res= document.getElementById("res")
+			var x=t1.value;
+			var y=t2.value;	
+			var z=x+y;
+			res.innerHTML+=z;
+		} 
+	</script>
+	</head>
+	<body>
+		<input id="t1" type="text" placeholder="First Number">
+		<br><br>
+		<input id="t2" type="text" placeholder="Secpnd number">
+		<br>
+			<b id="res">Result: </b>
+		<br>
+		<button onclick="add()">Add</button>
+	</body>
+</html>
+
+
+These are string values,
+so javascript will do concatenation
+
+So we have to convert them to integer
+
+var z=parseInt(x)+parseInt(y);
+res.innerHTML="Result: "+z;
+
+********************************************************************************
+We make a third program page3.html
+
+<html>
+	<head>
+	<script>
+		function add(){
+			var t1=document.getElementById("t1");
+			var t2=document.getElementById("t2");
+			var res= document.getElementById("res")
+			var x=t1.value;
+			var y=t2.value;	
+			var z=parseInt(x)+parseInt(y);
+			res.innerHTML+=z;
+		} 
+	</script>
+	</head>
+	<body>
+		<input id="t1" type="text" placeholder="First Number">
+		<br><br>
+		<input id="t2" type="text" placeholder="Secpnd number">
+		<br>
+			<input type="radio"> Addition<br>
+			<input type="radio">Subtraction<br>
+			<input type="radio">Multiply<br>
+			<input type="radio">Division</br>
+		<br>
+			<b id="res">Result: </b>
+		<br>
+		<button onclick="execute()">Process</button>
+	</body>
+</html>
+
+
+So to make only 1 radio button on at a time,
+we have to give them a same name
+
+<input type="radio" name="op"> Addition<br>
+<input type="radio" name="op">Subtraction<br>
+<input type="radio" name="op">Multiply<br>
+<input type="radio" name="op">Division</br>
+
+For default, we want one radio button checked
+which user can change later
+
+<input type="radio" name="op" checked> Addition<br>
+
+We changed function add to execute()
+
+
+So first 5 lines of javascript are right,
+we have to change the processing
+We have to give the radio buttons id
+
+<input type="radio" name="op" id="add"> Addition<br>
+<input type="radio" name="op" id="sub">Subtraction<br>
+<input type="radio" name="op" id="mul">Multiply<br>
+<input type="radio" name="op" id="div">Division</br>
+
+var op1=document.getElementById('add');
+var op2=document.getElementById('sub');
+var op3=document.getElementById('mul');
+var op4=document.getElementById('div');
+
+alert(op1.checked);
+
+In javascript, we can see error in console.
+
+if(op1.checked)
+	var z=parseInt(x)+parseInt(y);
+if(op2.checked)
+	var z=parseInt(x)-parseInt(y);
+if(op3.checked)
+	var z=parseInt(x)*parseInt(y);
+if(op4.checked)
+	var z=parseInt(x)/parseInt(y);
+
+Now our code will work the intended way
+***************************************************************
+Using name attribute also, we would have to do lot of code
+and check each
+
+So if we have 25 radio buttons,
+how can you do it more easily using radio buttons?
+Find it out and we will discuss in next lecture
