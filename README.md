@@ -47,6 +47,16 @@ I will regularly update here what I have learnt daily.
 - Learnt about AJAX
 - Implemented basic AJAX query using Testing.TestingServlet and testing.html
 
+### Day 22:
+- Created a new project AJAX DEMO, added Mysql and Gson JAR file to it
+- Added a DemoServlet for testing the working with a fun1 function in index.html
+- Created database sample1 and table student and populated it with entries
+- Made a table like structure in index.html
+- Implemented a SearchServlet for onkey searching of name
+- Learnt about XML, RSS and JSON
+- Made a Student class for creating objects of database records
+- converted Student objects arraylist to JSON and displayed it on screen
+
 ### Day 27:
 - .ht acess file
 - MVC2 architecture in short
