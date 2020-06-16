@@ -47,6 +47,16 @@ I will regularly update here what I have learnt daily.
 - Learnt about AJAX
 - Implemented basic AJAX query using Testing.TestingServlet and testing.html
 
+### Day 27:
+- .ht acess file
+- MVC2 architecture in short
+- Little bit about Apache Kafka by an example of GPS tracking application
+- Brief Intro of Angular,React, MEAN ,MERN Stack and databases
+
+### Day 28:
+- Deploying WAR file to localhost glassfish server without using Netbeans for deploying
+- Deploying the Web Application to remote AWS EC2 machine , so it can be accessed globally
+
 ### Day 29:
 - Angular JS vs Angular in short
 - Angular short description
