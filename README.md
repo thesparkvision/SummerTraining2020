@@ -46,3 +46,13 @@ I will regularly update here what I have learnt daily.
 - Corrected the numbering of categories
 - Learnt about AJAX
 - Implemented basic AJAX query using Testing.TestingServlet and testing.html
+
+### Day 29:
+- Angular JS vs Angular in short
+- Angular short description
+- DOM
+- DOM Manipulation accessing elements
+- Changing innerHTML properties
+- Adding new tags using innerHTML property to list
+- Addition Program using DOM Manipulation
+- Arithmetic Operation Program using radio button , id tag and DOM manipulation
