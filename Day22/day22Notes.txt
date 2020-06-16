@@ -1,3 +1,141 @@
+Create a new project AjaxDemo
+and given context path to /ajaxdemo
+------------------------------------------
+We made a heading and button in index.html
+
+And made a package called co.serv
+and a class inside it DemoServlet.java
+We made its name - first and urlpattern -first
+
+We write this code inside the servlet
+
+ @Override
+    protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
+   {
+       PrintWriter pw=resp.getWriter();
+       pw.write("Hello students , How are you?");
+   }
+   
+We attached a fun1 function to the button
+and wrote the javascript code in head
+
+<script>
+            function fun1(){
+                var request=new XMLHttpRequest();
+                request.open("GET","first");
+                request.onreadystatechange=function(){
+                    if(request.readyState===4 && request.status===200){
+                        var txt=request.responseText;
+                        alert(txt);
+                    }
+                };
+                request.send();
+            }
+</script>
+
+The result can also be shown in a b tag
+
+So we write 
+
+&nbsp;
+<b id="res1"></b>
+<hr>
+
+and in javascript  if write,  document.getElementById("res1").innerHTML=txt;
+
+******************************************************************************
+We have a database sample1 with student table
+which has fields like roll,name,phone,email,city
+
+create database sample1;
+
+use sample1;
+
+create table student(
+     roll int AUTO_INCREMENT,
+     name VARCHAR(30) NOT NULL,
+     phone VARCHAR(11) NOT NULL UNIQUE,
+     email VARCHAR(40) NOT NULL UNIQUE,
+     city VARCHAR(30) NOT NULL UNIQUE,
+     PRIMARY KEY(roll));
+
+We wrongly set the unique constraint in city,
+so let us remove that by
+
+ alter table student
+    -> DROP index city;
+
+ insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Tarun","985693434","tarun@ere.com","ujjain");
+    
+ insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Shivam","9435693434","shivam@ere.com","dewas");
+
+mysql> insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Sagar Kumar","9454553434","shivsfe.com","bhopal");
+    
+mysql> insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Sapan","945445434","sapan@e.com","bhopal");
+
+mysql> insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Mohit","945343434","mohit@e.com","riwa");
+
+mysql> insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Shivani","946656434","shivani@e.com","jhansi");
+    
+mysql> insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Rahul","94343434","rahul@e.com","jaipur");
+
+insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Abha","9433443434","abha@e.com","indore");
+    
+ insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Dheeraj","96334434","dheeraj@e.com","raipur");
+    
+ insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Tushar","9633434","tushar@e.com","dewas");
+    
+ insert into student
+    -> (name,phone,email,city)
+    -> values
+    -> ("Tushar","96333424434","mukesh@e.com","ujjain");
+    
+    
+***********************************************************
+<input type="text" placeholder="Search By Name">
+        
+        <table align="center" border="1" cellpadding="5" cellspacing="4">
+            <tr>
+                <th>Roll Number</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>City</th>
+        </table>
+
+So what we want is what we write in input box , according to that we want to search in database
+
+********************************************************************
 ajax
 
 - We don't want page to refresh
@@ -35,30 +173,46 @@ When when we key press, the text gets printed
 
 function fun2(txt)
 {
-  if(txt.length==0) //we want search to work when some data is entered
+  if(txt.length===0) //we want search to work when some data is entered
 	return;
   var req=new XMLHttpRequest();
   var URL="search?data="+txt;
   req.open("GET",URL);
-  req.onreadystatechnage=function()
+  req.onreadystatechange=function()
   {
-    if(req.readyState==5 && req.status==200)
+    if(req.readyState===4 && req.status===200)
     {
       var responseData=req.responseText;
       alert(responseData);
     }
-  }
-
+  };
+ re.send();
 }
 
 Let's make a class SearchServlet.java
 
 SearchServlet.java
 --------------------
+package co.serv;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @WebServlet(name="search",urlPatterns={"/search"})
-public class searchServlet extends HttpServlet
+public class SearchServlet extends HttpServlet
 {
- public void service(req,resp)// so that same code for both get and post
+ @Override
+ public void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
+// so that same code for both get and post
  {
     String txt=req.getParameter("data");
     try
@@ -69,15 +223,19 @@ public class searchServlet extends HttpServlet
       String query="select * from student"
        +"where name like '%?%'";
       PreparedStatement stm=cnn.prepareStatement(query);
-      stm.getString(1,txt);
+      stm.setString(1,txt);
       
       ResultSet rs=stm.executeQuery();
       
-      printWriter pw=resp.getWriter();
+      PrintWriter pw=resp.getWriter();
       pw.write("Text Received: "+txt); 
+    }
+    catch(Exception ex){
+        
     }
  }
 }
+
 
 
 In web,
