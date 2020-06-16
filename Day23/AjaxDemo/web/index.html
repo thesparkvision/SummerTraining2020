@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function fun1(){
+                var request=new XMLHttpRequest();
+                request.open("GET","first");
+                request.onreadystatechange=function(){
+                    if(request.readyState===4 && request.status===200){
+                        var txt=request.responseText;
+                        alert(txt);
+                        document.getElementById("res1").innerHTML=txt;
+                    }
+                };
+                request.send();
+            }
+            
+           function fun2(txt){
+              if(txt.length===0) //we want search to work when some data is entered
+                    return;
+               var req=new XMLHttpRequest();
+                var url="search?data="+txt;
+           
+                req.open("GET",url);
+                req.onreadystatechange=function()
+                {   
+                    if(req.readyState===4 && req.status===200)
+                    {
+                      var responseData=req.responseText;
+                      var records=JSON.parse(responseData);
+                    
+                      var finalData="";
+                      for(x=0;x<records.length;x++)
+                      {
+                       var ob=records[x];
+                       var tr="<tr>";
+                       tr+="<td>"+ob.roll+"</td>";
+                       tr+="<td>"+ob.name+"</td>";
+                       tr+="<td>"+ob.phone+"</td>";
+                       tr+="<td>"+ob.email+"</td>";
+                       tr+="<td>"+ob.city+"</td>";
+                       tr+="</tr>";
+                       finalData+=tr;
+                      }
+                      
+                      document.getElementById("tb").innerHTML=finalData;
+                    }
+                }; 
+                req.send();
+           }
+        </script>
+    </head>
+    <body>
+        <h3>Example1</h3>
+        <button onclick="fun1()"> Click me</button>
+        &nbsp;
+        <b id="res1"></b>
+        <hr>
+        <input type="text" onkeyup="fun2(this.value)" placeholder="Search By Name">
+        
+        <table align="center" border="1" cellpadding="5" cellspacing="4">
+            <tr>
+                <th>Roll Number</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>City</th>
+            </tr>
+            <tbody id="tb">
+                
+            </tbody>
+        </table>
+    </body>
+</html>
