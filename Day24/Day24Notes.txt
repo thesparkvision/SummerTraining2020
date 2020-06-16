@@ -1,80 +1,362 @@
 Product.java
 -------------------
 
+package com.adroit.eshop.dto;
+
+
+public class Product {
+ private int prodId;
+ private String prodName,company;
+ private float price;
+ private String pic1,pic2,pic3;
+ private int category,subcategory;
+ private boolean isActive;
+
+    public Product() {
+    }
+
+    public Product(int prodId, String prodName, String company, float price, String pic1, String pic2, String pic3, int category, int subcategory, boolean isActive) {
+        this.prodId = prodId;
+        this.prodName = prodName;
+        this.company = company;
+        this.price = price;
+        this.pic1 = pic1;
+        this.pic2 = pic2;
+        this.pic3 = pic3;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.isActive = isActive;
+    }
+
+    public int getProdId() {
+        return prodId;
+    }
+
+    public void setProdId(int prodId) {
+        this.prodId = prodId;
+    }
+
+    public String getProdName() {
+        return prodName;
+    }
+
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getPic1() {
+        return pic1;
+    }
+
+    public void setPic1(String pic1) {
+        this.pic1 = pic1;
+    }
+
+    public String getPic2() {
+        return pic2;
+    }
+
+    public void setPic2(String pic2) {
+        this.pic2 = pic2;
+    }
+
+    public String getPic3() {
+        return pic3;
+    }
+
+    public void setPic3(String pic3) {
+        this.pic3 = pic3;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(int subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+ 
+}
+
 
 ProuductDao.java
 ------------------
 
-public save(Product ob)
-{
 
-String query="insert into product"
-	+"(prod_name,company,price,"
-	+"pic1,category,subcategory)"
-	+"value(?,?,?,?,?,?)";
-PreparedStatement stm=cnn.prepareStatement(query);
-stm.setString(1,ob.getProdName());
-stm.setString(2,on.getCompany());
-stm.setFloat(3,ob.getPrice());
-stm.setString(4,ob.getPic1());
-stm.setInt(5,ob.getCategory());
-stm.set
+package com.adroit.eshop.dao;
 
+import com.adroit.eshop.dto.Product;
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.*;
 
+public class ProductDao implements BaseDao<Product>{
 
-int i=stm.executeUpdate();
+    @Override
+    public boolean save(Product ob) {
+       try(Connection cnn=DBConnection.getConnection()) //this is possible because Connection has closeable interface, 
+							//so java will automatically close it
+    {
+      String query="insert into product "
+              +"(prod_name,company,price,"
+              +"pic1,category,subcategory) "
+              +"value(?,?,?,?,?,?)";
+      PreparedStatement stm=cnn.prepareStatement(query);
+      stm.setString(1,ob.getProdName());
+      stm.setString(2,ob.getCompany());
+      stm.setFloat(3,ob.getPrice());
+      stm.setString(4,ob.getPic1());
+      stm.setInt(5,ob.getCategory());
+      stm.setInt(6,ob.getSubcategory());
+      
+      int i=stm.executeUpdate();
+      if(i>0)
+           return true;
+    }
+    catch(Exception ex)
+     {
+       System.err.println("Product Save Error"+ex.getMessage());
+     }
+     return false; 
+    }
+
+    @Override
+    public boolean update(Product ob) {
+      
+     return false; 
+    }
+
+    @Override
+    public Product get(int id) {
+        Product ob=null;    
+        try(Connection cnn=DBConnection.getConnection()) 
+            {
+            String query="select * from product "
+             +"where prod_id=?";
+            PreparedStatement stm=cnn.prepareStatement(query);
+            stm.setInt(1,id);
+      
+            ResultSet rs=stm.executeQuery();
+            if(rs.next())
+            {
+            int pid=rs.getInt("prod_id");
+            String pname=rs.getString("prod_name");
+            String company=rs.getString("company");
+            float price=rs.getFloat("price");
+            String pic1=rs.getString("pic1");
+            String pic2=rs.getString("pic2");
+            String pic3=rs.getString("pic3");
+            int category=rs.getInt("category");
+            int subcategory=rs.getInt("subcategory");
+            boolean isactive=rs.getBoolean("isactive");
+            ob=new Product(pid,pname,company,price,pic1,pic2,pic3,category,subcategory,isactive);
+            }
+        }
+    catch(Exception ex)
+     {
+       System.err.println("Product Get Error"+ex.getMessage());
+     }
+     return ob; 
+    }
+
+    @Override
+    public ArrayList<Product> list() {
+         ArrayList<Product> clist=new ArrayList<>();
+        try(Connection cnn=DBConnection.getConnection()) 
+    {
+     
+      String query="select * from product "
+              +"order by isactive DESC,prod_name,price";
+      PreparedStatement stm=cnn.prepareStatement(query);
+      ResultSet rs=stm.executeQuery();
+      while(rs.next())
+        {
+          int pid=rs.getInt("prod_id");
+            String pname=rs.getString("prod_name");
+            String company=rs.getString("company");
+            float price=rs.getFloat("price");
+            String pic1=rs.getString("pic1");
+            String pic2=rs.getString("pic2");
+            String pic3=rs.getString("pic3");
+            int category=rs.getInt("category");
+            int subcategory=rs.getInt("subcategory");
+            boolean isactive=rs.getBoolean("isactive");
+            Product ob=new Product(pid,pname,company,price,pic1,pic2,pic3,category,subcategory,isactive);
+	  clist.add(ob);
+        }
+    }
+    catch(Exception ex)
+     {
+       System.err.println("Product List Error"+ex.getMessage());
+     }
+     return clist; 
+    }
+
+    public ArrayList<Product> list(boolean status) {
+         ArrayList<Product> clist=new ArrayList<>();
+        try(Connection cnn=DBConnection.getConnection()) 
+    {
+     
+      String query="select * from product "
+              +"where isactive=?"
+              +"order by prod_name,price";
+      PreparedStatement stm=cnn.prepareStatement(query);
+      stm.setBoolean(1,status);
+      ResultSet rs=stm.executeQuery();
+      while(rs.next())
+        {
+          int pid=rs.getInt("prod_id");
+            String pname=rs.getString("prod_name");
+            String company=rs.getString("company");
+            float price=rs.getFloat("price");
+            String pic1=rs.getString("pic1");
+            String pic2=rs.getString("pic2");
+            String pic3=rs.getString("pic3");
+            int category=rs.getInt("category");
+            int subcategory=rs.getInt("subcategory");
+            boolean isactive=rs.getBoolean("isactive");
+            Product ob=new Product(pid,pname,company,price,pic1,pic2,pic3,category,subcategory,isactive);
+	  clist.add(ob);
+        }
+    }
+    catch(Exception ex)
+     {
+       System.err.println("Product List Error"+ex.getMessage());
+     }
+     return clist; 
+    }
+    
+    public boolean checkByName(String txt)
+   {
+   try(Connection cnn=DBConnection.getConnection())
+   {
+    String query="select * from product"+
+	"where prod_name=?";
+    PreparedStatement stm=cnn.prepareStatement(query);
+    stm.setString(1,txt);
+    ResultSet rs=stm.executeQuery();
+    return rs.next();
+   }
+   catch(Exception ex)
+   {
+       System.out.println("Product Check Error: "+ex.getMessage());
+   }
+   return false;
+}
+    
 }
 
-public Product get(int id)
-{
-
- Product ob=null;
- String query="select * from product"
-	+"where prod_id=?";
- PreparedStatement stm=cnn.prepareStatement(query);
- stm.setInt(1,id);
-
- ResultSet rs=stm.executeQuery();
- if(rs.next())
- {
-   int pid=rs.getInt("prod_id");
-   String name=rs.getString("prod_name");
-   String company=rs.getString("company");
-   float price=rs.getFloat("price");
-   String pic1=rs.getString("pic1");
-   String pic2=rs.getString("pic2");
-   String pic3=rs.getString("pic3");
-   int category=rs.getInt("category");
-   int subcategory=rs.getInt("subcategory");
-   boolean isactive=rs.getBoolean("isactive");
- }
-}
-
-public List<Product> list()
-{
-  ArrayList<Product> clist=new ArrayList<>();
-  try(Connection cnn=DBConnection.getConnection())
-  {
-   String query="select * from product"
-      +"where isactive=true"
-      +"order by isactive DESC,prod_name,price";
-   PreparedStatement stm=cnn.prepareStatement(query);
- 
-}
-
-checkByName()
-
-list(boolean status)
-{
- String query="select * from products"+  
-   "where isactive=?";
- PreparedStatement stm=cnn.prepareStatement(query);
- stm.setBoolean(isactive);
-}
 
 *************************************************************************
 product.jsp
 ------------
+
+<%@page import="java.util.List"%>
+<%@page import="com.adroit.eshop.dto.Product"%>
+<%@page import="com.adroit.eshop.dao.ProductDao"%>
+<%@include file="blocks/header.jsp" %>
+
+<%  
+    ProductDao pdao=new ProductDao();
+%>
+
+<%  
+    //*****************************************************************************
+    List<Product> plist=pdao.list();   
+%>
+
+<div class="tm-right-column">
+	<div class="tm-content-div">
+            <h1>Add New Product</h1>
+            <br>
+            <form action="saveproduct" method="POST">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" onkeyup="check(this.value)" class="form-control"
+                            name="pname" placeholder="Product Name" required>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" onkeyup="check(this.value)" class="form-control"
+                            name="company" placeholder="Product Company" required>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="number" onkeyup="check(this.value)" class="form-control"
+                           name="price" placeholder="Product Price" required>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <select name="category" class="form-control" required>
+                            <option value=''>Choose Category</option>
+                        </select>         
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <select name="subcategory" class="form-control" required>
+                            <option value=''>Choose Sub-Category</option>
+                        </select>      
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="file" name="pic" class='form-control'>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="submit" value="Save" class="btn btn-primary ml-2">
+                    </div>
+                </div>
+            </form>
+                
+               
+            <br>
+            <b class='text-danger' id="cmsg"></b>
+            <hr>
+            
+            <h2>Category List</h2>
+            <table class="table table-hover">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Category Name</th>
+                    <th>Operation</th>
+                </tr>
+                
+            </table>
+        </div>
+</div>
+
+*****************************************************************************************************************************
 Category
 
 <% for(Category ob:clist){%>
