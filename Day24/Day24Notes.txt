@@ -290,11 +290,13 @@ product.jsp
 
 <%  
     ProductDao pdao=new ProductDao();
+    
 %>
 
 <%  
     //*****************************************************************************
-    List<Product> plist=pdao.list();   
+    List<Product> plist=pdao.list();  
+   
 %>
 
 <div class="tm-right-column">
@@ -357,14 +359,21 @@ product.jsp
 </div>
 
 *****************************************************************************************************************************
+Add these lines above:
+CategoryDao cdao=new CategoryDao();
+List<Category> clist=cdao.list();
+
+
 Category
 
 <% for(Category ob:clist){%>
-<option value='<%=ob.getCateId()%>'> <%=ob.getCategory()%>
+                            <option value='<%=ob.getCateId()%>'> <%=ob.getCateName()%></option>
 <% } %>
 
 
 Make a ajax function to get subcategory according to category
+
+<select name="category" onchange="getSubCate(this.value)" >
 
 function getSubCate(category)
 {
@@ -386,34 +395,48 @@ function getSubCate(category)
 
 
 ****************************************************************
-GetSubCateServlet.java
+GetSubCateServlet.java    in controller
 -----------------------
 
-@WebServlet(name="getsubcate",ulrPatterns={"/getsubcate"})
+@WebServlet(name="getsubcate",urlPatterns={"/getsubcate"})
 public class GetSubCateServlet extends Httpservlet
 {
 
- protected void doPost(req,resp)
- {
-   String cid=req.getParameter("cid");  
-   
-   PrintWriter pw=resp.getWriter();
-   pw.write("YES :"+cid);
- }
+ @Override
+    protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException
+    {
+        String cid=req.getParameter("cid");
+        PrintWriter pw=resp.getWriter();
+        pw.write("YES: "+cid);
+    }
 }
 
 
 A new attribute to ajax
 
-$.ajax({
- url:"getsubcate",
- type:"POST",
- data:{cid:category},
- success:
- error:
-})
-
-
+ function getSubCate(category)
+            {
+                if(category.length>0)
+                {
+                    $.ajax({
+                    url:"getsubcate",
+                    type:"POST",
+                    data:{cid:category},
+                    success:function(response)
+                    {
+                        alert(response);
+                    },
+                    error:function(err)
+                        {
+                        alert(err);
+                        }
+                    });
+                }
+                else
+                {
+                    alert("Please Select Any One Category!");
+                }
+            }
 
 /*
 If we want to use ajax using jquery and do post
@@ -426,70 +449,147 @@ $.get("url?",function(data,status){});
 
 GetSubCateServlet.java
 ------------------------
+Add GSON jar file in Libraries
 
-doPost()
-{
- int cid=Integer.parseInt(req.getParameter("cid"));
- SubCategoryDao sdao=new SubCategoryDao();
- 
- List<SubCategory> list=sdao.list(cid);
- 
- Gson gson=new Gson();
- String json=gson.toJson(list);
+import com.google.gson.Gson;
 
- PrintWriter pw=resp.getWriter();
- pw.write(json);
-}
+@WebServlet(name = "getsubcate", urlPatterns = {"/getsubcate"})
+public class GetSubCateServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException
+    {
+        int cid=Integer.parseInt(req.getParameter("cid"));
+        SubCategoryDao sdao=new SubCategoryDao();
+ 
+        List<SubCategory> list=sdao.list(cid);
+ 
+        Gson gson=new Gson();
+        String json=gson.toJson(list);
+
+        PrintWriter pw=resp.getWriter();
+        pw.write(json);
+    }
+ }
 
 SubCategoryDao.java
 --------------------
-public List<SubCategory> list(int category)
-{
-
- String query="select * from subcategory"
-   +"where category=?";
- stm.setInt(category);
-}
+ public List<SubCategory> list(int category) 
+    {
+       ArrayList<SubCategory> clist=new ArrayList<>();
+      try(Connection cnn=DBConnection.getConnection()) 
+       {
+      String query="select * from subcategory "
+              +"where category=? "
+              +"order by scate_name";
+      PreparedStatement stm=cnn.prepareStatement(query);
+      stm.setInt(1,category);
+      ResultSet rs=stm.executeQuery();
+      while(rs.next())
+        {
+          int scid=rs.getInt("scate_id");
+          String scname=rs.getString("scate_name");
+          int cid=rs.getInt("category");
+          SubCategory ob=new SubCategory(scid,scname,cid);
+	  clist.add(ob);
+        }
+    }
+    catch(Exception ex)
+     {
+       System.err.println("SubCategory List Error"+ex.getMessage());
+     }
+     return clist; 
+    }
+    
+ Add some more Sub-categories   
 
 ***************************************************************************
 handling response in ajax
 
-success:function(response)
-{
- var arr=JSON.parse(response);
- var finalData="<option value=''>Choose Sub-Category</option>";
- for(x=0;x<arr.length;x++)
- {
-   var ob=arr[x];
-   var op="<option value='ob.subcateid'+>";
-   op+=ob.subcateName;
-   op+="</option>";
-   finalData+=op
- }
-}
+Give a id="subcate" to select of subcategory
 
+function getSubCate(category)
+            {
+                if(category.length>0)
+                {
+                    $.ajax({
+                    url:"getsubcate",
+                    type:"POST",
+                    data:{cid:category},
+                    success:function(response)
+                    {
+                        var arr=JSON.parse(response);
+                        var finalData="<option value=''>Choose Sub-Category</option>";
+                        for(x=0;x<arr.length;x++)
+                        {
+                            var ob=arr[x];
+                            var op="<option value='ob.subcateid'+>";
+                            op+=ob.subcateName;
+                            op+="</option>";
+                            finalData+=op;
+                        }
+                        $("#subcate").html(finalData);
+                    },
+                    error:function(err)
+                        {
+                        alert(err);
+                        }
+                    });
+                }
+                else
+                {
+                    alert("Please Select Any One Category!");
+                }
+            }
 ****************************************************************************
-copy paste and make SaveProductServlet.java
+copy paste and make SaveProductServlet.java in controller package
 
-@WebServlet(name="saveproduct",urlPatterns={"/"})
 
-doPost(req,resp)
-{
- String pname=req.getParameter("pname");
- String company=req.getParameter("company");
- float price=Flaot.parseFloat(req.getParameter("price"));
- int category=Integer.parseInt(req.getParameter("category"));
- int subcategory=Integer.parseInt(req.getParameter("subcategory"));
- Product ob=new Product();
- ob.setProdName(pname);
- ob.setCompany(company);
- ob.setCategory(category);
- ob.setSubCategory(subcategory);
- boolean check=pdao.save(ob);
+package com.adroit.eshop.controller;
+
+import com.adroit.eshop.dao.ProductDao;
+import com.adroit.eshop.dto.Product;
+import java.io.IOException;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "saveproduct", urlPatterns = {"/saveproduct"})
+public class SaveProductServlet extends HttpServlet {
+ private ProductDao pdao;
  
- String url="product.jsp?res="+;
-  }
+ @Override
+ public void init(ServletConfig config) throws ServletException
+ {
+  pdao=new ProductDao();
+  super.init(config);
+ }
+ 
+ @Override
+ protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
+ {
+  String pname=req.getParameter("pname");
+  String company=req.getParameter("company");
+  float price=Float.parseFloat(req.getParameter("price"));
+  int category=Integer.parseInt(req.getParameter("category"));
+  int subcategory=Integer.parseInt(req.getParameter("subcategory"));
+  Product ob=new Product();
+  ob.setProdName(pname);
+  ob.setCompany(company);
+  ob.setPrice(price);
+  ob.setCategory(category);
+  ob.setSubcategory(subcategory);
+  
+  boolean check=pdao.save(ob);
+  String url="product.jsp?res="+check;
+  resp.sendRedirect(url);
+ }
+ 
 }
+
 *********************************************************************************
 
 In SaveProductServlet.java
@@ -498,21 +598,38 @@ set
 
 ob.setPic1("???");
 
+Change this line in product.jsp
+to below line
+
+var op="<option value="+ob.subcateId+">";
+
 This is done for temporary purpose to check whether data is getting saved or not
+
+Add these lines in product.jsp
+
+<%
+String result=request.getParameter("res");
+String resultmsg="";
+if(result!=null && result.equals("true")){resultmsg="Category Saved!";}
+if(result!=null && result.equals("false")){resultmsg="Category Not Saved!";}
+%>
 *****************************************************************************************
 
 product.jsp
 -------------
 
 <% int x=1; for(Product ob:plist){%>
-<tr>
-  <th><%=x%></th>
-  <th><%=ob.getProdName()%></th>
-  <th><%=ob.getCompany()%></th>
-  <th><%=ob.getPrice()%></th>
-  <th><%=ob.getSubCategory()%></th>
-  <th><%=o
-</tr>
+                    <tr>
+                        <td><%=x%></td>
+                        <td><%=ob.getProdName()%></td>
+                        <td><%=ob.getCompany()%></td>
+                        <td><%=ob.getPrice()%></td>
+                        <td><%=ob.getCategory()%></td>
+                        <td><%=ob.getSubcategory()%></td>
+                        <td><%=ob.isIsActive()%></td>
+                    </tr>
+                <% x++; } %>
+
 
 ****************************************************************************************
 Task->
