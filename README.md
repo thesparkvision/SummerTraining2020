@@ -67,6 +67,14 @@ I will regularly update here what I have learnt daily.
 - Made updatesubcategory.jsp , UpdateSubCategoryServlet.java
 - Finally made CheckSubCategoryServlet.java and switched on the ajax
 
+### Day 24:
+- Made product class, added its getter,setter and constructors
+- Made ProductDao.java and implemented various functions in it
+- Made product.jsp, added CategoryList to it
+- Implemented GetSubCateServlet.java to bring subcategories according to Category
+- Made SaveProductServlet.java so that Products can be saved
+- Made the Product Table working
+
 ### Day 27:
 - .ht acess file
 - MVC2 architecture in short
