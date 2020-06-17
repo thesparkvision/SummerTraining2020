@@ -1,0 +1,386 @@
+We removed the id of the radio buttons
+
+<input type="radio" onchange="change(1)" name="op">
+<input type="radio" onchange="change(2)" name="op">
+<input type="radio" onchange="change(3)" name="op">
+<input type="radio" onchange="change(4)" name="op">
+
+<script>
+	var operation=1;
+	function change(val)
+	{
+		//alert(val);
+		operation=val;
+	}
+
+	function execute()
+	{
+	 var t1=document.getElementById('t1');
+	 vat t2=document.getElementById('t2');
+	 var res=document.getElementById('res');
+
+	 var x=t.value;
+	 var y=t2.value;
+	 var z;
+
+	switch(operation)
+         {
+	 	case 1: z=parseInt(x)+parseInt(y);
+			break;
+	   	case 2: z=parseInt(x)-parseInt(y);
+			break;
+	   	case 3: z=parseInt(x)*parseInt(y);
+			break;
+	   	case 4: z=parseInt(x)+parseInt(y);
+			break;	
+	 }
+	}
+</script>
+
+
+Now t1,t2 and res are not going to change,
+so we want that this lines do not execute every time
+
+So let us make the first 3 lines of global once
+If we do this, we won't get output,
+we will get error in line var x=t1.value;
+It is showing t1 is null
+Javascript was executed before html was rendered and t1,t2 and res tags were created
+
+So what do we do?
+
+We can add a script tag, after writing all body
+<script>
+	var t1=document.getElementById('t1');
+	vat t2=document.getElementById('t2');
+	var res=document.getElementById('res');
+</script>
+
+So now write them after loading the body and code will run
+
+*******************************************************************
+But what if we have external js,
+
+so let us make a function
+
+function init()
+{
+  t1=document.getElementById('t1');
+  t2=document.getElementById('t2');
+  res=document.getElementById('res');  
+}
+
+Now var keyword putting is not mandatory
+And if we have made a variable inside function,
+and not put var keyword, it is global
+
+
+So how to make the init function execute?
+There is an event onload related with body,
+which runs when the body has loaded
+
+<body onload="init()">
+</body>
+
+We can't run multiple functions with onload,
+but we can do this that put multiple functions in
+the function related with onload
+
+*******************************************************************
+Create another page page2.htm
+
+Now we want h1 tags to be get by a function
+
+
+<html>
+	<head>
+		<script>
+			function fun1()
+			{
+				var ob=document.getElementsByTagName('h1'); //we will get an array even if one object
+				//alert(ob.length);
+				for(x=0;x<ob.length;x++)
+					var ab=ob[x];
+					alert(ab.innerHTML);
+			}
+	</head>
+	<body>
+		<h1>MIT Ujjain</h1>
+		<h3>Hello All....</h3>
+		<h2>Good Morning</h2>
+		<h5>Indore</h5>
+	        <p>My name is Vikas</p>
+		<h1> Ujjain</h1>
+		<h3> Bhopal</h3>
+		<h5> Dewas</h5>
+		<hr>
+			<button onclick="fun1()">Click Me</button>
+	</body>
+</html>
+
+
+We can also give classes
+
+<h3 class="abcd">Hello All....</h3>
+<p class="abcd">My name is Vikas</p>
+<h5 class="abcd">Dewas</h5>
+
+So we can access all elements of this call by document.getElementsByClassName()
+
+*********************************************************************************
+page3.htm
+------------
+
+Now if we want to collect some structured data,
+because in javascript there are no classes and objects
+
+<html>
+	<body>
+		<script>
+			//Javascript Object
+			var ob1={
+				roll:101,
+				name:'Gopal',
+				age:23,
+				branch:'CS',
+				marks:234.45	
+			};
+
+			console.log(ob1);
+			console.log(ob1.name);
+			console.log(ob1.marks);
+		</script>
+	</body>
+</html>
+
+***********************************************************************
+page4.htm
+-----------------
+Now we can create multiple objects
+and even make an array object of them
+
+<html>
+	<body>
+		<script>
+			//Javascript Object
+			var ob1={
+				roll:101,
+				name:'Gopal',
+				age:23,
+				branch:'CS',
+				marks:234.45	
+			};
+			var ob1={
+				roll:102,
+				name:'Mahesh',
+				age:25,
+				branch:'IT',
+				marks:233.45	
+			};
+			var ob1={
+				roll:103,
+				name:'Gourav',
+				age:45,
+				branch:'CS',
+				marks:334.45	
+			};
+			var arr=[ob1,ob2,ob3];
+			console.log(arr);
+			for(x=0;x<arr.length;x++)
+			{
+				var ob=arr[x];
+				console.log(ob.roll,ob.name);
+			}
+		</script>
+	</body>
+</html>
+
+***********************************************************************
+page5.htm
+-----------
+
+So now we add address also in the objects
+
+
+<html>
+	<body>
+		<script>
+			//Javascript Object
+			var ob1={
+				roll:101,
+				name:'Gopal',
+				age:23,
+				branch:'CS',
+				marks:234.45,
+				address: 
+					{
+					 area:"Vijay Nagar",
+					 city:"Indore",
+					 pincode:452001
+					}	
+			};
+			var ob1={
+				roll:102,
+				name:'Mahesh',
+				age:25,
+				branch:'IT',
+				marks:233.45,
+				address: 
+					{
+					 area:"Raj Nagar",
+					 city:"Dewas",
+					 pincode:455001
+					}	
+			};
+			var ob1={
+				roll:103,
+				name:'Gourav',
+				age:45,
+				branch:'CS',
+				marks:334.45,
+				address: 
+					{
+					 area:"Vikas Nagar",
+					 city:"Indore",
+					 pincode:452001
+					}	
+			};
+			var arr=[ob1,ob2,ob3];
+			console.log(arr);
+			for(x=0;x<arr.length;x++)
+			{
+				var ob=arr[x];
+				console.log(ob.roll,ob.name);
+			}
+		</script>
+	</body>
+</html>
+
+******************************************************************************************
+Now we will add exams also:
+
+
+ob1:
+  {
+   ....
+   ....
+   exams:
+	[ {title:'abcd',result:'pass},
+	  {title:'abcd',result:'pass},
+	  {title:'abcd',result:'pass}
+         ]
+  }
+
+var arr=[ob1,ob2,ob3];
+
+In the real world, it can be lot nested
+
+To transmit the data, we have to make JSON
+
+var json=JSON.stringify(arr);
+console.log(json);
+document.write(json); // as now it is a string
+
+And to convert string fron json,
+JSON.parse
+
+************************************************************************
+Now we want to see the JSON in a beautiful manner
+
+just type json parser online
+
+page7.html
+---------------
+<html>
+	<body>
+		<script>
+			//Javascript Object
+			var ob1={
+				roll:101,
+				name:'Gopal',
+				age:23,
+				branch:'CS',
+				marks:234.45,
+				hello:function()
+				{
+				 alert("Gopal Function...");
+				}
+			};
+			var ob1={
+				roll:102,
+				name:'Mahesh',
+				age:25,
+				branch:'IT',
+				marks:233.45,
+				hello:function()
+				{
+				 alert("Mahesh Function...");
+				}
+			};
+			var ob1={
+				roll:103,
+				name:'Gourav',
+				age:45,
+				branch:'CS',
+				marks:334.45,
+				hello:function()
+				{
+				 alert("Gourav Function...");
+				}	
+			};
+			var arr=[ob1,ob2,ob3];
+			console.log(arr);
+			for(x=0;x<arr.length;x++)
+			{
+				var ob=arr[x];
+				ob.hello();
+			}
+		</script>
+	</body>
+</html>
+
+So we can even put functions inside
+**********************************************************************************
+Task
+-----
+
+When page opens,
+we need a add new student label
+
+we Will ask Roll,Name, Branch, City
+
+Branch: select tag
+Roll,Name : Textbox
+City: Radio button(3 city)
+
+And a button : save student
+---------------------------------
+When we will click on Save,
+
+Club the input field values,
+and make a JS object,
+and add it in an array
+
+Roll Duplicate entry should not be there,
+program should give error if such happens
+
+We need a student counter in page,
+so when students get entered, the counter should update
+and be visible
+
+And we want another button, Show Student aside save Student
+************************************************************
+When user clicks on Show student,
+
+there will be a table,
+all objects should be visible inside the table
+
+There in last column of every row,
+there should be a delete button,
+so that the objects gets deleted
+and counter gets updated
+and table also change
+
+***********************************************************************
+ajax is used for server side
+
