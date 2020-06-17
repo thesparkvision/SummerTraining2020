@@ -86,3 +86,14 @@ I will regularly update here what I have learnt daily.
 - Adding new tags using innerHTML property to list
 - Addition Program using DOM Manipulation
 - Arithmetic Operation Program using radio button , id tag and DOM manipulation
+
+### Day 30:
+- To manage radio buttons value using function for processing
+- How to declare global variables using onload event in body and functions
+- To manipulate content of DOM using TagName and ClassName
+- Javascript Object
+- Array of Objects
+- Nested Objects
+- JSON Parse and Stringify
+- Functions inside javascript objects
+- Task discussion
