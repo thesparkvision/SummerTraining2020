@@ -1,0 +1,344 @@
+Javascript: Client-side scripting....
+
+Google: V8 Engine: Open Source JS Execution Environment
+		-> written in c/c++
+		+
+		modify it!
+
+V8 engine+(own code(c/c++))
+
+........
+
+
+NodeJS: It is a modified version of V8 Engine
+
+https://www.freecodecamp.org/news/understanding-the-core-of-nodejs-the-powerful-chrome-v8-engine-79e7eb8af964/
+
+V8 Engine follows ECMAScript standard
+
+V8 engine can run standalone
+	- that means it can run without any other program
+V8 engine can be embed it within our own C++ program 
+	- We can mix it with C++
+
+********************************************************************************
+Node.js in itself is a C++ implementation of a V8 engine 
+allowing server-side programming and networking applications.
+
+So node will not only let you do javascript code,
+but also more server side and networking applications
+
+So our client side & backend side both will happen in javascript
+
+*******************************************************************************
+Installation of Node
+--------------------
+
+Type nodejs download,
+Download the LTS(Long Type Support) version ,
+download the windows .msi 32 or 64 bit version according to your system
+
+Set the path of nodejs
+Type "node" command on cmd to check its installation
+Also check the version.
+
+Also type the command "npm" (Node Package Manager)
+
+*****************************************************************************
+Let's create a new file pro1.js
+
+console.log("Hello Students,First NodeJS Program")
+
+Type node pro1.js and our code will get executed
+
+Add new lines,
+var x=45;
+var y=12;
+console.log(x+y);
+
+function hello()
+{
+  console.log("Hello Code....")
+}
+
+//No need of semi-colon also in latest JS
+
+So now we can make our js code execute without browser
+So our node can do what our servlet used to do for server code
+
+Our DOM code won't run here, that is client side coding
+
+*************************************************************************
+pro2.js
+----------
+
+
+function fun1()
+{
+ console.log("Fun1......")
+}
+
+fun1()
+
+x=3
+console.log(typeof x) //number
+
+x="vikas"
+console.log(typeof x) //string
+
+console.log(typeof fun1) //function
+
+Here javascript function will is a object,
+and its name is like a reference
+
+So we can do like:
+
+var hello=fun1
+hello()
+
+*********************************************************************************
+pro3.js
+---------
+
+function fun1()
+{
+ console.log("Fun1...")
+}
+
+var fun2=function()
+{
+  console.log("Fun2.....")
+}
+
+fun1()
+fun2()
+
+*****************************************************************
+pro4.js
+-----------
+function fun1()
+{
+ console.log("Fun1 ....")
+}
+
+function test(abcd)
+{
+  console.log("Testing.....")
+  abcd()
+}
+
+test(fun1)
+
+//Passing function to another function
+********************************************************************
+pro5.js
+---------
+
+We can even pass and create anonymous function
+
+function test(abcd)
+{
+  console.log("Testing....")
+  abcd()
+}
+
+test(function()
+{
+  console.log("Hello Code.....")
+})
+
+*****************************************************************
+pro6.js
+--------
+
+function fun1()
+{
+  console.log("Fun1....")
+  var ab=function()
+  {
+    console.log("Inside Fun Run ....")
+  }
+  return ab
+}
+
+ob=fun1()
+ob()
+
+//Function declaration inside Function
+
+So we can do this also,
+We called the fun1 and again called the returnback
+
+fun1()()   
+*********************************************************************
+code.js
+--------
+
+function add(a,b)
+{
+ var c=a+b;
+ console.log(c)
+}
+
+function add(a,b)
+{
+ var c=a*b;
+ console.log(c)
+}
+
+function div(a,b)
+{
+ var c=a/b;
+ console.log(c)
+}
+
+//So there are 3 different functions inside code.js
+//We want to use this functions in another file
+
+pro7.js
+---------- 
+
+add(34,45)  //this function won't run
+
+
+Our node code will be divided into modules
+And we use modules then in each other
+So firstly we need to know how to make modules
+
+So in code.js, write
+
+module.exports="Aman Gupta"
+
+In pro7.js,write
+ 
+var ob=require("./code")  //   ./ represents current folder
+
+console.log(ob)
+
+//This will print the string from that module
+********************************************************************
+So in code.js, write
+module_exports=add
+
+in pro7.js, write
+
+var ob=require("./code")
+ob(12,23)
+
+//Hence we are able to send a single function
+****************************************************************
+code2.js
+-----------
+
+function add(a,b)
+{
+ var c=a+b;
+ console.log(c)
+}
+
+function add(a,b)
+{
+ var c=a*b;
+ console.log(c)
+}
+
+function div(a,b)
+{
+ var c=a/b;
+ console.log(c)
+}
+
+module.exports.addition=add //we setup a key
+module.exports.multiply=mul
+
+
+pro8.js
+----------
+var ob=require("./code2")
+
+ob.addition(12,34)
+ob.multiply(23,12)
+
+*******************************************************************
+So there will be a security,
+if we don't want some functions to be send,
+we will not export them
+
+Another way:
+
+module.exports={
+	addition:add,
+	multiply:mul
+}
+
+******************************************************************
+Create a folder - nodepro
+This folder is like a project but initially it is empty
+
+cd nodepro
+Before we do anything, there is a file called package.json
+which is a description file for our project in notepad
+
+So type command "npm init"  (Initialization)
+
+package name : //You can give name here, else leave it blank, it will take the folder name
+version :  //if you not enter, it is 1.0.0 ,else you can specify
+description: 
+entry point:  //Here we can specify, which js file we have to make our main file
+		//from where the program will start, by default it is index.js
+test command:
+git repository:
+keywords:
+author:
+license :
+
+So npm converts all we have filled into a json string
+
+It asks confirmation to publish it, write YES,NO
+And now you will see a package.json file in folder
+
+**********************************************************************
+Now we want http package in project
+
+So write npm install http //this will install module inside project
+Another way npm install -g http //this will install in the PC in node.js
+
+We use the npm install http more,
+i.e. the local repository
+
+Ex. Another module "npm install express"
+    Another module "npm install mysql"
+
+Now when you will see package.json,
+there are dependency named entry.
+Dependencies means which modules are required
+to run our project
+
+Entry is just one thing,
+
+Also, there is a node_modules folder,
+inside our nodepro folder now
+And if we open,
+we will see there are many new modules.
+
+So what happened,
+those 3 modules needed which modules,
+they also get installed
+
+Now if we want to use any module,
+we can use require("")
+***********************************************************************
+So how is this entry usefull?
+
+When we want to send someone our code,
+we will not send them node_modules
+
+We will only send our code
+The person will type npm install inside the folder
+The npm will read the package.json file
+and see the dependencies
+and install all the modules automatically
+
+Angular will will be written in typescript
+typescript will be converted into js
+js will be executed by node.js
