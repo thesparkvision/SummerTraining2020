@@ -105,3 +105,18 @@ I will regularly update here what I have learnt daily.
 - JSON Parse and Stringify
 - Functions inside javascript objects
 - Task discussion
+
+### Day 31:
+- About V8 Engine
+- About Node.js
+- Node.js Installation
+- First Node.js program
+- Function and reference variable
+- Passing Function to a function
+- Creating Anonymous function and passing it to a function
+- Creating functions inside functions
+- Exporting a string from a file for other files
+- Exporting a function
+- Exporting many functions
+- npm init and package.json
+- installing modules in node.js
