@@ -1,0 +1,316 @@
+Create a folder pro1
+
+npm init
+
+Our package.json file will be created
+
+Create program1.js
+---------------------
+
+/*
+
+ECMA Eurpoeans Computer Manufacture Association
+
+ECMA 1 1997
+ECMA 2 1998
+ECMA 3,4,5,5.1
+
+So the last version was ECMA 5 2011
+
+Then ES6 2015
+     ES7 2016
+     ES8 2017
+     ES9 2018
+
+Browser properly supports ES5 standards
+The new standards are not properly supported
+
+*/
+
+Transpiler
+	- It converts code of one language
+	  into code of another language,
+	  here we don't get machine code.
+        - So transpiler will convert ES8 to ES5
+	  which is properly supported by browser
+
+Now Angular works on ES6 standard language Typescript,
+but browser can't understand Typescript,
+so it has to be converted to Javascript
+
+******************************************************************
+program1.js
+-------------
+var num=10
+
+function fun1()
+{
+  console.log("Fun1 .......",num)
+}
+
+function fun2()
+{
+  //Local
+  var num=100	
+  console.log("Fun2........",num)
+}
+
+There are 2 scopes of variable
+	- local and global
+Local
+	-inside function
+Global
+	-outside function
+
+fun1()
+fun2()
+
+//So we will get a value 10...100
+
+*****************************************************************
+Let's add a for loop in fun2
+
+for(var x=1;x<6;x++)
+{
+ //again creating num in this loop ,redeclaration error it did not give
+ var num=20;
+}
+
+console.log("Fun2.......",num)
+
+On executing it, it gives value 20
+So here the num variable is getting reinitilalized
+So its scope is in full function
+So var keyword scope is related to function
+
+
+****************************************************
+var num=10;
+function fun1()
+{
+ for(var x=1;x<6;x++)
+ {
+  console.log("hello....")
+  }
+  console.log("X: ",x)
+}
+
+fun1()
+
+So this prints :
+
+hello...
+hello...
+hello...
+hello...
+hello...
+6
+
+So the x value is what was inside
+********************************************************
+Now 'let' us make us scope
+
+var num=10;
+function fun1()
+{
+ let x=100;    //fun
+ for(let x=1;x<6;x++)   //for loop
+ {
+  console.log("hello....")
+  }
+  console.log("X: ",x)
+}
+
+fun1()
+
+
+So now when it prints:
+
+hello...
+hello...
+hello...
+hello...
+hello...
+100
+
+So the inner x was limited to the loop
+and outer x to function
+
+fun1()
+
+*************************************************************
+
+program3.js
+------------
+const x=100; //scope same as let
+x=12;
+
+This will give error, as the variable is const
+
+const arr=[10,20,30]
+console.log(arr)
+arr.push(40)
+console.log(arr)
+
+So will 40 get added on that ?
+Yes, it will get added
+
+const does not mean that value can't be added,
+that means that variable can't be changed
+
+if you try,
+arr=12,
+this will cause error as now you are changing the variable
+
+*************************************************************
+program4.js
+-----------------
+
+console.log("Num: ",num)
+var num=100
+console.log("Num: ",num)
+
+So here error will not come
+
+Num: undefined
+Num: 100
+
+So this is like that a line is written in top : var num=undefined
+
+**********************************************************************
+program5.js
+--------------
+var arr=[12,21,32,14,32,43,45]
+
+for(let x=0;x<arr.length;x++)
+{
+  console.log(arr[x])
+}
+
+So full array got executed
+--------------------------------------
+for(let x in arr)
+{
+ console.log(x);
+}
+
+So here the value of array not,
+but indexes of array got printed
+To print values, we have to do like:
+
+for(let x in arr)
+{
+ console.log(arr[x])
+}
+--------------------------------------
+Third way
+
+for(let x of arr)
+{
+ console.log(x)
+}
+
+So this will give us values of arr
+
+**************************************************************************
+program6.js
+-----------
+
+var ob={
+    roll:101,
+    name:'Vikas',
+    age:23,
+    city:'ujjain'
+}
+
+for(let k in ob)
+{
+  console.log(k)
+}
+
+So it will print the keys
+To print values, we will do
+
+for(let  k in ob)
+{
+ console.log(k,ob[k])
+}
+
+Let's try using of also
+
+for(let k of ob)
+{
+ console.log(k)
+}
+
+So it will give error,
+that ob is not a iterable.
+'of' always works with iterable i.e. an array
+
+***************************************************************************
+Create a new folder webpro
+cd webpro
+
+npm init -y (This creates without asking and does default settings)
+
+So we need a module for server side work
+
+npm install http
+
+Create a program server.js
+----------------------------
+var http=require('http')
+
+We do not want that value of http to change, so require using const
+So the line will look like
+
+const http=require('http') 
+
+const webserver=http.createServer(function(request,response)
+{
+  response.write("<h1>My First Node Web</h1><hr>");
+  response.end() 
+})
+
+webserver.listen(9999) //giving the port number to listen by server
+
+So now whenever request comes to server,
+this function will be executed
+
+So let's execute node,
+node server.js
+
+And now we come on browser, and type localhost:9999,
+we got a response
+
+We don't do directly web development in node
+We do in express framework
+
+*******************************************************************************
+Whenever a server gets request,
+it generates a thread
+After processing, until the webserver has responded,
+this thread will be alive and then gets ended
+This is what happens in Java
+So if 100 requests come, then 100 threads come
+If 1000 requests come, then 1000 threads will come
+
+Now our Apache server will have a capacity,
+supposedly if it can only manage 200 threads,
+and what if 201 requests come,
+then 200 requests will come and accept
+and  1 request will be denied and client will see "Server not responding"
+
+This is called " Blocking Pattern"
+i.e. our server is blocked if all threads are working
+and if it denies request
+
+Java,Python,PHP is multithread environment
+***********************************************************************************
+Node works on "Unblocking Pattern"
+Single Thread Environment
+
+The execution flow of Node is fast
+despite being a single thread environment
+Why so?
+
