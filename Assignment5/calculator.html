@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+
+        body{
+            background-color:darkorange;
+        }
+
+        .style-inputs {
+            width: 300px; font-size: 30px; height:40px;
+        }
+
+        .font-increase {
+            font-size: 30px;
+        }
+
+    </style>
+</head>
+
+<body onload="init()">
+
+    <h1>Welcome to this Amazing Calculator Site</h1>
+    <hr/>
+    <br/>
+
+    <center>
+
+        <h2>Choose from the variety of options available for computation:</h2>
+        <br/>
+        <input class="style-inputs" placeholder="Enter First Number" id="first">
+        <br/><br/>
+        <input class="style-inputs" placeholder="Enter Second Number" id="second">
+        <br/><br/>
+
+        <b class="font-increase">
+            <input type="radio" onchange="change(1)" name="op" checked>Addition
+            <input type="radio" onchange="change(2)" name="op" >Subtraction
+            <input type="radio" onchange="change(3)" name="op">Multiplication
+            <br/><br/>
+            <input type="radio" onchange="change(4)" name="op" >Division
+            <input type="radio" onchange="change(5)" name="op" >Remainder
+            <input type="radio" onchange="change(6)" name="op">Power
+            <br/><br/>
+        </b>
+
+        <button class="style-inputs" onclick="compute()">Calculate</button>
+        <br/><br/><br/>
+        <div>
+            <b class="font-increase" id="res">Result: </b>
+        </div>
+        <br/><br/>
+
+    </center>
+
+    <script>
+        function init()
+        {
+            operation=1;
+            first=document.getElementById("first")
+            second=document.getElementById("second")
+            result=document.getElementById("res")
+        }
+
+        function change(operationType)
+        {
+            operation=operationType;
+        }
+
+        function compute()
+        {
+            var x=first.value;
+            var y=second.value;
+
+            switch(operation)
+            {
+                case 1: z=parseInt(x)+parseInt(y);
+                        break;
+                case 2: z=parseInt(x)-parseInt(y);
+                        break;
+                case 3: z=parseInt(x)*parseInt(y);
+                        break;
+                case 4: if(parseInt(y)==0)
+                            alert("Second Number can't be zero")
+                        else
+                            z=parseInt(x)/parseInt(y);
+                        break;
+                case 5:if(parseInt(y)==0)
+                            alert("Second Number can't be zero")
+                        else
+                            z=parseInt(x)%parseInt(y);
+                        break;
+                case 6: z=parseInt(x)**parseInt(y);
+                        break;
+            }
+
+            result.innerHTML="Result: "+z;
+        }
+
+    </script>
+</body>
+</html>
