@@ -120,3 +120,16 @@ I will regularly update here what I have learnt daily.
 - Exporting many functions
 - npm init and package.json
 - installing modules in node.js
+
+### Day 32:
+- About ECMAScript, ES6 versions and Transpiler
+- Local and Global scope
+- let keyword
+- const keyword
+- strict keyword
+- use of 'in' and 'for' for accessing elements in array and object
+- Creating a webserver in node.js
+- Discussion about Multithreading 
+  - In languages like Java,PHP & its limitations
+  - Blocking Pattern
+- Node.js as a single threaded environment
