@@ -1,0 +1,336 @@
+So if there are requests more than the capacity,
+the server won't be able to handle
+**************************************************************
+But the Nodejs use a trick
+It keeps a single thread
+By the hotel example,
+it keeps only one waiter
+
+Nodejs server working on a single threaded environment,
+Now the waiter has made a Queue that 
+"Table 1 wants Pav Bhaji",
+"Table 2 wants Pizza",
+
+The earlier pattern was blocking pattern,
+
+And in kitchen,
+the worker will see if there is any new order?
+The kitchen one is called worker
+So for the order now, there will be threads created
+for making the order.
+
+So the single thread is mostly free as it has to just take a request,
+And multiple threads work behind the screen 
+
+********************************************************************
+Create a function pro1.js
+
+function hello()
+{
+ console.log("Hello start .....")
+ console.log("Hello end .....")
+}
+ 
+console.log("Program start .....")
+
+hello()
+
+console.log("Program end .....")
+
+So how does this get printed:
+Program start
+Hello start
+Hello end
+Program end
+****************************************************************
+Now we are suppling a function to hello
+
+function hello(ob)
+{
+ console.log("Hello start .....")
+ ob()
+ console.log("Hello end .....")
+}
+
+
+hello(function()
+{
+	for(let x=1;x<152934624;x++)
+	{}
+	console.log("Loop End")
+})
+
+So here a delay was coming,
+because of the loop in printing maybe 1-2 seconds
+This is Blocking
+
+********************************************************************
+Now we want that ob to work with unblocking
+
+So node manages a stack for functions,
+
+function hello(ob)
+{
+ console.log("Hello start .....")
+ setTimeout(ob,10)   //10 milli second
+ console.log("Hello end .....")
+}
+
+The setTimeout will put the function in stack,
+and now thread will be created for the function after 10 seconds
+So it will execute later
+
+So our execution will now look like:
+Program start... //program started
+Hello start...	//put the ob in stack
+Hello end....	//function ended
+Program end.....	//program ended
+loop end....	//the function was executed from stack
+
+******************************************************************
+pro2.js
+----------
+
+/*
+Javascript Object
+Function Object
+*/
+
+This is similar to hashmap
+Here there are no classes in javascript
+But here we have function objects to do this
+
+Function objects are useful by 2 ways-
+1. To execute some code
+2. 
+
+var product=function(pid,pname,qty,price)
+{
+//data
+this.pid=pid
+this.pname=pname
+this.qty=qty
+this.price=price
+}
+
+This is like a class, but it is not OOPs
+This can be said as Javascript version of class
+
+var p1=new product(101,'soap',25,32.34)
+var p2=new product(102,'pen',225,15.21)
+
+console.log(typeof p1)
+console.log(typeof p2)
+
+Output:
+object
+object //function object
+**************************************************************
+console.log(p1.id,p1.name)
+console.log(p2.id,p2.name)
+
+
+
+***************************************************************
+Now we need methods to execute something
+
+var product=function(pid,pname,qty,price)
+{
+//data
+this.pid=pid
+this.pname=pname
+this.qty=qty
+this.price=price
+
+this.show=function()
+{
+ console.log("Product Id: ",this.pid)
+ console.log("Product Name: ",this.pname)
+ console.log("Product Qty: ",this.qty)
+ console.log("Product Price: ",this.price)
+}
+
+}
+
+p1.show()
+p2.show()
+
+**************************************************************************
+in js 
+we can also do the same in your task of student
+add save show and delete
+
+code.js
+------------
+var product=function(pid,pname,qty,price)
+{
+//data
+this.pid=pid
+this.pname=pname
+this.qty=qty
+this.price=price
+
+this.show=function()
+{
+ console.log("Product Id: ",this.pid)
+ console.log("Product Name: ",this.pname)
+ console.log("Product Qty: ",this.qty)
+ console.log("Product Price: ",this.price)
+}
+
+}
+
+module.exports=product
+
+
+pro4.js
+---------
+const prod=require('./code')
+var ob1=new prod(112,'soap,34,23.34)
+ob1.show()
+
+So it will run
+
+**********************************************************************
+code2.js
+-------
+
+var product=function(pid,pname,qty,price)
+{
+//data
+this.pid=pid
+this.pname=pname
+this.qty=qty
+this.price=price
+
+this.show=function()
+{
+ console.log("Product Id: ",this.pid)
+ console.log("Product Name: ",this.pname)
+ console.log("Product Qty: ",this.qty)
+ console.log("Product Price: ",this.price)
+}
+
+}
+
+module.exports=new product() 
+//now the requesting module , will get a object
+//but the module won't be able to make a new object
+
+pro5.js
+---------
+
+const pob=require('./code')
+pob.show()
+
+So this will prevent undefined values
+So we can assign values to the function object now according to us
+This is similar to DBConnection and dao 
+where we didn't made a Connection object using new
+************************************************************************
+
+pro6.js
+----------
+Array is collection of values either of same types or different
+It is dynamic array
+
+var arr=[34,12,32,5,43,11,87]
+console.log(arr)
+console.log(arr.length)
+console.log(arr[3])
+
+//arr[2]=100
+//console.log(arr)
+
+arr.push(13)
+console.log(arr)
+
+arr.pop()
+console.log(arr)
+
+*******************************************************************************
+pro7.js
+----------
+
+var arr=[34,12,32,5,43,11,87]
+console.log(arr)
+arr.shift()
+console.log(arr)
+
+//shift deleted the first element
+
+arr.unshift(11)
+console.log(arr)
+
+//it will add 11 in the start
+
+********************************************************************
+pro8.js
+----------
+
+var arr=[34,12,32,5,43,11,87]
+console.log(arr)
+
+arr.splice(2,3,11,54,34)
+console.log(arr)
+
+So this means delete from 2nd position,
+delete 3 elements,
+and add this new 3 elements in the position
+
+arr.splice(2,3)
+console.log(arr)
+
+*******************************************************************
+pro9.js
+----------
+var arr=[34,12,32,5,43,11,87]
+console.log(arr)
+
+arr=arr.sort((a,b)=>a-b)
+console.log(arr)
+
+Sort function works correctly in string but for numerical values, 
+we have to give it some logic
+
+arr=arr.sort(function(a,b)
+{
+return a-b;
+}
+
+So here this can be done by lambda expression as done above
+
+For descending order,
+arr=arr.sort((a,b)=>b-a)
+console.log(arr)
+*********************************************************************
+pro10.js
+-----------
+var arr=[34,12,32,5,43,11,87]
+
+arr.forEach((value)=>
+{
+console.log(value)
+})
+
+
+a1=arr.map((value)=>
+{
+	return value-10
+})
+
+console.log(a1)
+
+So map function subtracts 10 from each element and returns an array
+
+a2=arr.filter((value)=>
+{
+ return value>25
+})
+
+So filter will return true false, and if true,
+ the value will get stored in a2
+
+************************************************************************
+
+
