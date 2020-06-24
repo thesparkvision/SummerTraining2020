@@ -1,0 +1,148 @@
+Install Angular/Cli
+---------------------------
+>>>npm install -g @angular/cli@8.3.23
+
+After install
+-------------------------
+>>>ng version
+>>>ng v
+*********************************************************************
+Create Angular App:  (It will take lot of Internet 500-600 MB+)
+------------------------------
+on cmd,
+>>> ng new webang
+
+>>>Would you like to add Angular routing? (y/N)   - Press y
+(It is asking to create a routing file , we can later also do)
+
+>>>Which stylesheet format you want?
+	CSS
+	SCSS
+	Sass	
+	Less
+	Stylus
+  -Select and Press CSS
+
+It will start the installation for angular app
+
+>>>dir
+
+>>>cd webang
+
+>>>dir
+
+***********************************************************************
+Execute the App
+-----------------
+>>>ng serve  (Make sure you are inside the project)
+
+So it will start compiling, it is converting typescript into javascript
+
+***************************************************************************
+How to Run the App?
+-----------------------
+After compilation, it will show port no 4200
+We got an application server- webpack
+
+On browser, https://localhost:4200/ , it will show the angular app 
+
+********************************************************************
+So how to save Internet?
+--------------------------
+
+Copy paste a angular project folder, change the name
+Since we have not done any work yet, the project is empty.
+
+One project node_modules folder contain 266 MB data, so it is very net heavy to download
+But on basis of requirement, we can install later small modules
+
+*****************************************************************************
+package.json is there whcih contains the dependencies
+
+There is also angular.json,
+It also contains the source folder name -src,
+index file which will execute on running code -src/index.html
+main file- src/main.ts   
+
+When Angular is run, it goes to angular.json,
+and executes the main file first
+
+In src,
+you will get main.ts
+------------------------
+You will see, there are import statements
+There is a if statement down
+
+And There is a AppModule which is the main module of application,
+it is coming from app/app.module
+
+Let's find app.module.ts
+-----------------------
+
+here we will also see javascript objects and array
+There is also an export statement
+
+So here we will do entries of components,
+here AppComponent is attached currently
+
+We can decide which will be our main component, 
+we have written here AppComponent
+
+Let's go to app.component.ts
+------------------------------
+So here you will see
+that AppComponent is a class and it is given a title 'webang'
+
+There is also a component(combo of html and css), 
+which contains:
+ selector,
+ templateURL : html
+ styleUrls: css
+
+Also the name of this html,css and ts files are same 
+because they are part of a component
+
+
+CSS is currently empty,
+
+In app.component.html
+-------------------------
+There is lot of html css written inside it
+********************************************************************************
+Let's delete all the html and write
+
+		<h1>My First Angular Page</h1>
+
+Now Angular does hot reloading,
+if our server is running,
+and we do some changes in code,
+on saving,
+the server will restart,
+and the browser page will be automatically refreshed
+
+So how does Angular know which component to run?
+To uniquely identify each component,
+it is given a selector, 
+this component is given a app-root
+
+Now in angular.js
+-----------------
+Starting page is show index.html
+
+And in index.html,
+
+it is given a head tag,
+<html>
+<body>
+	<app-root></app-root>
+</body>
+</html>
+ 
+So app-root is our component.
+
+So what we see is actually index.html,
+and component is just a part of it
+**********************************************************************
+<h1>My First Angular Page</h1>
+<hr>
+

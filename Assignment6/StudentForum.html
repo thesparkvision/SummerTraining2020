@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Forum</title>
+        <link type="text/css" rel="stylesheet" href="StudentForum.css">
+    </head>
+
+    <body onload="init()">
+        <!--header section-->
+        <center>
+            <div id="header">Welcome To The Student Forum</div>
+        </center>
+        <hr color="black">
+
+        <!--left division for form-->
+        <div>
+            <div class="split left form">
+                <div class="centered">
+                    <h3 class="header">Add New Student</h3>
+                    <input class="form" type="text" placeholder="Enter Roll No" id="roll"><br/><br/>
+
+                    <input class="form" type="text" placeholder="Enter Name" id="name"><br/><br/>
+
+                    <select class="form" id="branch">
+                        <option value="">Choose Branch</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Electronic Engineering">Electronic Engineering</option>
+                    </select>
+                    <br/><br/>
+
+                    Choose City:<br/><br/>
+                    <input  class="form" type="radio" name="city" onchange="changeCity('Dewas')" checked>Dewas &nbsp; &nbsp;
+                    <input  class="form" type="radio" name="city" onchange="changeCity('Indore')">Indore &nbsp; &nbsp;
+                    <input class="form" type="radio" name="city" onchange="changeCity('Ujjain')">Ujjain
+                    <br/><br/>
+
+                    <button  class="form" onclick="saveStudentData()">Save Student</button> &nbsp; &nbsp;
+                    <button class="form" onclick="showStudents()">Show Students</button>
+                    <br/><br/>
+
+                    <p class="form" id="op-message"></p>
+                    <br/><br/>
+                </div>
+            </div>
+        
+            <!--Right division for table and Counter-->
+            <div class="split right form">
+                <div class="centered">
+                    <h3 class="form" id="student-counter">Number Of Students: 0</h3>
+                    <br/>
+
+                    <table id="student-table">
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Roll No.</th>
+                            <th>Student Name</th>
+                            <th>Branch</th>
+                            <th>City</th>
+                            <th>Operation</th>
+                        </tr>
+                    </table>
+
+                    <!--Extra paragraph added so table has some space from the end of the page for increasing readability-->
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+
+        <script src="StudentForum.js"></script>
+    </body>
+</html>

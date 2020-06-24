@@ -1,0 +1,386 @@
+pro1.ts
+----------
+
+//number
+
+var num:number
+
+
+*********************************************************************
+pro2.ts
+----------
+class ABC
+{
+  private num:number;
+  private name:string;
+  private isactive:boolean;
+
+  //Here overloading is not there
+  public constructor(num:number,name:string,isactive:boolean)
+  {
+   this.num=num;
+   this.name=name;
+   this.isactive=isactive; 
+  }
+
+  public show():void
+  {
+   console.log("\nNum: ",this.num);
+   console.log("\nName: ",this.name);
+   console.log("\nStatus: ",this.isactive);
+  }
+}
+
+var ob1=new ABC(123,'Vikas',true);
+var ob2=new ABC(131,'Mohan',false);
+
+ob1.show();
+ob2.show();
+
+public show()
+{
+} 
+syntax is right
+but maybe that the function returning something
+So we have to use colon to state the return type
+*********************************************************************
+Compile it
+
+>>>tsc pro2.ts 
+
+Now pro2.js file will come up
+ts is not directly executable,
+node and browser both can't execute it,
+ts is just a standard
+----------------------------------
+Execute the js file
+
+>>>node pro2.js
+
+And output gets printed
+
+*******************************************************************
+pro3.ts
+-----------
+
+class ABC
+{
+  private num:number;
+  private name:string;
+  private isactive:boolean;
+
+  //Here overloading is not there
+  public constructor(num:number,name:string,isactive:boolean)
+  {
+   this.num=num;
+   this.name=name;
+   this.isactive=isactive; 
+  }
+
+  public show():void
+  {
+   console.log("\nNum: ",this.num);
+   console.log("\nName: ",this.name);
+   console.log("\nStatus: ",this.isactive);
+  }
+}
+
+class XYZ extends ABC
+{
+  private value:number;
+  
+  public constructor(value:number,num:number,name:string,isactive:boolean)
+  {
+    super(num,name,isactive);
+    this.value=value;
+  }
+
+  public show():void
+  {
+   super.show();
+   console.log("Value : ",this.value);
+  }
+}
+
+
+var ob1=new XYZ(12,123,'Vikas',true);
+var ob2=new XYZ(33,131,'Mohan',false);
+
+ob1.show();
+ob2.show();
+
+>>>tsc pro3.ts
+>>>node pro3.js
+******************************************************************
+Here interface is supported
+
+pro4.ts
+---------
+
+interface pqr
+{
+  test():void;
+}
+
+class XYZ extends ABC implements pqr
+{
+  public test():void
+  {
+   console.log("Testing....");
+  }
+}
+
+>>>tsc pro4.ts
+>>>node pro4.js
+
+*********************************************************************
+code.ts
+--------------
+export class ABC
+{
+  private num:number;
+  private name:string;
+  private isactive:boolean;
+
+  //Here overloading is not there
+  public constructor(num:number,name:string,isactive:boolean)
+  {
+   this.num=num;
+   this.name=name;
+   this.isactive=isactive; 
+  }
+
+  public show():void
+  {
+   console.log("\nNum: ",this.num);
+   console.log("\nName: ",this.name);
+   console.log("\nStatus: ",this.isactive);
+  }
+}
+
+export class XYZ extends ABC
+{
+  private value:number;
+  
+  public constructor(value:number,num:number,name:string,isactive:boolean)
+  {
+    super(num,name,isactive);
+    this.value=value;
+  }
+
+  public show():void
+  {
+   super.show();
+   console.log("Value : ",this.value);
+  }
+}
+
+
+pro5.ts
+---------
+Here we have to just write a keyword in front of class export
+{} this curly braces are for defining what classes we want
+
+import {XYZ,ABC} from './code';
+
+var ob1=new ABC(111,'Vikas',true)
+var ob2=new XYZ(23,222,'Mohan',false)
+
+ob1.show()
+ob2.show()
+
+*********************************************************************
+We can also use
+
+export default class XYZ extends ABC
+{
+}
+
+But this can be put on only 1 class
+
+import XYZ from './code';
+
+---------------------------------
+If we want all classes,
+we can use * concept
+
+import * from './code';
+
+**************************************************************************
+We brought the demo node.js project here
+Name it angweb
+
+>>>ng serve
+
+There is a folder src in project,
+where there is index.html which is the page we are able to see
+
+There are 2 new tags here of angular:
+
+<base href="/">
+<app-root></app-root>
+
+Now we get components here
+
+There is an 'app' component
+
+And in app.component.ts file,
+there is a selector:app-root
+
+Whenever this component will be called,
+the html related with it will be shown
+
+So all components will be loaded in the app-root component,
+and it will be loaded by index.html.
+We will see very less changes in index.html
+
+***************************************************************************
+For entry of all components, there is a file app.module.ts
+This will be only 1 file in project
+
+
+Here AppComponent is imported from app.component.ts
+
+NgModule is also a decorator
+
+In declaration, entry of components will be done
+
+@NgModule({
+
+//Components Entry
+declaration:[
+  AppComponent
+ ],
+
+//Module Entry
+ imports:[
+  BrowserModule,  //for browser support
+  AppRoutingModule   //for routing purpose
+  ]
+  
+ providers:[],
+
+ bootstrap: [AppComponent]
+})
+
+Component is a UI execution part, this will be visible on our page
+Module will not be visible on page, it has no UI, 
+it is for supporting the components
+
+For each Component, there will be 3 files:
+ts file
+html file
+css file
+*************************************************************************
+Suppose we delete the content of app.component.html file
+and write
+
+<h1>Main Component Start....</h1>
+<h1>Main Component End....</h1>
+
+
+index.html
+--------------
+
+<body>
+	<h1 align="center">Home Page</h1>
+ 	<hr>
+        <app-root></app-root>
+</body>
+
+And we will be able to see how component loaded
+************************************************************************
+So angular best thing is that we can use it with html
+
+There is a variable inside AppComponent , title='MIT Ujjain Training'
+
+In app.component.html,
+<h1> Main Component Start....</h1>
+	<h2>{{title}}</h2>
+<h1>Main Component End...</h1>
+
+And on seeing web page, we will see this title
+
+This {{}} is for writing variable inside html
+
+***************************************************************************
+Let's make another variable,
+
+class AppComponent
+{
+ title='MIT ujjain Training';
+ num:number=1;
+}
+
+in app.component.html,
+
+<h6> Number: {{num}}</h6>
+
+And it will be visible on page
+
+And if there is some syntax problem in html, angular will not show result
+*********************************************************************************
+AppComponent
+{
+ friends=["Shivam","Anuj","Mohit","Prakash","Jeevan"]
+}
+
+in app.component.html,
+
+{{friends}}
+
+So all names will be printed in a line with commas
+
+
+<br>
+<ol>
+	<li *ngFor="let name of friends"> //let,of are keywords; we are getting names out of list
+		{{name}}	
+	</li>	
+</ol>
+<hr>
+
+So we are able to see names one by one
+*******************************************************************
+AppComponent
+{
+  public test():void
+  {
+    var title="Rajesh"; //Local variable of test method
+  }
+}
+
+We can't display local variable of function directly
+
+
+*************************************************************************
+<h1>{{num}}</h1>
+<button>Increment</button>
+
+so we want on clicking the button the 
+value of num gets incremented by one
+
+<button (click)="incre()">Increment</button>
+
+In app.component.ts file,
+
+public incre():void
+{
+  this.num+=1;
+}
+
+So whenver we will do something,
+automatically changes will be shown on UI
+
+public decre():void
+{
+ this.num-=2;
+}
+
+in app.component.html,
+
+<button (click)="decre()">Decrement</button>
+***************************************************************************
+Here we put the events here in double brackets
+
+

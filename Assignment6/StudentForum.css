@@ -1,0 +1,50 @@
+body {
+    background-color: chocolate;
+}
+
+.label,center,.form {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+table,th,tr,td {
+    border: 3px solid black;
+    border-collapse: collapse;
+    padding: 2px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table {
+    overflow-y: auto;
+    overflow-x:auto;
+}
+
+#header {
+    font-size: 35px;
+    font-weight:bold;
+}
+
+.split
+{
+    width:50%;
+    position:fixed;
+    overflow-x:hidden;
+    height: 100%;
+}
+
+.left {
+    left:20;
+}
+
+.right {
+    right:0;
+}
+
+.centered {
+    text-align:center;
+}
+
+#op-message {
+    color: red;
+}
