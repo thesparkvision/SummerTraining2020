@@ -1,0 +1,276 @@
+app.component.ts
+-------------------
+
+values=[23,12,34,123,435,56,6,7,5,12,73,23,43]
+
+Some are odd and some even
+
+
+app.component.html
+---------------------
+<h5 *ngFor="let x of values">
+{{x}}
+</h5>
+
+This will print all the values on web page
+It repeats the h5 tag values.length times
+
+********************************************************************
+So we want to show odd even, so we will use If
+Else does not exist here
+
+{{x}}
+<b ngIf="x%2==0">Odd</b>
+<b ngIf="x%2!=0">Even</b>
+
+Only one tag from these b tags will be shown on the page for each x
+
+In app.component.css
+-----------------------,
+h1 {
+color:red;
+}
+
+
+So the css got applied on h1
+
+We can make the css apply for only the component also
+
+******************************************************************************
+There is a file in src/styles.css
+
+Here will come css which is common for all components
+
+For specific component, css will come inside the component dir
+
+So until the component won't come on site,
+it's css will also not come on site,
+so performance won't be degraded
+
+*********************************************************************
+Now we want to change value at client side
+We want to take value in this text field
+and input it in the array in ts file
+
+app.component.html
+------------------------
+<input type="text" placeholder="Number">
+<button (click)="add()"> Add New Number</button>
+
+app.component.ts
+----------------------
+public add():void
+{
+ this.values.push(61)
+}
+
+So angular on binding of variable,
+like we have used it in function and html
+So automatically it reflects the changes in variable on the html
+
+This is one way binding currently
+
+Ex. if we want LG,Samsung products in our ecommerce project,
+    the UI will be changed by Angular by calling the servlet
+    and getting new json.
+    the UI building will be very easy and done by angular
+
+So if we have used javascript,
+we would have given it a id,
+then on clicking button,
+get the value by id,
+then add it to array
+and then change the UI
+
+In Angular , we will give a hash (This is id here)
+
+<input type="text" #num placeholder="Number">
+<button (click)="add(num.value)"> Add New Number</button>
+
+public add(val):void
+{
+ this.values.push(val);
+}
+
+So now we will see the intended effect on the page
+The value on clicking button gets added
+*******************************************************************
+Create a folder test inside app component
+
+Create a file inside test-> 
+
+test.component.ts
+-------------------
+import {Component} from '@angular.core';
+
+@Component({
+selector:'app-test',
+template:'<h1>My Test Page</h1>',
+
+)}
+
+export class TestComponent
+{
+
+}
+
+*******************************************************************
+Let's make it using cmd
+
+>>>ng generate component demo
+
+And this will generate demo component
+
+It generate 4 files->
+css,html,spec.ts, ts file
+
+And updated the app.module.ts
+Because here entry comes of all components
+
+And we have got the demo component 
+inside app component.
+In bootstrap, entry of demo not done
+Only in declaration is done
+
+
+In other components, we have to implement a OnInit interface
+
+Its selector is app-demo,
+
+in demo.component.html,
+-----------------------------
+<hr>
+<h1>Demo component</h1>
+<hr>
+
+In app.component.html
+--------------------------
+<app-demo></app-demo>
+
+And our component will now be shown on page doing
+>>>ng serve
+
+***********************************************************************
+In demo.component.html
+----------------------
+
+<input type="text" #fn placeholder="First Number">
+<input type="text" #sn placeholder="Second Number">
+<br><br>
+<b>Result</b>
+<br><br>
+<button (click)="add(fn.value,sn.value)">Addition</button>
+
+<hr>
+
+
+in demo.component.ts
+---------------------
+class DemoComponent
+{
+  public result:number =0;
+
+public add(fn:number,sn:number):void
+{
+  this.result=fn+sn; 
+}
+
+And in demo.component.html
+------------------------------
+
+<b>Result- {{result}}</b>
+
+So now result is coming 455 on entering 45 and 5
+So *1 multiply by 1 to convert it to number automatically
+
+this.result=fn*1+sn*1;
+
+So now this is working
+
+************************************************************************
+And creating another component 
+
+>>>ng g c sample  
+And files will be created
+
+g for generate
+c for component
+
+Now we copy paste the same code as demo in this
+
+And add it to app.component.html
+
+<app-sample></app-sample>
+
+And now in our main component, we will be able to see
+demo and sample components
+
+in sample.component.ts
+--------------------------
+public fnum:number=0;
+public snum:number=0;
+
+And we want one module,
+so we have to do its entry in
+
+app.module.ts
+----------------
+
+import {FormsModule} from '@angular/forms';
+
+//and add it in imports section
+
+imports:
+[
+FormsModule,
+]
+
+
+Now in sample.component.html,
+
+<input type="text" [(ngModel)]="fnum" placeholder="First Number">
+<input type="text" [(ngModel)]="snum" placeholder="Second Number">
+<br><br>
+<b>Add Result- {{fnum*1+snum*1}}
+
+And now when we run it,
+
+Add Result is coming 0,
+both input fields have initial value 0 written
+So 1 way binding is there
+
+And if we change the value of any box, like we write 10,
+result will become 10
+
+And if write 10 and 5
+result-15
+
+We don't even have to make a button,
+automatically value is being printed
+
+***This is 2 way binding****
+Typescript data will automatically go to page
+and page data to typescript.
+Change in UI gets reflected to the variable
+
+This is looking easier,
+but there are chances of mistakes a lot
+because of automatic
+
+**************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
