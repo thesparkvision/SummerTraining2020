@@ -1,0 +1,387 @@
+new project
+-------------
+
+
+app.component.html
+--------------------
+<hr>
+	<h1>Main Component Start</h1>
+	<h1>Main Component End</h1>
+<hr>
+
+index.html
+-----------
+
+<body>
+	<h2>Angular Web Page<h2>
+	<app-root></app-root>
+</body>
+
+styles.css
+------------------
+
+h1{
+color:red;
+}
+
+So all will become red
+
+app.component.css
+--------------------
+
+h1 {
+color:blue;
+}
+
+Now the 2 h1 will become blue
+
+*****************************************************************
+app.component.ts
+-----------------
+export class AppComponent
+{
+private num1:number=25;
+public num2:number=75;
+}
+
+app.component.html
+----------------------
+<h1>....
+<h4>Number:{{num1}},{{num2}}</h4>
+<h1>...
+
+So it is letting the private variable to be accessed
+But is should have given warning in old version 6 or 7,
+still will get printed
+
+*************************************************************
+app.component.ts
+------------------
+
+public constructor(private num3:number)
+{
+ this.num3=22;
+}
+
+<h4>Number:{{num1}},{{num2}},{{num3}}</h4>
+
+Now this won't get printed,
+it will show "No provider for Number!" in web console
+Means it will not show the variable in constructor in UI
+
+public constructor(public num3:number)
+{
+ this.num3=22;
+}
+
+<h4>Number:{{num1}},{{num2}},{{num3}}</h4>
+
+Even if you made num3 public, it won't work
+As it is made under constructor,
+it won't be shown on UI
+
+************************************************************
+app.component.ts
+-----------------------
+We want num2 to be binded by this component input
+we want 1 way binding
+
+<input type="text" value="{{num2}}">   //First way
+
+//2nd way
+<input type="text" [ngModel]="num2">
+
+And we have to add this module
+
+app.module.ts
+---------------
+
+import {FormsModule} from '@angular/forms';
+
+imports:
+[...
+ FormsModule
+],
+
+Now it won't give error. And in both input boxes, 75 will be shown
+This both are 1 way binding
+
+
+**************************************************************
+Now we want to 2 way binding.
+so when we change the value of the text field,
+it should change the value of original variable 
+
+<br><br>
+<input type="text" [(ngModel)]="num2">  //so we used this a event
+
+this ngModel event is only in last input field,
+so from there only change can happen
+
+********************************************************************
+//New component
+
+>>> ng g c calculate
+
+Its entry would have happened in module
+So no tension
+
+app.component.html
+---------------------
+<app-calculate></app-calculate>
+
+calculate.component.html
+-------------------------
+<h2> Calculation Component</h2>
+
+<input type="text" [(ngModel)]="num1" placeholder="First Number">
+<input type="text" [(ngModel)]="num2" placeholder="Second Number">
+
+<br><br>
+
+<b>Add: {{num1*1+num2*1}}</b> <br>
+<b>Sub: {{num1-num2}}</b> <br>
+<b>Mul: {{num1*num2}}</b> <br>
+<b>Div: {{num1/num2}}</b> <br>
+<b>Rem: {{num1%num2}}</b> <br>
+
+calculate.component.css
+-----------------------------
+h2 {
+color:orange;
+}
+
+calculate.component.ts
+----------------------------
+
+export class CalculateComponent
+{
+ num1=0
+ num2=0
+}
+
+
+By default, we got output
+
+0
+0
+0
+NaN
+NaN
+
+Because 0/0 is not defined
+
+And if we change num1 to 25 in text field
+
+Div:Infinite
+
+And if we change num1 field to 25 and num2=5
+
+Add : 30
+Sub : 20
+Mul : 125
+Div : 5
+Rem : 0
+
+******************************************************************
+Now we want to take data in bulk like a registration form
+
+New component
+
+>>>ng g c reg
+
+app.component.html
+-------------------------
+<hr>
+<app-reg></app-reg>
+
+reg.component.html
+---------------------
+<h1>User Registration</h1>
+
+And it will be shown in red color due to styles.css i.e. global css
+
+reg.component.html
+----------------------
+<h1>User Registration</h1>
+
+<form>
+	<input type="text" placeholder="Roll"><br>
+	<input type="text" placeholder="Name"><br>
+	<input type="text" placeholder="City"><br>
+	<input type="text" placeholder="Phone"><br>
+	<button type="submit">
+</form>
+
+Now here in this form tag, action and method won't come up
+We are currently working on single page application currently
+We are not changing page
+
+Here form tag is not used for request
+
+Template gives data to ts file
+ts file will use API call to send data to server
+
+Let's give them a name
+
+<form>
+	<input type="text" ngModel name="roll" placeholder="Roll"><br>
+	<input type="text" ngModel name="sname" placeholder="Name"><br>
+	<input type="text" ngModel name="city" placeholder="City"><br>
+	<input type="text" ngModel name="phone" placeholder="Phone"><br>
+	<button type="submit">
+</form>
+
+So here we does not use [] and not [()]
+We used plain 'ngModel'
+Here we are not doing 1 way or 2 way binding
+We not want to display anything
+Just we want to receive the data
+So we made this fields as model using ngModel
+
+We will give an id to form and making it angular form ngForm
+
+<form #frm="ngForm">
+</form>
+
+What setting is required for ngForm is:
+- give each field a name, ngModel 
+- and give id to form
+
+<form #frm="ngform" (submit)="register(frm)">   //we can send complete form as argument
+</form>
+
+
+reg.component.ts
+------------------
+register(frm)
+{
+ console.log(frm.value);
+}
+
+Now let's run it,
+we will fill details
+and on pressing save,
+we will get a javascript object on console
+
+Another way is:
+
+<form #frm="ngform" (submit)="register(frm.value)">   
+</form>
+
+**********************************************************
+app component become parent component
+
+and calculate and reg become child component
+
+So if we copy paste the reg component inside calculate.html,
+it will become its child component
+
+<hr>
+<app-reg></app-reg>
+
+So this become multi level 
+************************************************************
+And now parent can communicate some data with child
+
+We are discussing : Data flow from **parent** to child
+
+in app.component.html
+---------------------
+<app-calculate [abc]="num2"></app-calculate>
+//Syntax to supply data to child component
+
+This is input from parent
+
+calculate.component.ts
+-------------------------
+
+We will import a decorator Input
+
+And in class,
+
+@Input abc:number;
+
+
+calculate.component.html
+-------------------------
+<h1>Calculate Component :{{abc}}</h1>
+
+So parent component num2 value becomes seen on child
+
+****************************************************************
+And now in
+
+calculate.component.html
+-------------------------
+
+<app-reg [xyz]="abc"></app-reg>
+
+reg.component.ts
+-----------------
+
+@Input('xyz') num:number;
+
+/* Here we told, we get a value from xyz var
+and we store it in num of number type,
+that's why that bracket was*/
+
+reg.component.html
+-----------------------
+
+<h1>User Registration {{num}}</h1>
+
+Now the data of app component will be seen on both reg and calculate
+
+multiple input data passing from parent to child will happen the same way
+<app-reg [xyz]="abc" [req]="pow"></app-reg>
+*************************************************************************
+
+And its reverse also happen
+Child to Parent Data Flow
+which will be a little difficult
+as child is not attaching its parent
+
+calculate.component.ts
+---------------------------
+
+import {Output,EventEmitter} from '@angular/core';
+
+export class
+{
+
+ @Output() sendValue=new EventEmitter(); //we alloted an object to sendValue
+
+ send{}
+ {
+   this.sendValue.emit([this.num1,this.num2]); //we supplied the data in the form of array
+   //we made a sendValue event which sends value by emit 
+ }
+}
+
+calculate.component.html
+----------------------------
+
+<br><br>
+<button (click)="send()">Send To Parent</button>
+
+
+app.component.html
+-----------------------
+<app-component (sendValue)="getValue(#event)"></app-component>
+
+app.component.ts
+--------------------
+
+getValue(data)
+{
+ console.log(data);
+ this.num1=data[0];
+ this.num2=data[1];
+}  
+
+
+On doing send To Parent after filling calculate component,
+the data get in parent
+
+**********************************************************************
