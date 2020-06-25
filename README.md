@@ -1,5 +1,5 @@
 # SummerTraining2020
-In this repository, I will daily add on the code that I practice as a part of my summer training on java, ReactJs, AngularJs and Nodejs with HTML,CSS and Javascript quick review along with Mysql
+In this repository, I will daily add on the code that I practice as a part of my summer training on Java, Java Server Pages, Angular framework with HTML, CSS, Javascript, TypeScript along with Mysql
 
 I will regularly update here what I have learnt daily.
 
@@ -27,6 +27,50 @@ I will regularly update here what I have learnt daily.
 - This keyword, reference variable 
 - Default and parametrised constructors 
 - Default values 
+
+### Day 4:
+- Implemented a demo simulation 
+ - Made 3 classes: Student, Exam and Result
+ - Used HAS A and USE A relationship between them
+
+### Day 5:
+- IS A Relationship
+- Inheritance
+- Types of Inheritance in Java
+- Implementing Single Inheritance
+- Types of Methods
+  - Own Method
+  - Inherit Method
+  - Overrride Method
+  - Override Method +super keyword use
+- Sequence of method call when object creation happens in inheritance
+- super and this keywords
+
+### Day 6:
+- Implementing another simulation
+ - Made 3 classes:Person, Faculty and Student
+ - Used IS A relationship i.e. inheritance here
+- Usage of final keyword
+- Using base class reference variable
+- Introduction to Polymorphism
+
+### Day 7:
+- Understanding Run time polymorphism by example and implementation
+- Upcasting and Downcasting
+- instanceOf keyword
+
+### Day 8:
+- Abstract class in detail
+- static keyword in detail
+- main method explanation
+
+### Day 9:
+- main method further explanation
+- Interface
+- static dependency
+- dynamic dependency and parametrised constructor
+- Coupling and Dependency
+- Injection and Dependency Injection
 
 ### Day 20:
 - Started with Web Application Project 
