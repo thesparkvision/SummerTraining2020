@@ -133,3 +133,13 @@ I will regularly update here what I have learnt daily.
   - In languages like Java,PHP & its limitations
   - Blocking Pattern
 - Node.js as a single threaded environment
+
+### Day 33:
+- Blocking Pattern
+- Blocking Pattern using code
+- Javascript function objects
+- methods inside fucntion objects
+- exporting function object to be created
+- Exporting a readymade function object
+- Javascript arrays
+- Different operations and methods on array
