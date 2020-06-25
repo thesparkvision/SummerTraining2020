@@ -143,3 +143,11 @@ I will regularly update here what I have learnt daily.
 - Exporting a readymade function object
 - Javascript arrays
 - Different operations and methods on array
+
+### Day 34:
+- Installing Angular
+- Checking Angular Installation
+- Creating first Angular app with settings
+- Running first Angular app
+- Copy Paste technique for making Angular apps to save Internet data
+- Understanding Angular app code structure
