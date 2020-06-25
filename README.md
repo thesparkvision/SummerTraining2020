@@ -151,3 +151,39 @@ I will regularly update here what I have learnt daily.
 - Running first Angular app
 - Copy Paste technique for making Angular apps to save Internet data
 - Understanding Angular app code structure
+
+### Day 35:
+- Static Typing in TypeScript
+- Class,Constructor and Objects in TypeScript
+- Inheritance in TypeScript
+- Interface in TypeScript
+- Exporting and importing classes in TypeScript
+- Understanding new tags in project/index.html i.e. <base> and <app-root>
+- Understanding app.module.ts
+- Component Structure in Angular
+- Using variables in html in Angular
+- ngFor loops in Angular
+- Functions and events in Angular
+  
+### Day 36:
+- If statements in Angular
+- Using global and local css
+- One way Binding in Angular using Variables and using hash id
+- Creating new Components in Angular
+- Demo of new Component using one way binding
+- Shortcut command to create component
+- One way binding using NgModel
+- Introduction to 2 way binding
+
+### Day 37:
+- Using constructors to make private variables
+- 1 way binding and 2 way binding implementation
+- Calculate Component Implementation
+- Using ngModel and form for taking bulk data
+- Multi level heirarchy of components (app->calculate->reg)
+- Data flow from parent to child component
+  - Using Input decorator
+  - Passing data even to the grandchild component
+- Data flow from child to parent component
+ - Using Output and EventEmitter
+ 
