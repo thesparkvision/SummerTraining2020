@@ -1,0 +1,359 @@
+new project
+-----------
+
+
+index.html
+------------
+<h1> Student Entry Page</h1>
+
+app.component.html
+-----------------------
+<div id="appmain">
+<h2> Add new Student</h2>
+<form>	
+	<input type="text" placehodler="Roll Number">
+	<input type="text" placeholder="Student Name">
+	<select>
+		<option>---Choose City---</option>
+		<option>Indore</option>
+		<option>Ujjain</option>
+		<option>Dewas</option>
+	</select>&nbsp;
+	<input type="radio" value='CS' name="branch" checked>CS &nbsp;
+	<input type="radio" value="IT" name="branch">IT &nbsp;
+	<input type="radio" value='EC' name="branch">EC &nbsp;
+	<br><br>
+	<button type="submit"> Save Student</button>
+</form>
+</div>
+
+app.component.css
+--------------------
+#appmain {
+	background-color:aquamarine;
+}
+
+***********************************************************************
+//Creating new component
+>>> ng g c addexam
+ 
+addexam.component.css
+--------------------------
+#addexam {
+	background-color:purple;
+}
+
+addexam.component.html
+-------------------------
+
+<div id="addexam">
+	<h2>New Exam Entry</h2>
+</div>
+
+
+app.component.html
+--------------------
+
+</form>
+<br>
+<app-addexam></add-exam>
+</div>
+
+
+addexam.component.html
+--------------------------
+<div id="addexam">
+	<h2>New Exam Entry</h2>
+	<form>
+		<select>
+			<option>---Select Roll Number---</option>
+		</select>
+		<input type="text" placeholder="Physics Marks">&nbsp;
+		<input type="text" placeholder="Chemistry Marks">&nbsp;
+		<input type="text" plcaeholder="Maths Marks">&nbsp;
+		<br><br>
+		<button type="submit">Add Exam</button>
+	</form>
+</div>
+
+*******************************************************************
+//new component
+
+>>> ng g c showstud
+
+showstud.component.html
+--------------------------
+#showexam {
+	background-color:silver;
+	margin:20px;
+	border-radius:5%;
+	padding-left:20px;
+	padding-right:20px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+h4 {
+	text-align: right;
+}
+
+span {
+ color:red;
+}
+
+showstud.component.html
+------------------------
+
+<div id="showexam">
+	<h4>Roll: <span>239482</span>, Name: Vikas Patil City: Indore, Branch: CS</h4>
+	<h5>Title: abcd Phy: 65 Che: 76 Math: 72</h5>
+</div>
+
+
+app.component.html
+--------------------
+<app-addexam></app-addexam>
+<hr>
+<app-showstud></app-showstud>
+</div>
+
+********************************************************************
+
+app.component.ts
+-------------------
+{
+ public students=[]
+}
+
+
+app.component.html
+-----------------------
+<app-addexam></app-addexam>
+<hr>
+<h2> Total Student: {{students.length}}</h2>
+<app-showstud></app-showstud>
+</div>
+
+So now we need forms module
+
+app.module.ts
+-----------------
+
+import {FormsModule} from '@angular/forms';
+
+imports : [
+ ...
+ FormsModule
+]
+
+app.component.html
+-------------------
+
+<div id="appmain">
+<h2> Add new Student</h2>
+<form #addstudfrm="ngForm" (submit)="addstudent(addstudfrm.value)">	
+	<input type="text" name="roll" ngModel placehodler="Roll Number">
+	<input type="text" name="sname" ngModel placeholder="Student Name">
+	<select name="city" ngModel>
+		<option>---Choose City---</option>
+		<option>Indore</option>
+		<option>Ujjain</option>
+		<option>Dewas</option>
+	</select>&nbsp;
+	<input type="radio" ngModel value='CS' name="branch" checked>CS &nbsp;
+	<input type="radio" ngModel value="IT" name="branch">IT &nbsp;
+	<input type="radio" ngModel value='EC' name="branch">EC &nbsp;
+	<br><br>
+	<button type="submit" > Save Student</button>
+</form>
+</div>
+
+/*
+ The tag whose input we have to need,
+  we have to give ngModel to them only
+*/
+
+app.component.ts
+--------------------
+
+export class AppComponent
+{
+ public addStudent(studdata)
+ {
+  studdata.exam=[]     //assigning an exam key also to connect exams later
+  //console.log(studdata);
+  this.students.push(studdata);
+ }
+}
+
+And now the city is getting to the function correctly
+
+app.component.html
+------------------
+
+<app-showstud *ngFor="let stud of students"></app-showstud> //added a loop
+
+
+If now we add lot of students, the component will repeat that much times
+So we can place for loop on a component as well as if statement
+******************************************************************************
+
+app.component.html
+---------------------
+<app-showstud *ngFor="let stud of students"
+[student]="stud"></app-showstud>
+
+
+showstud.component.ts
+-------------------------
+
+import {Input} from @angular/core;
+
+export class ShowstudComponent
+{
+
+@Input() student:any;   //any means any data type
+}
+
+
+showstud.component.html
+-------------------------
+
+<div id="showexam">
+	<h2> Roll: <span>{{student.roll}}</span>&nbsp; &nbsp; &nbsp; , 
+	     Name: {{student.sname}} &nbsp; &nbsp; &nbsp; , 
+	     City: {{student.city}} &nbsp; &nbsp; &nbsp; ,
+	     Branch: {{student.branch}}
+	</h2>
+</div>
+
+So now our added student data will be seen
+
+*************************************************************************
+
+<app-addexam [students]="students"></app-addexam>
+
+addexa.component.ts
+---------------------
+export class AddexamComponent
+{
+ @Input() students:any;
+}
+
+addexam.component.html
+------------------------
+
+<option *ngFor="let stud of students">
+	{{stud.roll}}
+</option>
+
+Now we are able to see roll number from there here
+**********************************************************************
+
+So how will exam get added now,
+by child to parent data flow
+
+addexam.component.html
+----------------------
+
+<form #addexam="ngForm" (submit)="saveexam(examfrm.value)">
+	<select ngModel name="roll">
+	...
+	</select>
+	<input ngModel></input>
+	<input ngModel></input>
+	<input ngModel></input>
+</form>
+
+addexam.component.ts
+-----------------------
+import Output and EventEmitter
+
+@Output() setexam=new EventEmitter();
+
+public addexam(examdata)
+{
+ console.log(examdata);
+ this.setexam.emit(examdata); 
+}
+
+
+app.component.html
+--------------------
+
+<app-addexam [students]="students"  (setexam)="setExam($event)" ></app-addexam>
+
+The data  from emit  is coming inside $event 
+
+app.component.ts
+------------------
+
+public setExam(exam)
+{
+console.log("app: "+exam);
+}
+
+********************************************************************
+Now we need to add the exam data in array
+
+public setExam(exam)
+{
+	console.log("app: "+exam);
+	this.students.forEach(student=>
+	{
+		if(student.roll==exam.roll)
+		{
+			//console.log("YES")
+			delete exam.roll;	//this deletes the exam key
+			student.exam.push(exam);
+		}
+	});
+	//console.log(this.students);
+}
+
+so now our exam is getting saved
+*********************************************************************
+addexam.component.html
+------------------------
+	<input type="text" name="title" placeholder="Exam Title">
+
+showstud.component.html
+-------------------------------
+<h5 *ngFor="let exam of student.exam">
+	Title: {{exam.title}}&nbsp;
+	Phy: {{exam.phy}}&nsbp;
+	Che: {{exam.che}}&nbsp;
+	Math: {{exam.che}}&nbsp;
+</h5>
+
+**********************************************************************
+
+1. Clear Form After Submit.
+2. Roll no. repeat no allowed.
+3. Show Result of all Individual Exam.(pass ya fail on criteria)
+4. Also total percentage of all exam (by adding marks of exams)
+5. Show Topper Student Name at the Top(those who have given)
+    - by using the all exam percentage , 
+   this should be shown near the total student counter
+    (only the topmost student)
+
+
+app.component.html
+------------------------
+<button (click)="send()">Send Student Data</button>
+
+app.component.ts
+--------------------
+public send()
+{
+  var jsonStr=JSON.stringify(this.students);
+  console.log(jsonStr);
+}
+
+
+now we will get a json string
+
+//data send to server(java)
+//List>> student object >> Exam list
+We can supply this data to dao
+
