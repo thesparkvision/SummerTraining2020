@@ -1,5 +1,5 @@
 # SummerTraining2020
-In this repository, I will daily add on the code that I practice as a part of my summer training on java, ReactJs, AngularJs and Nodejs with HTML,CSS and Javascript quick review along with Mysql
+In this repository, I will daily add on the code that I practice as a part of my summer training on Java, Java Server Pages, Angular framework with HTML, CSS, Javascript, TypeScript along with Mysql
 
 I will regularly update here what I have learnt daily.
 
@@ -27,6 +27,50 @@ I will regularly update here what I have learnt daily.
 - This keyword, reference variable 
 - Default and parametrised constructors 
 - Default values 
+
+### Day 4:
+- Implemented a demo simulation 
+ - Made 3 classes: Student, Exam and Result
+ - Used HAS A and USE A relationship between them
+
+### Day 5:
+- IS A Relationship
+- Inheritance
+- Types of Inheritance in Java
+- Implementing Single Inheritance
+- Types of Methods
+  - Own Method
+  - Inherit Method
+  - Overrride Method
+  - Override Method +super keyword use
+- Sequence of method call when object creation happens in inheritance
+- super and this keywords
+
+### Day 6:
+- Implementing another simulation
+ - Made 3 classes:Person, Faculty and Student
+ - Used IS A relationship i.e. inheritance here
+- Usage of final keyword
+- Using base class reference variable
+- Introduction to Polymorphism
+
+### Day 7:
+- Understanding Run time polymorphism by example and implementation
+- Upcasting and Downcasting
+- instanceOf keyword
+
+### Day 8:
+- Abstract class in detail
+- static keyword in detail
+- main method explanation
+
+### Day 9:
+- main method further explanation
+- Interface
+- static dependency
+- dynamic dependency and parametrised constructor
+- Coupling and Dependency
+- Injection and Dependency Injection
 
 ### Day 20:
 - Started with Web Application Project 
@@ -133,3 +177,57 @@ I will regularly update here what I have learnt daily.
   - In languages like Java,PHP & its limitations
   - Blocking Pattern
 - Node.js as a single threaded environment
+
+### Day 33:
+- Blocking Pattern
+- Blocking Pattern using code
+- Javascript function objects
+- methods inside fucntion objects
+- exporting function object to be created
+- Exporting a readymade function object
+- Javascript arrays
+- Different operations and methods on array
+
+### Day 34:
+- Installing Angular
+- Checking Angular Installation
+- Creating first Angular app with settings
+- Running first Angular app
+- Copy Paste technique for making Angular apps to save Internet data
+- Understanding Angular app code structure
+
+### Day 35:
+- Static Typing in TypeScript
+- Class,Constructor and Objects in TypeScript
+- Inheritance in TypeScript
+- Interface in TypeScript
+- Exporting and importing classes in TypeScript
+- Understanding new tags in project/index.html i.e. <base> and <app-root>
+- Understanding app.module.ts
+- Component Structure in Angular
+- Using variables in html in Angular
+- ngFor loops in Angular
+- Functions and events in Angular
+  
+### Day 36:
+- If statements in Angular
+- Using global and local css
+- One way Binding in Angular using Variables and using hash id
+- Creating new Components in Angular
+- Demo of new Component using one way binding
+- Shortcut command to create component
+- One way binding using NgModel
+- Introduction to 2 way binding
+
+### Day 37:
+- Using constructors to make private variables
+- 1 way binding and 2 way binding implementation
+- Calculate Component Implementation
+- Using ngModel and form for taking bulk data
+- Multi level heirarchy of components (app->calculate->reg)
+- Data flow from parent to child component
+  - Using Input decorator
+  - Passing data even to the grandchild component
+- Data flow from child to parent component
+ - Using Output and EventEmitter
+ 
