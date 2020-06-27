@@ -1,0 +1,435 @@
+New Project
+
+>>> ng g c home
+>>> ng g c about
+>>> ng g c service
+>>> ng g c contact
+
+We have made 4 components
+
+So we have got all components,
+their entries have been done.
+
+Total 5 including AppComponent - the main component
+*****************************************************
+about.component.html
+-------------------------
+<h1>About Page</h1>
+
+contact.component.html
+--------------------------
+<h1>Contact Page</h1>
+
+
+home.component.html
+---------------------------
+<h1>Home Page</h1>
+
+
+service.component.html
+---------------------------
+<h1>Service Page</h1>
+
+
+app.component.html
+------------------------
+<div>
+<h1>Main Component</h1>
+<hr>
+<app-home></app-home>
+<app-about></app-about>
+<app-service></app-service>
+<app-contact></app-contact>
+<hr>
+</div>
+
+Let's run the project...
+
+>>>ng serve
+
+***************************************************************
+app.component.css
+---------------------
+div {
+background-color:grey;
+}
+
+about.component.css
+---------------------
+div {
+background-color:blue;
+}
+
+home.component.css
+---------------------
+div {
+background-color:purple;
+}
+
+contact.component.css
+---------------------
+div {
+background-color:green;
+}
+
+service.component.css
+-------------------------
+div {
+background-color:brown;
+}
+
+********************************************************
+<div>
+
+<h1>Main Component</h1>
+
+<a>Home</a>&nbsp; &nbsp;
+<a>About</a>&nbsp; &nbsp;
+<a>Service</a>&nbsp; &nbsp;
+<a>Contact</a>&nbsp; &nbsp;
+
+<hr>
+	<router-outlet></router-outlet>
+<hr>
+</div>
+
+//router outlet is placed at only 1 place,
+//here the components will switch
+
+We had context in JSP
+
+In index.html,
+there is <base href="/"> ,
+this works like context path...
+
+*********************************************************
+app-routing.module.ts
+----------------------
+import {Router,RouterModule} from '@angular/router';
+We can write this directly in app.module.ts
+but we do not do this because the code becomes very long then in app.module.ts
+
+And this AppRoutingModule is imported in app.module.ts
+Main routing happens from appmodule
+
+
+appp-routing.module.ts
+-------------------------
+
+import {HomeComponent} from './home/home.component';
+import {AboutComponent} from './about/about.component';
+import {ServiceComponent} from './service/service.component';
+import {ContactComponent} from './contact/contact.component';
+
+const routes:Routes=[
+{
+ path:"home", //  /home
+ component:HomeComponent
+}
+{
+ path:"about", //  /about
+ component:AboutComponent
+}
+{
+ path:"service", //  /service
+ component:ServiceComponent
+}
+{
+ path:"contact", //  /contact
+ component:ContactComponent
+}
+];
+
+@NgModule({
+imports: [RouterModule.forRoot(routes)],
+exports: [RouterModule]
+})
+
+
+AppComponent is not written in routing,
+because it is not dynamic, it is loaded just once
+
+And index.html is not controlled by angular
+When <app-root> component is loaded,
+then angular reaches app.component ,
+and from there routing starts
+
+**************************************************************
+
+app.component.html
+---------------------
+<a routerLink='/home">Home</a>
+<a routerLink='/about">About</a>
+<a routerLink='/service">Service</a>
+<a routerLink='/contact">Contact</a>
+
+But we didn't set anything for router-outlet
+On running the page,
+
+When we click the links,
+we will see the component.
+So we are not changing the page, but changing the component
+
+But on opening, no child component was shown
+
+
+***********************************************************
+For setting the default component to load on path "/"
+
+app-routing.module.ts
+-------------------------
+
+{
+ path:"",
+ redirectTo:"home",
+ pathMatch:"full"
+}
+
+
+We can have very complicated urls like
+/home
+/user/home
+/user/list
+/user/save
+
+So we have 2 urls with substring "home"
+
+If we had put "/home", no problem
+But if only "home" , so it is confused which home?
+
+So writing pathMatch:'full' ,
+it only redirects only if full path matches
+************************************************************
+
+Now we want to change component by coding also
+
+
+contact.component.html
+---------------------
+
+<h1>
+<button (click)="send()">Home Page</button>
+
+contact.component.ts
+----------------------
+import {Router} from '@angular/router'
+
+export class ContactComponent 
+{
+ 
+ constructor(private router:Router){}
+ 
+ //we have done dependency injection
+ //it gives us a reference
+
+ send()
+ {
+  this.router.navigateByUrl("/home")
+ }
+}
+
+So now we can go from contact page to home page by coding
+Here the path is like what we have written in routing module
+
+**********************************************************
+Now we want external files like images in our project
+
+Angular has given us a predefined folder 'assets'
+and its entry has been done in angular.json
+
+We can even change folder name and do its setting
+
+So make an 'img' folder in 'assets'
+and put some images in it
+
+home.component.html
+----------------------
+<h1>
+<img src='assets/img/img1.jpg'>
+
+about.component.html
+----------------------
+<h1>
+<img src='assets/img/img2.jpg'>
+
+service.component.html
+----------------------
+<h1>
+<img src='assets/img/img3.jpg'>
+
+So we will keep our static files like css,js ,img in assets folder
+This will be needed for example in template etc.
+or some extra css js 
+
+and we don't write js in components, we write ts
+
+*****************************************************************
+
+So we download a template
+
+>Make a new project
+
+>>> ng g c home
+>>> ng g c about
+>>> ng g c contact
+
+And we pasted the template folder in assets
+
+So we will take the content before page wrapper from  assets/template/index.html
+and put that before app-root 
+
+And do not forget to add <base href="/">
+
+Now take the footer till down and after, app-root,
+copy paste the remaining code below app-root
+
+********************************************************************
+Currently there will be no style displayed
+
+Replace all css/ to assets/css 
+
+And replace all owl- by assets/owl-
+
+Replace all js/ by assets/js
+
+Replace img/ by assets/img
+
+So now our footer will be displayed
+
+Delete a middle section to make the footer small
+
+*****************************************************************
+Copy paste from div to /main from index/html in home.component.html
+
+Then place <app-home></app-home> in app.component.html
+
+Now it will look dull
+
+Replace all img to assets/img
+
+Now all images will appear
+*********************************************************************
+
+Now cut and paste the <div page wrapper> before app-root in index.html
+
+>>> ng g c menu
+
+And cut paste the <header div> in menu.html
+And in app.html, write 
+
+<app-menu></app-menu>
+<app-home></app-home>
+
+And now our home is ready
+
+******************************************************************
+Cut paste the <main div> code from about and contact.html 
+in about.component.html and  contact.component.html
+
+And in app.component.html,
+do this now
+
+<app-menu></app-menu>
+<router-outlet><router-outlet>
+
+In app-routing.module.ts
+----------------------------
+
+import {HomeComponent} from './home/home.component'
+import {AboutComponent} from './about/about.component'
+import {ContactComponent} from './contact/contact.component'
+
+const routes:Routes=[
+ {path:"home",component:HomeComponent},
+ {path:"about",component:AboutComponent},
+ {path:"contact",component:ContactComponent},
+ {path:"",redirectTo:"/home",pathMatch:"full"}
+]
+
+
+And in menu.component.html
+-------------------------
+<a routerLink="/home">
+<a routerLink="/about">
+<a routerLink="/contact">
+
+
+And now our links should work
+
+***************************************************************
+One challenge is
+
+that we have to put the csss from assets into styles.css
+and component.css to improve the performance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
