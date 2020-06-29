@@ -1,0 +1,278 @@
+So we will get the template Champ- Eresponsive E-commerce website
+
+for our ecommerce project
+**********************************************************************
+Put all css fonts images js in assets folder of eshop/src
+
+In index.html, open it in text editor
+
+from opening  to before header tag,
+copy content and paste in index.html of angular project
+
+Make the title tag "Eshop-Electronic Shop"
+Add a tag <base href="/">
+
+Change all css to assets/css
+
+Copy the footer and add it in index.html of angular project
+
+The <app-root> is between them
+
+We will clear the app-component
+
+Now let's check how it looks
+****************************************************************************
+//new component
+>>> ng g c home
+
+Copy paste the intermediate code from index.html of template
+ to home component.html file
+
+>>>ng g c menu
+
+Copy paste the header code in menu.component.html
+
+In app.component.html,
+
+<app-menu></app-menu>
+<app-home><app-home>
+
+Now the page will be shown
+**********************************************************************
+Change images to assets/images 
+
+Remove the form tag for searching
+
+"Change" ul tag remove
+
+Remove "how it works "
+
+Remove the image of logo
+and place <b class='text-info'>Eshop</b>
+and it will appear in logo
+**************************************************************************
+There is a bootstrap modal,
+remove it
+
+Remove the "how it works"
+from home.html
+
+Remove the cat-main-box
+
+***********************************************************************
+<<<ng g c login
+
+login.component.html
+----------------------------
+
+<div class="page-content-product">
+	<div class='main-product'>
+		<div class="container">
+		<div class='row-clearfix'>
+			<div class='col-lg-6 col-md-6 col-sm-6'>
+			<h2>Register user</h2>
+			<hr>
+			<form>
+				<input class="form-control" type="text" placeholder="Name">
+				<br>
+				<input class="form-control" type="text" placeholder="Email">
+				<br>
+				<input class="form-control" type="password" placeholder="Password">
+				<br>
+				<input class="form-control" type="text" placeholder="Phone">
+				<br>
+				<button type='submit' class="btn btn-success">Sign Up</button>
+			</form>
+			</div>
+			<h2>Login User</h2>
+			<hr>
+			<form>
+				<input class="form-control" type="text" placeholder="Email">
+				<br>
+				<input class="form-control" type="password" placeholder="Password">
+				<br>
+				<button type='submit' class="btn btn-success">Sign In</button>
+			</form>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+app.component.html
+-----------------------
+<app-menu></app-menu>
+<app-login></app-login>
+
+And change menu to Home, Login User 
+**************************************************************************
+
+And add some tags below from index.html so it not looks empty in login.html
+
+Now change again app.component.html
+---------------------------------------
+<app-menu></app-menu>
+<app-home></app-home>
+
+app.module.ts
+------------------
+
+import {FormsModule} from '@angular/forms'
+import {HttpClientModule} from '@angular/common/http'
+
+imports:
+[
+ HttpClientModule,
+ FormsModule
+]
+
+app.routing.module.ts
+-----------------------
+
+import {HomeComponent} from './home/home.component'
+import {LoginComponent} from './login/login.component'
+
+const routes:Routes=[
+ {
+   path:"home",
+   component:HomeComponent
+ },
+ {
+  path:"login",
+  component:LoginComponent
+ },
+ {
+  path:"",
+  redirectTo:"/home",
+  pathMatch:"full"
+ }
+]
+
+In app.component.html
+-----------------------
+<app-menu></app-menu>
+<router-outlet></router-outlet>
+
+In menu.html
+-------------------
+<a routerLink="/home">
+<a routerLink="/login">
+
+And now our login and home links are working
+**************************************************************************
+Put assets/js in place of js in index.html
+
+Delete all products from tables in mysql
+and also subcategories 
+And also categories
+
+Login and add some categories in eshop admin
+
+LED TV
+MOBILE
+LAPTOP
+SPEAKER
+COOLER
+
+We want that real categories should be seen in select list
+
+In controller package,
+make api package
+
+Make a Servlet inside it SendCategoryServlet.java
+
+@WebServlet(name="sendCate",urlPatterns={"/api/getcate"})
+public class SendCategoryServlet extends HttpServlet
+{
+
+  private cAtegoryDao cateDao;
+
+  public void init(ServletConfig config)
+  {
+   cateDao=new CategoryDao();
+  }
+	
+  protected void doGet(HttpServletREquest req,HttpServletResponse resp)
+  {
+
+    resp.setContentType("application/json");
+    ...
+    ...
+    List<Category> list=this.cateDao.list();
+    Gson gson=new Gson();
+    String json=gson.toJson(list);
+    resp.getWriter().write(json);
+  }
+}
+
+
+In home.component.ts
+--------------------
+
+import {HttpClient} from '@angular/common/http';
+
+export class HomeComponent implements OnInit
+{
+  public category=[]
+  constructor(private http:HttpClient){}
+
+  ngOnInit()
+  {
+  this.http.get("http://localhost://8080/eshop/api/getcate").subscribe(
+   response.any=>
+
+
+In home.component.html
+-------------------
+<option *ngFor="let cate of category">
+	{{cate.cateName}}
+</option>
+
+Change class of select to form-control
+
+*************************************************************************
+Now place this category code in above "Choose something"
+place
+
+And in this select tag write
+
+<option>Choose SubCategory</option>
+
+Change their class to sm-3
+
+
+Let's add subcategories in table
+
+Lenovo LAPTOP
+Dell   LAPTOP
+Samsung Mobile
+Nokia  Mobile
+Zebronics Speakers
+JBL Speakers
+Sony LEDTV
+LG LEDTV
+Panasonic LEDTV
+Symphony Cooler
+Bajaj Cooler
+Shyam Cooler
+
+SendSubCategoryServlet.java
+--------------------------------
+
+name = sendSubCate urlPatterns="/api/getsubcate"
+
+private SubCategoryDao subcatedao;
+
+init()
+{
+}
+
+doGet
+{
+ int cateid=Integer.parseInt(req.getParameter("cateid"));
+ List<SubCategory> list=this.subcatedao.list(cateid);
+}
+
+********************************************************************
+
+
