@@ -1,0 +1,273 @@
+home.component.html
+-----------------------
+
+Place this event on categories list
+
+<select #cate (change)="changecate(cate.value)">
+<option *ngFor="let cate of category" value={{cate.cateId}}></option>
+
+home.component.ts
+---------------------
+changecate(cate)
+{
+console.log("Cate value: "+cate);
+}
+
+This way we can get the id of a category
+**************************************************************
+
+home.component.ts
+--------------------
+
+public subcategory=[]
+---------------------
+
+changecate(cate)
+{
+ var URL='http://localhost:8080/eshop/api/getsubcate?cateid=${cate}'
+  this.http.get(URL).subscribe((response.any)=>{
+   this.subcategory=response;
+  }); 
+}
+
+
+In subcategory list,
+
+<option *ngFor="let scate of subcategory" value={{scate.subcateId}}>{{scate.subcateName}}</option>
+
+*****************************************************************
+In angular, we can use pipes 
+
+{{cate.cateId|uppercase}}
+
+This |uppercase is a pipe which converts all categories to upper case 
+
+
+<option value='0' >Choose Category</option>
+
+changecate(cate)
+{
+  if(cate=='0')  //we did not select any category
+  {
+	this.subcategory=[]
+  }
+  else
+  {
+    //the api code
+  }
+
+
+*******************************************************
+For search button,
+
+remove the a tag
+and insert a button tag
+
+<button (click)="search(cate.value,subcate.value)" class="btn btn-primary">Search</button>
+
+search(cate,subcate)
+{
+ console.log(cate,subcate);
+}
+
+
+**************************************************************
+Now we want that by only selecting category also,
+we get the products on homepage
+
+We are inserting an error message box
+
+the h4 tag above select list, we will make it error box
+
+<b class='text-danger'> {{searcherror}}</b>
+
+home.ts
+------------
+
+searcherror=""
+products=[]
+search(cate,subcate)
+{
+
+ if(cate=='0' && subcate=='0'){
+	this.searcherror="Select Category or Subcategory first!"
+  }
+ else
+  {
+    this.searcherror="";
+    var URL="https://localhost:8080/eshop/api/getprod?cateid=${cate}
+     &&subcateid=${subcate}";
+    this.http.get().....
+
+   }
+}
+
+In api,
+another servlet SendProductServlet.java
+--------------------------------------
+
+@WebServlet(name="sendProd",urlPatterns="{/api/getprod"})
+public class sendProductServlet extends HttpServlet
+{
+ protected void doGet(HttpServletRequest req,HttpServletResponse)
+ {
+   resp ....code
+
+   int cateid=Integer.parseInt(resp.getParameter("cateid"));
+   int subcateid=Integer.parseInt(resp.getParameter("subcateid"));
+   
+   List <Product> list;
+   ProductDao pdao=new ProductDao();
+   if(subcateid>0)
+   {
+      //according subcategory 
+	list=pdao.listBySubCategory(subcateid);      	
+   } 
+   else
+   {
+      //according category
+      list=pdao.listByCategory(cateid);
+   }
+
+  Gson gson=new Gson();
+  String json=gson.tojson();
+  resp.getWriter().write(json);
+ } 
+}
+
+And in ProductDao.java
+-----------------------------
+we will pass a listByCategory method
+
+listByCategory(int cateid)
+{
+String query="select * from product"
++"where isactive=true and category=? "
++"order by price";
+
+stm.setInt(cateid);
+}
+
+*********************************************************************
+And where to show this products?
+
+Remove the image divs for images, now we will insert by loops
+Let only 1 image remain inside div class="clear-rowfix"
+
+
+<div *ngFor="let prod of products" .... >
+<h4>{{prod.prodName}}</h4>
+<img src="assets/eshop/product/  >
+
+**********************************************************************
+Image uploading
+-----------------
+-----------------
+
+We removed the image upload box from admin panel
+
+Earlier we were using save method in productservlet
+but we now are using saveProduct method
+
+Now in mysql, autoincrement is done for product table
+And we want the id of the product
+
+So we change something in save method,
+
+if(i>0)
+{
+  ResultSet rs=stm.getGeneratedKeys();
+  if(rs.next())
+   {
+   }
+}
+ 
+
+in saveProduct method,
+
+int pid=pdao.saveProduct(ob);
+String url;
+if(pid>0)
+{
+  url=cpath+"admin/uploadpic.html";
+  req.getSession().setAttribute("pid",pid);
+}
+else
+  url=cpath+"/admin/product.html?res="+false;
+resp.sendRedirect("product.jsp");
+
+in uploadproductimage.jsp
+-----------------------------
+
+<form action="<%=cpath%>/uploadpic" enctype="multipart/form-data"
+   method="POST">   //in image uploading, enctype is compulsory
+  //but this will only take binary data, so radio button etc won't work
+
+<div class="row">
+<input type="file">
+
+We need 2 jar files for uploading->
+commons-io-2.7.jar
+commons-fileupload-1.4.jar
+
+UploadPic.java
+-------------------
+Another folder in assets->product in backend
+
+doPost()
+{
+
+//build path
+String dir1=getServletContext().getRealPath("/")+"assets/product";
+//real path means where app is running, that path
+
+//source path
+String dir2=dir1.replace("build/","");
+System.out.println(dir1);
+System.out.println(dir2);
+
+DiskFileItemFactory factory=new DiskFileItemFactory();
+
+//maximum size that will be stored in memory
+factory.setSizeThreshold(5000*1024);
+//factory.setRepository(new File("")); for a big file
+
+ServletFileUpload upload=new ServletFileUpload(factory);
+upload.setSizeMax(5000*1024); //maximum size to be uploaded
+
+ try{
+  List fileitems=upload.parseRequest(req); //it will search multipart
+  Iterator it=fileitems.iterator();
+  System.out.println
+
+  FileItem item=(FileItem)it.next();
+  if(item.getSize()>0)
+   {
+    String ext=item.getName().substring(item.getName().lastIndexOf("."));
+    String fileName=UUID.randomUUID().toString()+ext;
+    //UUID is 36 digit number which gives unique name to file
+ 
+    item.write(new File(dir1,fileName));
+    item.write(new File(dir2,fileName));
+    System.out.println("file sAVE....");
+   }
+ }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
