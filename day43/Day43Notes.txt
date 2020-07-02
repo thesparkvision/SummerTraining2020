@@ -1,0 +1,256 @@
+bajaj 
+samsung l1
+nokia 2.3
+
+added products
+
+****************************************************
+We have to do changes of server location each time,
+like its port
+
+So in tsconfig.json, we can do setting for it
+------------------------------------------------
+There is a "key compilerOptions"
+
+There a option "resolveJsonModule" won't be there
+Add it here
+
+"resolveJsonModule":true,
+
+This let us read json files which were not readable
+and now  we will do a global setting of server location in a .json file
+so we can access the key from there always
+
+package.json
+---------------
+"eshopserver":"https://localhost:8080/eshop"
+
+In the "app" directory,
+we made a new file "WebUrl.ts",
+
+import {eshopserver} from '../../package.json';
+
+export default class WebUrl
+{
+public static SERVER_URL:string=eshopserver;
+public static GET_CATEGORY:string=WebURL.SERVER_URL+"/api/getcate";
+public static GET_SUBCATEGORY:string=WebURL.SERVER_URL+"/api/getsubcate";
+public static GET_PRODUCT:string=WebURL.SERVER_URL+"/api/getprod";
+} 
+
+
+home.ts
+----------
+import WebUrl '../WebUrl';
+
+this.http.get(WebUrl.GET_CATEGORY);
+
+
+this.http.get(Weburl.GET_SUBCATEGORY+'cateid=${cate}')
+
+public class HomeComponent 
+{
+ public serverurl=WebUrl.SERVER_URL
+}
+
+And in images also use this url now,
+ {{serverurl}}
+
+*****************************************************************
+do not write urls manually. avoid repetition
+and also you are able to change by one changing at one place
+
+Now we want a page that opens on clicking
+"Browse all categories"
+
+And we are able to apply filters and subcategories there
+Make a new component
+
+>>>ng g c productfilter
+
+app-routing.module.ts
+------------------------
+import {ProductfilterComponent} from productfilter
+
+{
+path:"search",
+component:ProductfilterComponent
+}
+
+
+***********************************************************************
+category.html      in template
+----------------
+
+
+from div class="furniture box" to before main footer
+
+copy paste in productfilter.component.html
+Change images/ to assets/images/
+
+And in browse all categories
+
+<a routerLink="/search"></a>
+
+and our product page will come
+******************************************************************
+Insert a <h3>Categories</h3> here before subcategories header
+
+And also insert dropdown
+ 
+<select #cate (change)
+......
+.....
+
+all select tag code in productfilter below category header
+
+
+And also copy the api code from app.component.ts
+to productfilter.component.ts
+
+***********************************************************************
+Remove the images now
+
+and place this in dropdown lists
+
+<li *ngFor="let cate of category"
+<li *ngFor="let scate of subcategory">
+<a href="#">{{subcate.subcateName|uppercase}}</a></li>
+
+*****************************************************
+change h2 tag from furniture to products
+
+And remove the slider-range
+and then place 
+<h4 class="text-right" text-danger">{{}}</h4>
+<input type="range" min="100" and max="100000" value="100">
+
+in productfiltercomponent.ts
+---------------------------
+public filter={
+category:undefined,
+subcategory:undefined,
+price:0,
+company:undefined,
+}
+
+<h4 class="text-right" text-danger">{{filter.price}}</h4>
+<input #price (change)="changeprice(price.value)" type="range">
+
+
+productfilter.component.ts
+-----------------------------------
+changeprice(value)
+{
+this.filter.price=value;
+}
+
+************************************************************************
+We made  a servlet
+
+SendCompanyServlet.java
+
+---------------------------
+@WebServlet(name=")
+SendCompanyServlet
+{
+
+void doGet()
+{
+int cateid=Integer.parseInt(req.getParameter("cateid"));
+List<String> list=this.pdao.listCompany(cateid);
+Gson gson=new Gson();
+
+}
+}
+
+
+ProductDao.java
+--------------------
+copy paste a list code and we will change the query
+
+public list<String>
+{
+ArrayList<String> clist=new ArrayList<>();
+
+String query="Select distinct company from product"
++"where isactive=true and category=?"
++"order by company";
+}
+
+
+In WebUrl.ts
+-----------------
+
+public static GET_COMPANY:string=WebUrl.SERVER_URL+'/api/getcompany/';
+
+productfilter.component.ts
+-----------------------------
+
+var CURL=WebUrl.GET_COMPANY+'....'
+this.http.get()
+{
+this.company=response;
+}
+
+
+productfilter.component.html
+----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
