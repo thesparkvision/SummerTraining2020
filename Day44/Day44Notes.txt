@@ -1,0 +1,399 @@
+Also change text to "Add to Cart"
+Change like this to view
+
+Remove extra boxes and we will
+make a single box repeat through loop
+
+
+Currently checkbox is not letting check the company names
+This is because all checkbox are getting same ids
+
+So we will use pipe here
+
+<div *ngFor="let cm of company| keyvalue"
+class="form-check">
+<input id="checkbox{{cm.key}}">
+<label for="checkbox{{cm.key}}">
+{{cm.value}}
+</label>
+</div>
+
+*****************************************************
+We will put the same thing in subcategory
+
+In place of a tag,
+we can put this input tag
+
+And change just "let scate of subcategory"
+checkbox{{scate.subcateId}}
+
+And now we will get checkboxes in subcategories
+*****************************************************
+We want selecting any filter,
+the products according to that should change
+
+On selecting categories,subcategories,price range,
+by company we want the products
+
+Change
+
+public filter={
+	category:undefined,
+	subcategory:{
+		mode:'all',   /*all,spec*/
+		list:[]
+	},
+	price:undefined,
+	company:{
+		mode:'all', /*all,spec*/
+		list:[]
+	}
+}
+
+mode if all in default and later can be changed
+to spec on clicking a certain element
+
+In list, the ids of selected elements will come
+This filter will go to java to get back the products
+
+changecate(
+
+if(cate=="0")
+{
+  this.category=[]
+  this.company=[]
+  filter={
+	category:undefined,
+	subcategory:{
+		mode:'all',   /*all,spec*/
+		list:[]
+	},
+	price:undefined,
+	company:{
+		mode:'all', /*all,spec*/
+		list:[]
+	}
+    }
+}
+else
+{
+this.filter.category=cate
+}
+
+
+Also now each checkbox will have value
+We put curly braces for html and not javascript
+
+<input (change)="changesubcate(scate.subcateId)" value="{{scate.subcateId}}">
+
+changesubcate(subcateId)
+{
+ var subcateid=event.target.value;
+ console.log(subcateid);
+}
+
+********************************************************************
+now the change will work for both true and false
+
+So we want to know whether checkbox is checked or not.
+
+(change)="changesubcate($event)"
+
+
+changesubcate(event)
+{
+ var status=event.target.checked
+ var subcateid=event.target.value
+ console.log(status,subcateid)
+
+ if(status)
+ {
+  this.filter.subcategory.mode='spec';
+  this.filter.subcategory.list.push(subcateid);
+ }
+ else
+ { 
+  var i=this.filter.subcategory.list.indexOf(subcateid);
+  this.filter.subcategory.list.splice(i,1);
+  if(this.filter.subcategory.list.length==0){
+	this.filter.subcategory.mode='all';
+  }
+ }
+  
+ console.log(filter.subcategory);
+}
+
+********************************************************
+And we will do the same thing now with company
+
+(change)="changecompany($event)"
+value="{{cm.value}}">
+
+
+changecompany(event)
+{
+ var status=event.target.checked
+ var company=event.target.value
+ console.log(status,subcateid)
+
+ if(status)
+ {
+  this.filter.company.mode='spec';
+  this.filter.company.list.push(company);
+ }
+ else
+ { 
+  var i=this.filter.company.list.indexOf(company);
+  this.filter.company.list.splice(i,1);
+  if(this.filter.company.list.length==0){
+	this.filter.company.mode='all';
+  }
+ }
+  
+ console.log(this.filter);
+}
+
+The mode tells us whether all elements are selected or not
+This saves us from checking and doing calculations
+and only do when mode is spec
+
+And we have to send this data to the server
+
+search()
+{
+this.http.post("",this.fitler).subscribe((response:any)=>{
+ });
+}
+
+*************************************************************
+We made a file prox.conf.json
+-------------------------
+
+{
+   "/api/*":{
+     "target":"http://localhost:8080/eshop",  //use this server when api url comes
+     "secure":false,
+     "logLevel":"debug"
+   }
+}
+
+And its entry will be done in angular.json
+
+"serve":{
+
+.....
+"options":{
+...
+"proxyConfig":"proxy.conf.json"
+}
+}
+
+
+Now it will be able to send data by post
+
+
+Make a new url in WebUrl.ts
+-----------------------------
+public static SEARCH_PRODUCT:string="api/searchprod"; //we have done server entry
+
+
+********************************************************************
+POST is for secure data
+get can be done easily
+
+
+search()
+{
+ this.http.post(WebUrl.SEARCH_PRODUCT,this.filter,{
+  "headers":{
+     'Content-Type':'application/json'
+  }
+ })
+}
+
+Now this function should be called when we change anything
+
+changeprice()
+{
+....
+ this.search()
+}
+
+changesubcate()
+{
+....
+this.search()
+}
+
+changecate()
+{
+....
+this.search()
+}
+
+changecompany()
+{
+....
+this.search()
+}
+
+
+In java, we have to make /searchprod
+
+SearchProductServlet.java
+-----------------------------
+doPost()
+{
+ resp......
+  
+ JsonParser parser=new JsonParser(); //file from gson jar
+ JsonElement mainElement=parser.parse(req.getReader());
+ System.out.println(mainElement);
+
+ /* We are getting json data and not simple data,
+   so we have to parse it
+   now we can't use req.getParameter()
+ */
+
+ JsonObject mainObj=mainElement.getAsJsonObject();
+ String categoryStr=mainObj.get("category").getAsInt(); //key which is in json data
+ 
+ JsonObject subcateObj=mainObject.get("subcategory").getAsJsonObject();
+ String subcateMode=subcateObj.get("mode").getAsString();
+ JsonArray subcateList=subcateObj.get("list").getAsJsonArray();
+
+ int price=mainObj.get("category").getAsInt();
+
+ JsonObject companyObj=mainObject.get("company").getAsJsonObject();
+ String companyMode=companyObj.get("mode").getAsString();
+ JsonArray companyList=companyObj.get("list").getAsJsonArray();
+ 
+ 
+
+ List<Product>list=new ArrayList<>();
+ ProductDao pdao=new ProductDao();
+ list.add(n)
+}
+
+
+Now the query for this looks lot difficult
+We will make a class SQLBuilder.java in service package
+
+public class SQLBuilder
+{
+  public string searchSQL(JsonObject mainObj)
+  {
+     String categoryStr=mainObj.get("category").getAsInt(); //key which is in json data
+ 
+ JsonObject subcateObj=mainObject.get("subcategory").getAsJsonObject();
+ String subcateMode=subcateObj.get("mode").getAsString();
+ JsonArray subcateList=subcateObj.get("list").getAsJsonArray();
+
+ int price=mainObj.get("category").getAsInt();
+
+ JsonObject companyObj=mainObject.get("company").getAsJsonObject();
+ String companyMode=companyObj.get("mode").getAsString();
+ JsonArray companyList=companyObj.get("list").getAsJsonArray();
+ 
+     String query="";
+     return query;
+   }
+}
+
+
+In SearchProductServlet.java
+-----------------------------
+SQLBuilder builder=new SQLBuilder();
+String query=builder.searchSQL(mainElement);
+
+
+SQLBuilder.java
+-----------------
+
+query+="select * from product where category="+category;
+if(price>0)
+{
+ query+=" AND price<="+price;
+}
+
+/* it gives error if we change price before selecting any category
+We want that price pattern works only after category is selected
+*/
+
+if(subcateMode.equals("spec")){
+  String subCateStr=subcateList.toString();
+ // Sout(subCateStr);
+  subCateStr=subCateStr.replace("[","(");
+  subCateStr=subCateStr.replace("]",")");
+  query+=" and subcategory in "+subCateStr;
+  }
+}
+
+
+/* we are getting string values in list
+  so change them to int in angular only
+   var subcateid=parseInt(event.target.value);
+  */
+
+if(companyMode.equals("spec")){
+  String companyStr=companyList.toString();
+ // Sout(subCateStr);
+  companyStr=companyStr.replace("[","(");
+  companyStr=companyStr.replace("]",")");
+  query+=" and company in "+companyStr;
+  }
+}
+
+query+="order by price";
+return query;
+}
+
+
+
+In SearchProductServlet.java
+-------------------------------
+list=pdao.searchByQuery(query);
+
+ProductDao.java
+----------------
+Copy paste the list code
+
+Change the query and let everything remain same.
+
+
+In productfilter.component.ts
+------------------------------------
+
+
+
+
+<div *ngFor="let pd of products">
+	<h4>{{pd.prodName}}</h4>
+        <a> {{pd.price}}</a>
+        <img src="{{serverurl}}/assets/product/{{pd.pic1}}">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
